@@ -1,0 +1,29 @@
+﻿@model MakerFarm.Models.Material
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Material</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MaterialName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaterialName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PrinterTypeId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PrinterTypeId)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

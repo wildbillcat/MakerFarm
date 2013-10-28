@@ -9,110 +9,107 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
-    public class PrintsController : Controller
+    public class MaterialsController : Controller
     {
-        private PrintDBContext db = new PrintDBContext();
-        private PrinterTypeDBContext pdb = new PrinterTypeDBContext();
-        private MaterialDBContext mdb = new MaterialDBContext();
+        private MaterialDBContext db = new MaterialDBContext();
+
         //
-        // GET: /Prints/
+        // GET: /Materials/
 
         public ActionResult Index()
         {
-            return View(db.Prints.ToList());
+            return View(db.Materials.ToList());
         }
 
         //
-        // GET: /Prints/Details/5
+        // GET: /Materials/Details/5
 
         public ActionResult Details(long id = 0)
         {
-            Print print = db.Prints.Find(id);
-            if (print == null)
+            Material material = db.Materials.Find(id);
+            if (material == null)
             {
                 return HttpNotFound();
             }
-            return View(print);
+            return View(material);
         }
 
         //
-        // GET: /Prints/Create
+        // GET: /Materials/Create
 
-        public ActionResult Create(Int16 id = 0)
+        public ActionResult Create()
         {
-
             return View();
         }
-        
+
         //
-        // POST: /Prints/Create
-        
+        // POST: /Materials/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Print print)
+        public ActionResult Create(Material material)
         {
             if (ModelState.IsValid)
             {
-                db.Prints.Add(print);
+                db.Materials.Add(material);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(print);
+            return View(material);
         }
 
         //
-        // GET: /Prints/Edit/5
+        // GET: /Materials/Edit/5
 
         public ActionResult Edit(long id = 0)
         {
-            Print print = db.Prints.Find(id);
-            if (print == null)
+            Material material = db.Materials.Find(id);
+            if (material == null)
             {
                 return HttpNotFound();
             }
-            return View(print);
+            return View(material);
         }
 
         //
-        // POST: /Prints/Edit/5
+        // POST: /Materials/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Print print)
+        public ActionResult Edit(Material material)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(print).State = EntityState.Modified;
+                db.Entry(material).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(print);
+            return View(material);
         }
 
         //
-        // GET: /Prints/Delete/5
+        // GET: /Materials/Delete/5
 
         public ActionResult Delete(long id = 0)
         {
-            Print print = db.Prints.Find(id);
-            if (print == null)
+            Material material = db.Materials.Find(id);
+            if (material == null)
             {
                 return HttpNotFound();
             }
-            return View(print);
+            return View(material);
         }
 
         //
-        // POST: /Prints/Delete/5
+        // POST: /Materials/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Print print = db.Prints.Find(id);
-            db.Prints.Remove(print);
+            Material material = db.Materials.Find(id);
+            db.Materials.Remove(material);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
