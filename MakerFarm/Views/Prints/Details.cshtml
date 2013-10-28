@@ -1,0 +1,106 @@
+﻿@model MakerFarm.Models.Print
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Print</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FileName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FileName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SMBPath)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SMBPath)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StaffProcessingFee)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StaffProcessingFee)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EstPrintCost)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EstPrintCost)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FinalPrintCost)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FinalPrintCost)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Success)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Success)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SubmissionTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubmissionTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EstToolpathTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EstToolpathTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompletionTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompletionTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AuthorizedAttempts)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AuthorizedAttempts)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PrinterTypeID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PrinterTypeID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StaffAssitedPrint)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StaffAssitedPrint)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

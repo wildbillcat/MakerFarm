@@ -1,0 +1,134 @@
+﻿@model MakerFarm.Models.Print
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Print</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FileName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FileName)
+            @Html.ValidationMessageFor(model => model.FileName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserID)
+            @Html.ValidationMessageFor(model => model.UserID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SMBPath)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SMBPath)
+            @Html.ValidationMessageFor(model => model.SMBPath)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StaffProcessingFee)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StaffProcessingFee)
+            @Html.ValidationMessageFor(model => model.StaffProcessingFee)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EstPrintCost)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EstPrintCost)
+            @Html.ValidationMessageFor(model => model.EstPrintCost)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FinalPrintCost)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FinalPrintCost)
+            @Html.ValidationMessageFor(model => model.FinalPrintCost)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Success)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Success)
+            @Html.ValidationMessageFor(model => model.Success)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubmissionTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubmissionTime)
+            @Html.ValidationMessageFor(model => model.SubmissionTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EstToolpathTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EstToolpathTime)
+            @Html.ValidationMessageFor(model => model.EstToolpathTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompletionTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CompletionTime)
+            @Html.ValidationMessageFor(model => model.CompletionTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AuthorizedAttempts)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AuthorizedAttempts)
+            @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PrinterTypeID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PrinterTypeID)
+            @Html.ValidationMessageFor(model => model.PrinterTypeID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StaffAssitedPrint)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StaffAssitedPrint)
+            @Html.ValidationMessageFor(model => model.StaffAssitedPrint)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

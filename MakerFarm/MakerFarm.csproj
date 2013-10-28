@@ -183,12 +183,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="Controllers\PrintsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\MaterialModel.cs" />
+    <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -303,7 +305,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Print\Create.cshtml" />
+    <Content Include="Views\Prints\Index.cshtml" />
+    <Content Include="Views\Prints\Details.cshtml" />
+    <Content Include="Views\Prints\Create.cshtml" />
+    <Content Include="Views\Prints\Edit.cshtml" />
+    <Content Include="Views\Prints\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
