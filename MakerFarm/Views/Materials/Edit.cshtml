@@ -31,6 +31,14 @@
             @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MaterialSpoolQuantity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MaterialSpoolQuantity)
+            @Html.ValidationMessageFor(model => model.MaterialSpoolQuantity)
+        </div>
+
         <p>
             <input type="submit" value="Save" />
         </p>

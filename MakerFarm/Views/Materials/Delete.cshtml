@@ -23,6 +23,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.PrinterTypeId)
     </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaterialSpoolQuantity)
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

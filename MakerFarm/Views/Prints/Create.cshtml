@@ -37,6 +37,16 @@
             @Html.ValidationMessageFor(model => model.SMBPath)
         </div>
 
+        @for (int i = 0; i < (int)ViewData["SupportedMaterials"]; i++)
+        { 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MaterialIDs[i])
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MaterialIDs[i])
+            @Html.ValidationMessageFor(model => model.MaterialIDs[i])
+        </div>
+        }
         <div class="editor-label">
             @Html.LabelFor(model => model.StaffProcessingFee)
         </div>

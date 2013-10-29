@@ -17,6 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.PrinterTypeId)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
+        </th>
         <th></th>
     </tr>
 
@@ -27,6 +30,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PrinterTypeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaterialSpoolQuantity)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

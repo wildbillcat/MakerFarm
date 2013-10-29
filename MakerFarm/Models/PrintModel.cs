@@ -17,8 +17,8 @@ namespace MakerFarm.Models
         public DateTime SubmissionTime { get; set; } /* This is the time the print is submitted to the application */
         public DateTime EstToolpathTime { get; set; } /* Estimated amount of time to complete the print job from the processing software */
         public DateTime CompletionTime { get; set; } /* The time when the print job was completed */
-        public Int16 AuthorizedAttempts { get; set; } /* Number of attempts that are requested to be attempted in at cost to the user. */
-        public Int16 PrinterTypeID { get; set; } /* ID number of the printer type the file is meant for */
+        public int AuthorizedAttempts { get; set; } /* Number of attempts that are requested to be attempted in at cost to the user. */
+        public int PrinterTypeID { get; set; } /* ID number of the printer type the file is meant for */
         public bool StaffAssitedPrint { get; set; } /* Denotes if a staff member assited iwth the print submission */
     }
 

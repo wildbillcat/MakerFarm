@@ -24,7 +24,7 @@ namespace MakerFarm.Controllers
         //
         // GET: /PrinterTypes/Details/5
 
-        public ActionResult Details(short id = 0)
+        public ActionResult Details(int id = 0)
         {
             PrinterType printertype = db.PrinterTypes.Find(id);
             if (printertype == null)
@@ -62,7 +62,7 @@ namespace MakerFarm.Controllers
         //
         // GET: /PrinterTypes/Edit/5
 
-        public ActionResult Edit(short id = 0)
+        public ActionResult Edit(int id = 0)
         {
             PrinterType printertype = db.PrinterTypes.Find(id);
             if (printertype == null)
@@ -91,7 +91,7 @@ namespace MakerFarm.Controllers
         //
         // GET: /PrinterTypes/Delete/5
 
-        public ActionResult Delete(short id = 0)
+        public ActionResult Delete(int id = 0)
         {
             PrinterType printertype = db.PrinterTypes.Find(id);
             if (printertype == null)
@@ -106,7 +106,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(short id)
+        public ActionResult DeleteConfirmed(int id)
         {
             PrinterType printertype = db.PrinterTypes.Find(id);
             db.PrinterTypes.Remove(printertype);
