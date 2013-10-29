@@ -40,12 +40,14 @@ namespace MakerFarm.Controllers
 
         public ActionResult Create(Int16 id = 0)
         {
-            if (id != 0)
+            if (id == 0)
             {
-                PrinterType printerType = pdb.PrinterTypes.Find(id);
-                var materials = mdb.Materials.Where(s => s.PrinterTypeId.Equals(id));
-                return View(printerType, materials);
+                return View();
             }
+            PrinterType printerType = pdb.PrinterTypes.Find(id);
+            List<Material> materials = mdb.Materials.Where(s => s.PrinterTypeId.Equals(id) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
+            ViewData["MaterialsList"] = new SelectList(materials, "Id", "MaterialName");
+            ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             return View();
         }
         
