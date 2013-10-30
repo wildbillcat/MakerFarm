@@ -13,6 +13,10 @@ namespace MakerFarm.Models
 
     public class MaterialDBContext : DbContext
     {
+        public MaterialDBContext() : base()
+        {
+            Database.SetInitializer<MaterialDBContext>(new DropCreateDatabaseIfModelChanges<MaterialDBContext>());
+        }
         public DbSet<Material> Materials { get; set; }
     }
 }

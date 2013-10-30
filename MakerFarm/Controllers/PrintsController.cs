@@ -42,20 +42,29 @@ namespace MakerFarm.Controllers
         {
             if (id == 0)
             {
+                //The create function requires that a printer type be passed to it.
                 return RedirectToAction("Index", "PrinterTypes");
             }
             PrinterType printerType = pdb.PrinterTypes.Find(id);
             if(printerType == null)
             {
-                //Invalid Printer Type!
+                //The printer you attempted to use does not exist in the database!
                 return RedirectToAction("Index", "PrinterTypes");
             }
             List<Material> materials = mdb.Materials.Where(s => s.PrinterTypeId.Equals(id) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
             if(materials.Count() == 0)
             {
+                //The printer you attempted to use does not have any materials available
                 return RedirectToAction("Index", "Materials");
             }
             ViewData["MaterialsList"] = new SelectList(materials, "Id", "MaterialName");
+            List<string> MNUA = new List<string>();
+            /*
+            for(int i = 1; i <= printerType.MaxNumberUserAttempts; i++)
+            {
+                MNUA.Add(i.ToString());
+            }*/
+            ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             return View();
         }

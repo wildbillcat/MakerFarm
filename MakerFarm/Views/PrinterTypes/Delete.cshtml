@@ -7,34 +7,50 @@
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>PrinterType</legend>
+<div>
+    <h4>PrinterType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeName)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.TypeName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TypeName)
-    </div>
+        <dd>
+            @Html.DisplayFor(model => model.TypeName)
+        </dd>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SupportedNumberMaterials)
-    </div>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PrinterIcon)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PrinterIcon)
-    </div>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-}
+        <dd>
+            @Html.DisplayFor(model => model.SupportedNumberMaterials)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterIcon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrinterIcon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxNumberUserAttempts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxNumberUserAttempts)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

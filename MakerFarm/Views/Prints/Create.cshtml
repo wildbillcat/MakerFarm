@@ -43,8 +43,7 @@
             @Html.LabelFor(model => model.MaterialIDs[i])
         </div>
         <div class="editor-field">
-            @Html.DropDownList("MaterialsList", String.Concat("MaterialIDs[", i, "]"));
-            @Html.EditorFor(model => model.MaterialIDs[i])
+            @Html.DropDownListFor(model => model.MaterialIDs[i], (SelectList)ViewData["MaterialsList"])
             @Html.ValidationMessageFor(model => model.MaterialIDs[i])
         </div>
         }
@@ -108,7 +107,7 @@
             @Html.LabelFor(model => model.AuthorizedAttempts)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.AuthorizedAttempts)
+            @Html.DropDownListFor(model => model.AuthorizedAttempts, (SelectList)ViewData["MaxNumberUserAttempts"])
             @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
         </div>
 

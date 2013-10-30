@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.TypeName)
@@ -19,6 +19,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PrinterIcon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxNumberUserAttempts)
         </th>
         <th></th>
     </tr>
@@ -33,6 +36,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PrinterIcon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxNumberUserAttempts)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

@@ -6,31 +6,45 @@
 
 <h2>Details</h2>
 
-<fieldset>
-    <legend>PrinterType</legend>
+<div>
+    <h4>PrinterType</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeName)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.TypeName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TypeName)
-    </div>
+        <dd>
+            @Html.DisplayFor(model => model.TypeName)
+        </dd>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SupportedNumberMaterials)
-    </div>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PrinterIcon)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PrinterIcon)
-    </div>
-</fieldset>
+        <dd>
+            @Html.DisplayFor(model => model.SupportedNumberMaterials)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterIcon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrinterIcon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxNumberUserAttempts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxNumberUserAttempts)
+        </dd>
+
+    </dl>
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

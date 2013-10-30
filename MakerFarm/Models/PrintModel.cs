@@ -24,6 +24,10 @@ namespace MakerFarm.Models
 
     public class PrintDBContext : DbContext
     {
+        public PrintDBContext() : base()
+        {
+            Database.SetInitializer<PrintDBContext>(new DropCreateDatabaseIfModelChanges<PrintDBContext>());
+        }
         public DbSet<Print> Prints { get; set; }
     }
 }
