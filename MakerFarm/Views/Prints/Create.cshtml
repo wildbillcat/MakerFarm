@@ -43,6 +43,7 @@
             @Html.LabelFor(model => model.MaterialIDs[i])
         </div>
         <div class="editor-field">
+            @Html.DropDownList("MaterialsList", String.Concat("MaterialIDs[", i, "]"));
             @Html.EditorFor(model => model.MaterialIDs[i])
             @Html.ValidationMessageFor(model => model.MaterialIDs[i])
         </div>
