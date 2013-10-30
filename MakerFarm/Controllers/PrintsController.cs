@@ -59,11 +59,10 @@ namespace MakerFarm.Controllers
             }
             ViewData["MaterialsList"] = new SelectList(materials, "Id", "MaterialName");
             List<string> MNUA = new List<string>();
-            /*
             for(int i = 1; i <= printerType.MaxNumberUserAttempts; i++)
             {
                 MNUA.Add(i.ToString());
-            }*/
+            }
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             return View();

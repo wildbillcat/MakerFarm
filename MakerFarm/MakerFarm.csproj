@@ -231,6 +231,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PrinterTypeModel.cs" />
+    <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
