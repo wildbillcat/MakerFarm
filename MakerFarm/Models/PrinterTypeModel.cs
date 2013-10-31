@@ -10,6 +10,7 @@ namespace MakerFarm.Models
         public int SupportedNumberMaterials { get; set; } /* The number of materials supported for sumultanious use. (IE, how many extrution heads available on the printer) */
         public string PrinterIcon { get; set; } /*This is the icon that was uploaded to represent the printer. */
         public int MaxNumberUserAttempts { get; set; } /* This notes the maximum number of attempts allowed for this printer */
+        public string SupportedFileTypes { get; set; } /* This is a comma separated list of the printers file extensions */
     }
 
     public class PrinterTypeDBContext : DbContext

@@ -14,19 +14,12 @@
         <legend>Print</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FileName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FileName)
-            @Html.ValidationMessageFor(model => model.FileName)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.UserID)
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.UserID)
-            @Html.ValidationMessageFor(model => model.UserID)
+            <input name="PrintFile" id="PrintFile" type="file" accept="">
+            @PrintFile.accept = ViewData["SupportedFileTypes"]
         </div>
 
         <div class="editor-label">

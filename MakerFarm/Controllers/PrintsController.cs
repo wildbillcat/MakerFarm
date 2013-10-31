@@ -65,6 +65,7 @@ namespace MakerFarm.Controllers
             }
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
+            ViewData["SupportedFileTypes"] = printerType.SupportedFileTypes;
             return View();
         }
         
