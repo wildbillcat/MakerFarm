@@ -17,17 +17,15 @@
             @Html.LabelFor(model => model.UserID)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UserID)
-            <input name="PrintFile" id="PrintFile" type="file" accept="">
-            @PrintFile.accept = ViewData["SupportedFileTypes"]
+            @Html.EditorFor(model => model.UserID, (string)ViewData["CurrentUser"], new { @disabled = "disabled" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SMBPath)
+            @Html.Label("Print File:")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SMBPath)
-            @Html.ValidationMessageFor(model => model.SMBPath)
+            @Html.TextBox("PrintFile", null, new { @id="PrintFile", @name="PrintFile", @type="file", @required="required" })
+            @Html.ValidationMessage("PrintFile")
         </div>
 
         @for (int i = 0; i < (int)ViewData["SupportedMaterials"]; i++)
@@ -40,13 +38,6 @@
             @Html.ValidationMessageFor(model => model.MaterialIDs[i])
         </div>
         }
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StaffProcessingFee)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.StaffProcessingFee)
-            @Html.ValidationMessageFor(model => model.StaffProcessingFee)
-        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.EstPrintCost)
@@ -64,13 +55,7 @@
             @Html.ValidationMessageFor(model => model.FinalPrintCost)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Success)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Success)
-            @Html.ValidationMessageFor(model => model.Success)
-        </div>
+       
 
         <div class="editor-label">
             @Html.LabelFor(model => model.SubmissionTime)
@@ -87,15 +72,7 @@
             @Html.EditorFor(model => model.EstToolpathTime)
             @Html.ValidationMessageFor(model => model.EstToolpathTime)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CompletionTime)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CompletionTime)
-            @Html.ValidationMessageFor(model => model.CompletionTime)
-        </div>
-
+                
         <div class="editor-label">
             @Html.LabelFor(model => model.AuthorizedAttempts)
         </div>
@@ -129,7 +106,27 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+@(ViewData["SupportedFileTypes"])
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+    
+<script>
+    
+    $('input[type=file]').change(function (e) {
+        var file = $(this).val();
+        var ext = file.split('.').pop();
+        var list = (@ViewBag["SupportedFileTypes"]);
+        var pext = list.split(',');
+        for (var i = 0; i < length; i++)
+        {
+            if(ext==pext[i])
+            {
+                return;
+            }
+        }
+        alert("Invaild File Type: " + ext);
+    });
+
+</script>
+
+        }

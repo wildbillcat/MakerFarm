@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FileName)
@@ -21,25 +21,16 @@
             @Html.DisplayNameFor(model => model.SMBPath)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StaffProcessingFee)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.EstPrintCost)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FinalPrintCost)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Success)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SubmissionTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EstToolpathTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompletionTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AuthorizedAttempts)
@@ -65,25 +56,16 @@
             @Html.DisplayFor(modelItem => item.SMBPath)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StaffProcessingFee)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.EstPrintCost)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FinalPrintCost)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Success)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.SubmissionTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EstToolpathTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompletionTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AuthorizedAttempts)
