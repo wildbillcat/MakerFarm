@@ -13,11 +13,8 @@
     <fieldset>
         <legend>Print</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserID)
-        </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UserID, (string)ViewData["CurrentUser"], new { @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.UserID, null, new { @type = "hidden", @Value = ViewData["CurrentUser"] })
         </div>
 
         <div class="editor-label">
@@ -31,7 +28,7 @@
         @for (int i = 0; i < (int)ViewData["SupportedMaterials"]; i++)
         { 
         <div class="editor-label">
-            @Html.LabelFor(model => model.MaterialIDs[i])
+            @Html.Label(string.Concat("Material ", (1+i).ToString()))
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.MaterialIDs[i], (SelectList)ViewData["MaterialsList"])
@@ -40,29 +37,11 @@
         }
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.EstPrintCost)
+            @Html.LabelFor(model => model.EstMaterialUse)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.EstPrintCost)
-            @Html.ValidationMessageFor(model => model.EstPrintCost)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FinalPrintCost)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FinalPrintCost)
-            @Html.ValidationMessageFor(model => model.FinalPrintCost)
-        </div>
-
-       
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SubmissionTime)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SubmissionTime)
-            @Html.ValidationMessageFor(model => model.SubmissionTime)
+            @Html.EditorFor(model => model.EstMaterialUse)
+            @Html.ValidationMessageFor(model => model.EstMaterialUse)
         </div>
 
         <div class="editor-label">
@@ -81,20 +60,9 @@
             @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PrinterTypeID)
-        </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.PrinterTypeID)
+            @Html.TextBoxFor(model => model.PrinterTypeID, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
             @Html.ValidationMessageFor(model => model.PrinterTypeID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StaffAssitedPrint)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.StaffAssitedPrint)
-            @Html.ValidationMessageFor(model => model.StaffAssitedPrint)
         </div>
 
         <p>
@@ -106,7 +74,6 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-@(ViewData["SupportedFileTypes"])
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     
@@ -121,8 +88,7 @@
         var ValidTypeMSG = "Valid File Types are: "
         if (pext.length > 0)
         {
-            alert(pext);
-            for (var i = 0; i < length; i++) {
+            for (var i = 0; i < pext.length; i++) {
                 if (ext == pext[i]) {
                     invalid = false;
                 }
