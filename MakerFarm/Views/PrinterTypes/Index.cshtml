@@ -23,6 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.MaxNumberUserAttempts)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupportedFileTypes)
+        </th>
         <th></th>
     </tr>
 
@@ -39,6 +42,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.MaxNumberUserAttempts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupportedFileTypes)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

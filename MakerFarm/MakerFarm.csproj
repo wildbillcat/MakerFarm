@@ -384,12 +384,12 @@
     <Content Include="Views\Materials\Create.cshtml" />
     <Content Include="Views\Materials\Edit.cshtml" />
     <Content Include="Views\Materials\Delete.cshtml" />
+    <Content Include="Views\Prints\Index.cshtml" />
+    <Content Include="Views\PrinterTypes\Create.cshtml" />
     <Content Include="Views\PrinterTypes\Delete.cshtml" />
     <Content Include="Views\PrinterTypes\Details.cshtml" />
-    <Content Include="Views\PrinterTypes\Index.cshtml" />
-    <Content Include="Views\Prints\Index.cshtml" />
     <Content Include="Views\PrinterTypes\Edit.cshtml" />
-    <Content Include="Views\PrinterTypes\Create.cshtml" />
+    <Content Include="Views\PrinterTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

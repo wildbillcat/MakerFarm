@@ -115,16 +115,31 @@
     $('input[type=file]').change(function (e) {
         var file = $(this).val();
         var ext = file.split('.').pop();
-        var list = (@ViewBag["SupportedFileTypes"]);
+        var list = '@ViewBag.SupportedFileTypes';
+        var invalid = true;
         var pext = list.split(',');
-        for (var i = 0; i < length; i++)
+        var ValidTypeMSG = "Valid File Types are: "
+        if (pext.length > 0)
         {
-            if(ext==pext[i])
-            {
-                return;
+            alert(pext);
+            for (var i = 0; i < length; i++) {
+                if (ext == pext[i]) {
+                    invalid = false;
+                }
+                ValidTypeMSG = ValidTypeMSG + pext[i];
+            }
+        } else {
+            if (ext == list) {
+                invalid = false;
+                ValidTypeMSG = ValidTypeMSG + list;
             }
         }
-        alert("Invaild File Type: " + ext);
+        
+        if (invalid)
+        {
+            alert("Invaild File Type: " + ext + "\n Valid File Types: " + '@ViewBag.SupportedFileTypes');
+        }
+        
     });
 
 </script>
