@@ -76,8 +76,27 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Print print)
+        public ActionResult Create(FormCollection values)
         {
+            Print print = new Print();
+            print.FileName = "new";
+            print.UserID = values["UserID"];
+            print.SMBPath = "path";
+
+            /* Material ID Parsing */
+            string[] tempMaterial = values.GetValues("MaterialIds");
+            long[] matIds = new long[tempMaterial.Length];
+            for (int i = 0; i < tempMaterial.Length; i++ )
+            {
+                matIds[i] = long.Parse(tempMaterial[i]);
+            }
+            print.MaterialIDs = matIds;
+
+            /*Estimated Material Usage*/
+            print.EstMaterialUse = 2.5;
+
+            /*Submission Time*/
+            print.SubmissionTime = 
 
             if (ModelState.IsValid)
             {

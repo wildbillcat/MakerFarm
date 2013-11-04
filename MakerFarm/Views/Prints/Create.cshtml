@@ -17,6 +17,10 @@
             @Html.TextBoxFor(model => model.UserID, null, new { @type = "hidden", @Value = ViewData["CurrentUser"] })
         </div>
 
+        <div class="editor-field">
+            @Html.TextBox(model => model.UserID, null, new { @type = "hidden", @Value = ViewData["CurrentUser"] })
+        </div>
+
         <div class="editor-label">
             @Html.Label("Print File:")
         </div>
