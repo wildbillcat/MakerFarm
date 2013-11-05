@@ -76,10 +76,11 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FormCollection values)
+        public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
             Print print = new Print();
-            print.FileName = "new";
+
+            print.FileName = PrintFile.FileName;
             print.UserID = values["UserID"];
             print.SMBPath = "path";
 
@@ -93,15 +94,29 @@ namespace MakerFarm.Controllers
             print.MaterialIDs = matIds;
 
             /*Estimated Material Usage*/
-            print.EstMaterialUse = 2.5;
+            print.EstMaterialUse = double.Parse(values["EstMaterialUse"]);
 
             /*Submission Time*/
-            print.SubmissionTime = 
+            print.SubmissionTime = DateTime.Now;
+
+            /*Estimated Toolpath Time*/
+            print.EstToolpathTime = int.Parse(values["EstToolpathTime"]);
+
+            /*Authorized number of attempts*/
+            print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
+
+            /*Printer Type ID*/
+            print.PrinterTypeID = int.Parse(values["PrinterTypeID"]);
+
+            /*Staff Assistance*/
+            print.StaffAssitedPrint = false;
+
 
             if (ModelState.IsValid)
             {
                 db.Prints.Add(print);
                 db.SaveChanges();
+                PrintFile.SaveAs(string.Concat(System.Configuration.ConfigurationManager.AppSettings["RedirectURL"], print.Id, "_", PrintFile.FileName));
                 return RedirectToAction("Index");
             }
 
