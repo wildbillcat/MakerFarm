@@ -79,13 +79,13 @@ namespace MakerFarm.Controllers
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
             Print print = new Print();
-
+            string saveAsDirectory = string.Concat(System.Configuration.ConfigurationManager.AppSettings["3DFileSaveDirectory"], DateTime.Now.ToString("yyyy-MMM-d"));
             print.FileName = PrintFile.FileName;
             print.UserID = values["UserID"];
             print.SMBPath = "path";
 
             /* Material ID Parsing */
-            string[] tempMaterial = values.GetValues("MaterialIds");
+            string[] tempMaterial = values.GetValues("MaterialIDs");
             long[] matIds = new long[tempMaterial.Length];
             for (int i = 0; i < tempMaterial.Length; i++ )
             {
@@ -114,9 +114,15 @@ namespace MakerFarm.Controllers
 
             if (ModelState.IsValid)
             {
+                if (!System.IO.Directory.Exists(saveAsDirectory))
+                {
+                    System.IO.Directory.CreateDirectory(saveAsDirectory);
+                }
+
                 db.Prints.Add(print);
                 db.SaveChanges();
-                PrintFile.SaveAs(string.Concat(System.Configuration.ConfigurationManager.AppSettings["RedirectURL"], print.Id, "_", PrintFile.FileName));
+                string printFileName = string.Concat(saveAsDirectory, "\\", print.Id, "_", PrintFile.FileName);
+                PrintFile.SaveAs(printFileName);
                 return RedirectToAction("Index");
             }
 
