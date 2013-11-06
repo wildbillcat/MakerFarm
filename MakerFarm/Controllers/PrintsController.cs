@@ -79,7 +79,7 @@ namespace MakerFarm.Controllers
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
             Print print = new Print();
-            string saveAsDirectory = string.Concat(System.Configuration.ConfigurationManager.AppSettings["3DFileSaveDirectory"], DateTime.Now.ToString("yyyy-MMM-d"));
+            string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
             print.FileName = PrintFile.FileName;
             print.UserID = values["UserID"];
             print.SMBPath = "path";
