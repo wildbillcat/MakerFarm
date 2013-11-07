@@ -6,16 +6,17 @@ using System.Data.Entity;
 
 namespace MakerFarm.Models
 {
-    public class MakerfarmContext : DbContext
+    public class MakerfarmDBContext : DbContext
     {
-        public MakerfarmContext() : base()
+        public MakerfarmDBContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<PrinterTypeDBContext>(new DropCreateDatabaseIfModelChanges<PrinterTypeDBContext>());
+            //Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
         }
 
         public DbSet<PrinterType> PrinterTypes { get; set; }
         public DbSet<PrintEvent> PrintEvents { get; set; }
         public DbSet<Print> Prints { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }

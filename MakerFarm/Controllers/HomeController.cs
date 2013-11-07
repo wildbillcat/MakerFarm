@@ -10,7 +10,7 @@ namespace MakerFarm.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            ViewBag.Message = "Farming 3D Prints and Wrangling Cephalopods.";
 
             return View();
         }

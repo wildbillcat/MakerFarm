@@ -32,13 +32,5 @@ namespace MakerFarm.Models
             return EventTypes;
         }
     }
-
-    public class PrintEventDBContext : DbContext
-    {
-        public PrintEventDBContext() : base()
-        {
-           // Database.SetInitializer<PrintEventDBContext>(new DropCreateDatabaseIfModelChanges<PrintEventDBContext>());
-        }
-        public DbSet<PrintEvent> PrintsEvents { get; set; }
-    }
+       
 }

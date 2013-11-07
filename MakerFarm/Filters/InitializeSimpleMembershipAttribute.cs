@@ -25,11 +25,11 @@ namespace MakerFarm.Filters
         {
             public SimpleMembershipInitializer()
             {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<MakerfarmDBContext>(null);
 
                 try
                 {
-                    using (var context = new UsersContext())
+                    using (var context = new MakerfarmDBContext())
                     {
                         if (!context.Database.Exists())
                         {

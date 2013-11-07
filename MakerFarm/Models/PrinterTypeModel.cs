@@ -12,13 +12,5 @@ namespace MakerFarm.Models
         public int MaxNumberUserAttempts { get; set; } /* This notes the maximum number of attempts allowed for this printer */
         public string SupportedFileTypes { get; set; } /* This is a comma separated list of the printers file extensions */
     }
-
-    public class PrinterTypeDBContext : DbContext
-    {
-        public PrinterTypeDBContext(): base()
-        {
-            //Database.SetInitializer<PrinterTypeDBContext>(new DropCreateDatabaseIfModelChanges<PrinterTypeDBContext>());
-        }
-        public DbSet<PrinterType> PrinterTypes { get; set; }
-    }
+        
 }

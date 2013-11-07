@@ -40,13 +40,5 @@ namespace MakerFarm.Models
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssitedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
     }
-
-    public class PrintDBContext : DbContext
-    {
-        public PrintDBContext() : base()
-        {
-            //Database.SetInitializer<PrintDBContext>(new DropCreateDatabaseIfModelChanges<PrintDBContext>());
-        }
-        public DbSet<Print> Prints { get; set; }
-    }
+        
 }

@@ -11,7 +11,7 @@ namespace MakerFarm.Controllers
 {
     public class MaterialsController : Controller
     {
-        private MaterialDBContext db = new MaterialDBContext();
+        private MakerfarmDBContext db = new MakerfarmDBContext();
 
         //
         // GET: /Materials/

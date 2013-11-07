@@ -12,7 +12,7 @@ namespace MakerFarm.Controllers
 {
     public class PrinterTypesController : Controller
     {
-        private PrinterTypeDBContext db = new PrinterTypeDBContext();
+        private MakerfarmDBContext db = new MakerfarmDBContext();
 
         // GET: /PrinterTypes/
         public ActionResult Index()

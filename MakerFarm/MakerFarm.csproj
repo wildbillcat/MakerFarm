@@ -231,8 +231,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311071701146_InitialCreate.cs" />
+    <Compile Include="Migrations\201311071701146_InitialCreate.Designer.cs">
+      <DependentUpon>201311071701146_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\MakerfarmContext.cs" />
+    <Compile Include="Models\MakerfarmDBContext.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintEventModel.cs" />
@@ -240,6 +245,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\MakerFarm.mdf" />
+    <Content Include="App_Data\MakerFarm.mdf_log.ldf" />
+    <Content Include="App_Data\MakerFarm_log.ldf">
+      <DependentUpon>MakerFarm.mdf</DependentUpon>
+    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -396,11 +406,14 @@
     <Content Include="Views\PrinterTypes\Edit.cshtml" />
     <Content Include="Views\PrinterTypes\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201311071701146_InitialCreate.resx">
+      <DependentUpon>201311071701146_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

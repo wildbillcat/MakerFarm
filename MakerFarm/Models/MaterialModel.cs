@@ -11,12 +11,4 @@ namespace MakerFarm.Models
         public long MaterialSpoolQuantity { get; set; } /* This denotes how many spools of the material are on hand, and thus the maximum number of simultanious jobs using said material */
     }
 
-    public class MaterialDBContext : DbContext
-    {
-        public MaterialDBContext() : base()
-        {
-            //Database.SetInitializer<MaterialDBContext>(new DropCreateDatabaseIfModelChanges<MaterialDBContext>());
-        }
-        public DbSet<Material> Materials { get; set; }
-    }
 }

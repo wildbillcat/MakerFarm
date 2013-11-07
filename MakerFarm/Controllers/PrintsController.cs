@@ -11,9 +11,7 @@ namespace MakerFarm.Controllers
 {
     public class PrintsController : Controller
     {
-        private PrintDBContext db = new PrintDBContext();
-        private PrinterTypeDBContext pdb = new PrinterTypeDBContext();
-        private MaterialDBContext mdb = new MaterialDBContext();
+        private MakerfarmDBContext db = new MakerfarmDBContext();
         //
         // GET: /Prints/
 
@@ -45,13 +43,13 @@ namespace MakerFarm.Controllers
                 //The create function requires that a printer type be passed to it.
                 return RedirectToAction("Index", "PrinterTypes");
             }
-            PrinterType printerType = pdb.PrinterTypes.Find(id);
+            PrinterType printerType = db.PrinterTypes.Find(id);
             if(printerType == null)
             {
                 //The printer you attempted to use does not exist in the database!
                 return RedirectToAction("Index", "PrinterTypes");
             }
-            List<Material> materials = mdb.Materials.Where(s => s.PrinterTypeId.Equals(id) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
+            List<Material> materials = db.Materials.Where(s => s.PrinterTypeId.Equals(id) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
             if(materials.Count() == 0)
             {
                 //The printer you attempted to use does not have any materials available
