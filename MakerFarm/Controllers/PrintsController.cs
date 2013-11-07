@@ -37,7 +37,7 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Create
-
+        [Authorize]
         public ActionResult Create(int id = 0)
         {
             if (id == 0)
@@ -76,6 +76,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
             Print print = new Print();
@@ -131,7 +132,7 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Edit/5
-
+        [Authorize]
         public ActionResult Edit(long id = 0)
         {
             Print print = db.Prints.Find(id);

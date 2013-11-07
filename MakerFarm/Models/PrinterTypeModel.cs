@@ -17,7 +17,7 @@ namespace MakerFarm.Models
     {
         public PrinterTypeDBContext(): base()
         {
-            Database.SetInitializer<PrinterTypeDBContext>(new DropCreateDatabaseIfModelChanges<PrinterTypeDBContext>());
+            //Database.SetInitializer<PrinterTypeDBContext>(new DropCreateDatabaseIfModelChanges<PrinterTypeDBContext>());
         }
         public DbSet<PrinterType> PrinterTypes { get; set; }
     }
