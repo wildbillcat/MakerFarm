@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using MakerFarm.Filters;
 using MakerFarm.Models;
+using DotNetCasClient;
 
 namespace MakerFarm.Controllers
 {
@@ -20,16 +21,15 @@ namespace MakerFarm.Controllers
         //
         // GET: /Account/Login
 
-        [AllowAnonymous]
+        [Authorize]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         //
         // POST: /Account/Login
-
+        /*
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -44,7 +44,7 @@ namespace MakerFarm.Controllers
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
         }
-
+        */
         //
         // POST: /Account/LogOff
 
@@ -52,7 +52,8 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+           // FormsAuthentication.SignOut();
+            CasAuthentication.SingleSignOut();
 
             return RedirectToAction("Index", "Home");
         }

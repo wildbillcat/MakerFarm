@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MakerFarm")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("For coralling 3D printers, taking in jobs and expediting the process of rapid prototyping!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MakerFarm")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright © 2013 Patrick McMorran")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

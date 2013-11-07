@@ -23,7 +23,9 @@ namespace MakerFarm.Models
         [Display(Name = "Estimated Material Usage", Description = "Estimated amount of Material usage given by the software")]
         public double EstMaterialUse { get; set; } /* The print cost originally estimated by the print software */
 
+        [DataType(DataType.Date)]
         [Display(Name = "Submission Time", Description = "Time the Submission was made")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionTime { get; set; } /* This is the time the print is submitted to the application */
 
         [Display(Name = "Estimated Print Time (Minutes)", Description = "Estimated amount of time print will take in minutes")]
