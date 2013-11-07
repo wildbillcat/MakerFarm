@@ -232,6 +232,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\MakerfarmContext.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintEventModel.cs" />
