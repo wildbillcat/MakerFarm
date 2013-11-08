@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MakerFarm.Models.ExternalLogin">
+    <Position X="3" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AccountModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.Material">
+    <Position X="5.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAEAgAA=</HashCode>
+      <FileName>Models\MaterialModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.Print">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAIAAAQAAAAhBAAAgAAAAAAAAAAACAAABAAQA=</HashCode>
+      <FileName>Models\PrintModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.PrinterType">
+    <Position X="9.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAABAAAAABBABAAAAAAAAAAgAA=</HashCode>
+      <FileName>Models\PrinterTypeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.PrintEvent">
+    <Position X="11.5" Y="1.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAJAAAAABAAAAEAAAAAAgEAAAAAEAAQAAAABAAEIA=</HashCode>
+      <FileName>Models\PrintEventModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.UserProfile">
+    <Position X="0.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\AccountModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MakerFarm.Models.PrintErrorType">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PrintErrorType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

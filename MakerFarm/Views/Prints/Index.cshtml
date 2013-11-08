@@ -15,9 +15,6 @@
             @Html.DisplayNameFor(model => model.UserID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SMBPath)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.EstMaterialUse)
         </th>
         <th>
@@ -47,9 +44,6 @@
             @Html.DisplayFor(modelItem => item.UserID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SMBPath)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.EstMaterialUse)
         </td>
         <td>
@@ -68,9 +62,9 @@
             @Html.DisplayFor(modelItem => item.StaffAssitedPrint)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterTypeID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PrinterTypeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterTypeID })
         </td>
     </tr>
 }

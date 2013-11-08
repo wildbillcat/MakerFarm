@@ -80,8 +80,7 @@ namespace MakerFarm.Controllers
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
             print.FileName = PrintFile.FileName;
-            print.UserID = values["UserID"];
-            print.SMBPath = "path";
+            print.UserName = values["UserName"];
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
@@ -120,7 +119,7 @@ namespace MakerFarm.Controllers
 
                 db.Prints.Add(print);
                 db.SaveChanges();
-                string printFileName = string.Concat(saveAsDirectory, "\\", print.Id, "_", PrintFile.FileName);
+                string printFileName = string.Concat(saveAsDirectory, "\\", print.PrinterTypeID, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
                 return RedirectToAction("Index");
             }

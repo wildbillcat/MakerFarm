@@ -235,10 +235,17 @@
     <Compile Include="Migrations\201311071701146_InitialCreate.Designer.cs">
       <DependentUpon>201311071701146_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311080014002_ChangeIDsForConvention.cs" />
+    <Compile Include="Migrations\201311080014002_ChangeIDsForConvention.Designer.cs">
+      <DependentUpon>201311080014002_ChangeIDsForConvention.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
     <Compile Include="Models\MaterialModel.cs" />
+    <Compile Include="Models\PrinterModel.cs" />
+    <Compile Include="Models\PrintErrorTypeModel.cs" />
+    <Compile Include="Models\PrinterStatusLog.cs" />
     <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
@@ -328,7 +335,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\jquery-1.8.2.js" />
-    <Content Include="ClassDiagram1.cd" />
+    <Content Include="Class Diagram.cd" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -413,6 +420,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201311071701146_InitialCreate.resx">
       <DependentUpon>201311071701146_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311080014002_ChangeIDsForConvention.resx">
+      <DependentUpon>201311080014002_ChangeIDsForConvention.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

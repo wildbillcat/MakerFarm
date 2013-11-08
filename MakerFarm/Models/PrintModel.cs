@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 
 namespace MakerFarm.Models
 {
     public class Print
     {
-        public long Id { get; set; } /* Generic Id for the Print Job */
+        public long PrintId { get; set; } /* Generic Id for the Print Job */
 
         [Display(Name = "File Name", Description = "The file name of the print submitted")]
         public string FileName { get; set; } /* The file name of the print submitted */
 
-        [Display(Name = "User ID", Description = "User ID of the person whom submitted the print")]
-        public string UserID { get; set; } /* User ID of the person whom submitted the print */
-
-        [Display(Name = "SMB Path", Description = "This is the UNC path to the File. This will be used to retrieve the file")]
-        public string SMBPath { get; set; } /* This is the UNC path to the File. This will be used to retrieve the file */
+        [Display(Name = "User Name", Description = "User Name of the person whom submitted the print")]
+        public string UserName { get; set; } /* User ID of the person whom submitted the print */
 
         [Display(Name = "Material", Description = "This is the Material(s) that should be used for each printer.")]
         public long[] MaterialIDs { get; set; } /* This is an array listing the MaterialIDs of the types of materials requested for the printer job */

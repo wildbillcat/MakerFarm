@@ -24,41 +24,6 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SMBPath)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SMBPath)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.StaffProcessingFee)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.StaffProcessingFee)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.EstPrintCost)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.EstPrintCost)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.FinalPrintCost)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FinalPrintCost)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Success)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Success)
-    </div>
-
-    <div class="display-label">
          @Html.DisplayNameFor(model => model.SubmissionTime)
     </div>
     <div class="display-field">
@@ -70,13 +35,6 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EstToolpathTime)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CompletionTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CompletionTime)
     </div>
 
     <div class="display-label">
@@ -101,6 +59,6 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id=Model.PrinterTypeID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -27,6 +27,7 @@ namespace MakerFarm
             //    appSecret: "");
 
             //OAuthWebSecurity.RegisterGoogleClient();
+
         }
     }
 }

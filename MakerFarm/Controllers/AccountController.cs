@@ -24,12 +24,26 @@ namespace MakerFarm.Controllers
         [Authorize]
         public ActionResult Login(string returnUrl)
         {
+            
+            using (MakerfarmDBContext db = new MakerfarmDBContext())
+            {
+                UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
+                // Check if user already exists
+                if (user == null)
+                {
+                    // Insert name into the profile table
+                    db.UserProfiles.Add(new UserProfile { UserName = User.Identity.Name});
+                    db.SaveChanges();
+                }
+                
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
         //
         // POST: /Account/Login
-        /*
+        
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -44,7 +58,7 @@ namespace MakerFarm.Controllers
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
         }
-        */
+        
         //
         // POST: /Account/LogOff
 
