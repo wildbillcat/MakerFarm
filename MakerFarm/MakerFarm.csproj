@@ -425,6 +425,7 @@
     <Content Include="Views\Materials\Details.cshtml" />
     <Content Include="Views\Materials\Edit.cshtml" />
     <Content Include="Views\Materials\Index.cshtml" />
+    <Content Include="Views\PrinterTypes\Chooser.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

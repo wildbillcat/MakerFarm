@@ -7,9 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "PrinterTypes", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
     
     <div class="form-horizontal">
         <h4>PrinterType</h4>
@@ -40,12 +41,12 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PrinterIcon, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PrinterIcon)
-                @Html.ValidationMessageFor(model => model.PrinterIcon)
-            </div>
+        <div class="editor-label">
+            @Html.Label("Printer Icon:")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("IconFile", null, new { @id = "IconFile", @name = "IconFile", @type = "file", @required = "required" })
+            @Html.ValidationMessage("IconFile")
         </div>
 
         <div class="form-group">
