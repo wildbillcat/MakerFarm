@@ -89,7 +89,7 @@ namespace MakerFarm.Controllers
             {
                 matIds[i] = long.Parse(tempMaterial[i]);
             }
-            print.MaterialIDs = matIds;
+            print.MaterialIds = matIds;
 
             /*Estimated Material Usage*/
             print.EstMaterialUse = double.Parse(values["EstMaterialUse"]);
@@ -104,7 +104,7 @@ namespace MakerFarm.Controllers
             print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
 
             /*Printer Type ID*/
-            print.PrinterTypeID = int.Parse(values["PrinterTypeID"]);
+            print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
 
             /*Staff Assistance*/
             print.StaffAssitedPrint = false;
@@ -119,7 +119,7 @@ namespace MakerFarm.Controllers
 
                 db.Prints.Add(print);
                 db.SaveChanges();
-                string printFileName = string.Concat(saveAsDirectory, "\\", print.PrinterTypeID, "_", PrintFile.FileName);
+                string printFileName = string.Concat(saveAsDirectory, "\\", print.PrinterTypeId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
                 return RedirectToAction("Index");
             }

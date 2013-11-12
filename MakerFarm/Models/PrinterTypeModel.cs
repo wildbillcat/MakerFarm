@@ -14,6 +14,9 @@ namespace MakerFarm.Models
         [Display(Name = "Maximum Number of Supported Materials", Description = "This is the maximum number of materials ")]
         public int SupportedNumberMaterials { get; set; } /* The number of materials supported for sumultanious use. (IE, how many extrution heads available on the printer) */
 
+        [Display(Name = "Printer Unit of Measure", Description = "This defines what unit of measure it used for the printer. (Gram, Ounce, Cubic Inch)")]
+        public string MaterialUseUnit { get; set; } /* Printers use a varying units of measure, this allows the operator to make sure the appropriate chage is made */
+
         [Display(Name = "Printer Icon", Description = "This should be a image to double at the printer Icon when users select what printer they would like to submit to")]
         public string PrinterIcon { get; set; } /*This is the icon that was uploaded to represent the printer. */
 

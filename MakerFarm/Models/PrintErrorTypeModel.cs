@@ -10,6 +10,9 @@ namespace MakerFarm.Models
     {
         public long PrintErrorTypeId { get; set; } /* Generic Id for the Error Type */
 
+        [Display(Name = "Printer Types", Description = "Printer Types that support his error")]
+        public virtual ICollection<PrinterType> PrinterTypes { get; set; }
+
         [Display(Name = "Error Name", Description = "The Name/Short Description of the error")]
         public string PrintErrorName { get; set; } /* Name of the error type */
 

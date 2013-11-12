@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MakerFarm.Models
@@ -14,7 +15,7 @@ namespace MakerFarm.Models
         public string UserName { get; set; } /* User ID of the person whom submitted the print */
 
         [Display(Name = "Material", Description = "This is the Material(s) that should be used for each printer.")]
-        public long[] MaterialIDs { get; set; } /* This is an array listing the MaterialIDs of the types of materials requested for the printer job */
+        public long[] MaterialIds { get; set; } /* This is an array listing the MaterialIDs of the types of materials requested for the printer job */
 
         [Display(Name = "Estimated Material Usage", Description = "Estimated amount of Material usage given by the software")]
         public double EstMaterialUse { get; set; } /* The print cost originally estimated by the print software */
@@ -31,10 +32,15 @@ namespace MakerFarm.Models
         public int AuthorizedAttempts { get; set; } /* Number of attempts that are requested to be attempted in at cost to the user. */
 
         [Display(Name = "Printer Type", Description = "The Type of printer this print is made for")]
-        public int PrinterTypeID { get; set; } /* ID number of the printer type the file is meant for */
+        public int PrinterTypeId { get; set; } /* ID number of the printer type the file is meant for */
 
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssitedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
+
+        //[Display(Name = "Material(s)", Description = "This is the Material(s) that should be used for each printer.")]
+        //public virtual ICollection<Material> Materials { set; get; }
+
+        public virtual PrinterType PrinterType { get; set; }
     }
         
 }

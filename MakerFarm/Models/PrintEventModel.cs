@@ -26,13 +26,21 @@ namespace MakerFarm.Models
         public double MaterialUsed { get; set; } /* Amount of Material Used by event */
 
         [Display(Name = "Printer", Description = "This Identifies the Specific Printer associated with the event")]
-        public long PrinterID { get; set; } /* ID number of the printer that event was associated with. */
+        public long PrinterId { get; set; } /* ID number of the printer that event was associated with. */
 
         [Display(Name = "User Name", Description = "User Whom the action is affiliated with")]
-        public string UserID { get; set; } /* User ID of who registered the event */
+        public string UserName { get; set; } /* User ID of who registered the event */
 
         [Display(Name = "Print", Description = "The Print associated with the Print Event")]
-        public long PrintID { get; set; }
+        public long PrintId { get; set; }
+
+        public virtual Print Print { get; set; }
+
+        public virtual Printer Printer { get; set; }
+
+        
+
+
        
     }
        

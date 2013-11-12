@@ -246,6 +246,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
+    <Compile Include="Models\MaterialCheckoutModel.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PrinterModel.cs" />
     <Compile Include="Models\PrintErrorTypeModel.cs" />

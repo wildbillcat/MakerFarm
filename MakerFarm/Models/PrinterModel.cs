@@ -6,7 +6,7 @@ namespace MakerFarm.Models
     
     public class Printer
     {
-        public long PrinterID { set; get; }
+        public long PrinterId { set; get; }
 
         [Display(Name = "Printer Name", Description = "This should be a friendly name for the Printer/Queue")]
         public string PrinterName { set; get; }
@@ -15,6 +15,6 @@ namespace MakerFarm.Models
         public int PrinterTypeId { set; get; }
 
         [Display(Name = "Loaded Material(s)", Description = "This the the current type of material(s) loaded (Or thought to be) in the printer")]
-        public long[] MaterialID { set; get; }
+        public long[] MaterialId { set; get; }
     }
 }
