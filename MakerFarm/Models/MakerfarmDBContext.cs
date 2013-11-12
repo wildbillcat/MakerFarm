@@ -19,6 +19,8 @@ namespace MakerFarm.Models
         public DbSet<Material> Materials { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<PrintErrorType> PrintErrorTypes { get; set; }
+        public DbSet<Printer> Printers { get; set; }
+        public DbSet<PrinterStatusLog> PrinterStatusLogs { set; get; }
 
     }
 }

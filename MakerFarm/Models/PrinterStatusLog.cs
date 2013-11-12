@@ -19,7 +19,10 @@ namespace MakerFarm.Models
         [Display(Name = "Printer Status", Description = "Status of the Printer")]
         public PrinterStatus LoggedPrinterStatus { set; get; }
 
+        [Display(Name = "Status Comment", Description = "Comment giving additional detail about the status")]
+        public string Comment { set; get; }
 
+        [Display(Name = "Printer", Description = "Printer associated with the status")]
         public long PrinterID { set; get; }
     }
 }

@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201311080014002_ChangeIDsForConvention.Designer.cs">
       <DependentUpon>201311080014002_ChangeIDsForConvention.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311121436378_AddPrinterAndLogs.cs" />
+    <Compile Include="Migrations\201311121436378_AddPrinterAndLogs.Designer.cs">
+      <DependentUpon>201311121436378_AddPrinterAndLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -423,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311080014002_ChangeIDsForConvention.resx">
       <DependentUpon>201311080014002_ChangeIDsForConvention.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311121436378_AddPrinterAndLogs.resx">
+      <DependentUpon>201311121436378_AddPrinterAndLogs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
