@@ -46,7 +46,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,TypeName,SupportedNumberMaterials,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype)
+        public ActionResult Create([Bind(Include="PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,TypeName,SupportedNumberMaterials,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype)
+        public ActionResult Edit([Bind(Include="PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype)
         {
             if (ModelState.IsValid)
             {

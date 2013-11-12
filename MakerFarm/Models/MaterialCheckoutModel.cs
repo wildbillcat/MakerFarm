@@ -12,5 +12,9 @@ namespace MakerFarm.Models
 
         [Display(Name = "Material", Description = "The Type of Material Assigned to the printer")]
         public long MaterialId { set; get; }
+
+        public virtual Printer Printer { set; get; }
+
+        public virtual Material Material { set; get; }
     }
 }

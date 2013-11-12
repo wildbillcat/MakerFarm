@@ -55,7 +55,7 @@ namespace MakerFarm.Controllers
                 //The printer you attempted to use does not have any materials available
                 return RedirectToAction("Index", "Materials");
             }
-            ViewData["MaterialsList"] = new SelectList(materials, "Id", "MaterialName");
+            ViewData["MaterialsList"] = new SelectList(materials, "PrinterTypeId", "MaterialName");
             List<string> MNUA = new List<string>();
             for(int i = 1; i <= printerType.MaxNumberUserAttempts; i++)
             {

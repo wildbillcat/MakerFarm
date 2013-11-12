@@ -6,43 +6,47 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    
+    <div class="form-horizontal">
+        <h4>Material</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.MaterialId)
 
-    <fieldset>
-        <legend>Material</legend>
-
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MaterialName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MaterialName)
-            @Html.ValidationMessageFor(model => model.MaterialName)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PrinterTypeId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PrinterTypeId)
-            @Html.ValidationMessageFor(model => model.PrinterTypeId)
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaterialName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MaterialName)
+                @Html.ValidationMessageFor(model => model.MaterialName)
+            </div>
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MaterialSpoolQuantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MaterialSpoolQuantity)
-            @Html.ValidationMessageFor(model => model.MaterialSpoolQuantity)
+        <div class="form-group">
+            @Html.LabelFor(model => model.PrinterTypeId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PrinterTypeId)
+                @Html.ValidationMessageFor(model => model.PrinterTypeId)
+            </div>
         </div>
 
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaterialSpoolQuantity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MaterialSpoolQuantity)
+                @Html.ValidationMessageFor(model => model.MaterialSpoolQuantity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
 }
 
 <div>

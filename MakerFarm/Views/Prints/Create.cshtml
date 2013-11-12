@@ -14,7 +14,7 @@
         <legend>Print</legend>
 
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.UserID, null, new { @type = "hidden", @Value = ViewData["CurrentUser"] })
+            @Html.TextBoxFor(model => model.UserName, null, new { @type = "hidden", @Value = ViewData["CurrentUser"] })
         </div>
 
         <div class="editor-label">
@@ -31,8 +31,8 @@
             @Html.Label(string.Concat("Material ", (1+i).ToString()))
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.MaterialIDs, (SelectList)ViewData["MaterialsList"])
-            @Html.ValidationMessageFor(model => model.MaterialIDs)
+            @Html.DropDownListFor(model => model.MaterialIds, (SelectList)ViewData["MaterialsList"])
+            @Html.ValidationMessageFor(model => model.MaterialIds)
         </div>
         }
 
@@ -61,8 +61,8 @@
         </div>
 
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.PrinterTypeID, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
-            @Html.ValidationMessageFor(model => model.PrinterTypeID)
+            @Html.TextBoxFor(model => model.PrinterTypeId, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
+            @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
 
         <p>

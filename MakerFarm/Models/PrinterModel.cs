@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MakerFarm.Models
@@ -15,6 +16,7 @@ namespace MakerFarm.Models
         public int PrinterTypeId { set; get; }
 
         [Display(Name = "Loaded Material(s)", Description = "This the the current type of material(s) loaded (Or thought to be) in the printer")]
-        public long[] MaterialId { set; get; }
+        public virtual ICollection<MaterialCheckout> MaterialsInUse { set; get; }
+        
     }
 }

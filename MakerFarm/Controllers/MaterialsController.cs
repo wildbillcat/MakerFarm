@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
@@ -13,19 +14,19 @@ namespace MakerFarm.Controllers
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
 
-        //
         // GET: /Materials/
-
         public ActionResult Index()
         {
             return View(db.Materials.ToList());
         }
 
-        //
         // GET: /Materials/Details/5
-
-        public ActionResult Details(long id = 0)
+        public ActionResult Details(long? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Material material = db.Materials.Find(id);
             if (material == null)
             {
@@ -34,20 +35,18 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
-        //
         // GET: /Materials/Create
-
         public ActionResult Create()
         {
             return View();
         }
 
-        //
         // POST: /Materials/Create
-
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Material material)
+        public ActionResult Create([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
         {
             if (ModelState.IsValid)
             {
@@ -59,11 +58,13 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
-        //
         // GET: /Materials/Edit/5
-
-        public ActionResult Edit(long id = 0)
+        public ActionResult Edit(long? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Material material = db.Materials.Find(id);
             if (material == null)
             {
@@ -72,12 +73,12 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
-        //
         // POST: /Materials/Edit/5
-
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Material material)
+        public ActionResult Edit([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
         {
             if (ModelState.IsValid)
             {
@@ -88,11 +89,13 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
-        //
         // GET: /Materials/Delete/5
-
-        public ActionResult Delete(long id = 0)
+        public ActionResult Delete(long? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Material material = db.Materials.Find(id);
             if (material == null)
             {
@@ -101,9 +104,7 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
-        //
         // POST: /Materials/Delete/5
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
@@ -116,7 +117,10 @@ namespace MakerFarm.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            if (disposing)
+            {
+                db.Dispose();
+            }
             base.Dispose(disposing);
         }
     }

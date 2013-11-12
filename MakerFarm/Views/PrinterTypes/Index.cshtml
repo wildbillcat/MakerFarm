@@ -18,6 +18,9 @@
             @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.MaterialUseUnit)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PrinterIcon)
         </th>
         <th>
@@ -38,6 +41,9 @@
             @Html.DisplayFor(modelItem => item.SupportedNumberMaterials)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.MaterialUseUnit)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.PrinterIcon)
         </td>
         <td>
@@ -47,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.SupportedFileTypes)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterTypeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PrinterTypeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterTypeId })
         </td>
     </tr>
 }

@@ -37,10 +37,8 @@ namespace MakerFarm.Models
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssitedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
 
-        //[Display(Name = "Material(s)", Description = "This is the Material(s) that should be used for each printer.")]
-        //public virtual ICollection<Material> Materials { set; get; }
-
         public virtual PrinterType PrinterType { get; set; }
+        public virtual ICollection<PrintEvent> PrintEvents { get; set; }
     }
         
 }

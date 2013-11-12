@@ -6,31 +6,37 @@
 
 <h2>Details</h2>
 
-<fieldset>
-    <legend>Material</legend>
+<div>
+    <h4>Material</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialName)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.MaterialName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.MaterialName)
-    </div>
+        <dd>
+            @Html.DisplayFor(model => model.MaterialName)
+        </dd>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PrinterTypeId)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PrinterTypeId)
-    </div>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterTypeId)
+        </dt>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.MaterialSpoolQuantity)
-    </div>
-</fieldset>
+        <dd>
+            @Html.DisplayFor(model => model.PrinterTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialSpoolQuantity)
+        </dd>
+
+    </dl>
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MaterialId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
