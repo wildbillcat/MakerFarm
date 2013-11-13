@@ -17,6 +17,7 @@ namespace MakerFarm.Controllers
         // GET: /Materials/
         public ActionResult Index()
         {
+            ViewBag.PrinterNames = db.PrinterTypes.ToList().ToLookup("PrinterTypeId", "PrinterName");
             return View(db.Materials.ToList());
         }
 
@@ -38,6 +39,13 @@ namespace MakerFarm.Controllers
         // GET: /Materials/Create
         public ActionResult Create()
         {
+            List<PrinterType> printerType = db.PrinterTypes.ToList();
+            ViewData["PrintersList"] = new SelectList(printerType, "PrinterTypeId", "TypeName");
+            if (printerType == null)
+            {
+                //The printer you attempted to use does not exist in the database!
+                return RedirectToAction("Index", "PrinterTypes");
+            }
             return View();
         }
 
@@ -70,6 +78,8 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
+            List<PrinterType> printerType = db.PrinterTypes.ToList();
+            ViewData["PrintersList"] = new SelectList(printerType, "PrinterTypeId", "TypeName");
             return View(material);
         }
 

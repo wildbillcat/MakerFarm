@@ -6,58 +6,19 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TypeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SupportedNumberMaterials)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MaterialUseUnit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrinterIcon)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MaxNumberUserAttempts)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SupportedFileTypes)
-        </th>
-        <th></th>
+@for(int i = 0; i < Model.Count(); i++){
+    var item = Model.ElementAt(i);
+    if (i % 3 == 0 && i != 0) { 
+     @Html.Raw("</tr><tr>")
+    }
+    <td>
+        <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null)>
+            <img src="@Url.Content(item.PrinterIcon)" alt="Image" />
+        </a>
+    </td>
+     
+     }
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TypeName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SupportedNumberMaterials)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaterialUseUnit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PrinterIcon)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxNumberUserAttempts)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SupportedFileTypes)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterTypeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrinterTypeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterTypeId })
-        </td>
-    </tr>
-}
-
 </table>

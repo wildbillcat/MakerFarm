@@ -28,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrinterTypeId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PrinterTypeId)
+                @Html.DropDownListFor(model => model.PrinterTypeId, (SelectList)ViewData["PrintersList"])
                 @Html.ValidationMessageFor(model => model.PrinterTypeId)
             </div>
         </div>

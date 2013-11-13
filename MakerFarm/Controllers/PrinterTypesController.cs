@@ -21,7 +21,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrinterTypes/Chooser
-        public ActionResult Chooser()
+        public ActionResult Administration()
         {
             return View(db.PrinterTypes.ToList());
         }
@@ -54,7 +54,7 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
-            string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrinterIcons\\");
+            string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
             {
                 ModelState.AddModelError("PrinterIcon", "An Icon must be attached for Display");
@@ -62,14 +62,14 @@ namespace MakerFarm.Controllers
            printertype.PrinterIcon = "TempPath";
             if (ModelState.IsValid)
             {
-                if (!System.IO.Directory.Exists(saveAsDirectory))
+                if (!System.IO.Directory.Exists(Server.MapPath(saveAsDirectory)))
                 {
-                    System.IO.Directory.CreateDirectory(saveAsDirectory);
+                    System.IO.Directory.CreateDirectory(Server.MapPath(saveAsDirectory));
                 }
                 db.PrinterTypes.Add(printertype);
                 db.SaveChanges();
                 string printerIconPath = string.Concat(saveAsDirectory, printertype.PrinterTypeId, "-", IconFile.FileName);
-                IconFile.SaveAs(printerIconPath);
+                IconFile.SaveAs(Server.MapPath(printerIconPath));
                 printertype.PrinterIcon = printerIconPath;
                 db.Entry(printertype).State = EntityState.Modified;
                 db.SaveChanges();

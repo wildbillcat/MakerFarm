@@ -349,6 +349,7 @@
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Class Diagram.cd" />
+    <None Include="Properties\PublishProfiles\arch-web2.architecture.yale.edu.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -419,13 +420,13 @@
     <Content Include="Views\PrinterTypes\Delete.cshtml" />
     <Content Include="Views\PrinterTypes\Details.cshtml" />
     <Content Include="Views\PrinterTypes\Edit.cshtml" />
-    <Content Include="Views\PrinterTypes\Index.cshtml" />
+    <Content Include="Views\PrinterTypes\Administration.cshtml" />
     <Content Include="Views\Materials\Create.cshtml" />
     <Content Include="Views\Materials\Delete.cshtml" />
     <Content Include="Views\Materials\Details.cshtml" />
     <Content Include="Views\Materials\Edit.cshtml" />
     <Content Include="Views\Materials\Index.cshtml" />
-    <Content Include="Views\PrinterTypes\Chooser.cshtml" />
+    <Content Include="Views\PrinterTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
