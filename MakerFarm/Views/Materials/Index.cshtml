@@ -29,7 +29,7 @@
             @Html.DisplayFor(modelItem => item.MaterialName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PrinterTypeId)
+            @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.MaterialSpoolQuantity)

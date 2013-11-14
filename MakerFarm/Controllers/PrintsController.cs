@@ -15,9 +15,18 @@ namespace MakerFarm.Controllers
         //
         // GET: /Prints/
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 0)
         {
-            return View(db.Prints.ToList());
+            if (id == 0)
+            {
+                return RedirectToAction("Index", "PrinterTypes");
+            }
+            else
+            {
+                ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
+                ViewBag.id = id;
+                return View(db.Prints.Where(s => s.PrinterTypeId.Equals(id)).ToList());
+            }
         }
 
         //

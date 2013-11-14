@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
+    <Compile Include="Controllers\PrintersController.cs" />
     <Compile Include="Controllers\PrinterTypesController.cs" />
     <Compile Include="Controllers\PrintsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -427,6 +428,11 @@
     <Content Include="Views\Materials\Edit.cshtml" />
     <Content Include="Views\Materials\Index.cshtml" />
     <Content Include="Views\PrinterTypes\Index.cshtml" />
+    <Content Include="Views\Printers\Create.cshtml" />
+    <Content Include="Views\Printers\Delete.cshtml" />
+    <Content Include="Views\Printers\Details.cshtml" />
+    <Content Include="Views\Printers\Edit.cshtml" />
+    <Content Include="Views\Printers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

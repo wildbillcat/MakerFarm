@@ -13,7 +13,7 @@ namespace MakerFarm.Models
     {
         public long PrinterStatusLogId { set; get; }
 
-        [Display(Name = "LogEntryDate", Description = "The entry Date of the printer Log")]
+        [Display(Name = "Default1LogEntryDate", Description = "The entry Date of the printer Log")]
         public DateTime LogEntryDate { set; get; }
 
         [Display(Name = "Printer Status", Description = "Status of the Printer")]

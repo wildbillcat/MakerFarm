@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Available Printers</h2>
 
 <table class="table">
     <tr>
@@ -14,9 +14,11 @@
      @Html.Raw("</tr><tr>")
     }
     <td>
-        <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null)>
+        <a href=@Url.Action("Index", "Prints", new { id = item.PrinterTypeId }, null)>
             <img src="@Url.Content(item.PrinterIcon)" alt="Image" />
         </a>
+        <br />
+        @item.TypeName
     </td>
      
      }
