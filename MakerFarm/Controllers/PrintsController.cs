@@ -39,6 +39,8 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
+            //List<PrintEvent> Events = db.PrintEvents.Where(p => p.PrintId.Equals(id)).OrderByDescending(x => x.EventTimeStamp).ToList();
+            //ViewBag.Events = Events;
             return View(print);
         }
 

@@ -72,7 +72,11 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
+                    @if(Request.IsAuthenticated){
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrinterTypeId })
+                    }else{
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    }                    
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)

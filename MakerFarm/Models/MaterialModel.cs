@@ -15,6 +15,8 @@ namespace MakerFarm.Models
 
         [Display(Name = "Material Quantity", Description = "This is the number of Physical Rolls of Material kept in inventory")]
         public long MaterialSpoolQuantity { get; set; } /* This denotes how many spools of the material are on hand, and thus the maximum number of simultanious jobs using said material */
+
+        public virtual PrinterType PrinterType; /*Provides easier access to the Associated Printer! */
     }
 
 }

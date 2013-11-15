@@ -17,6 +17,7 @@ namespace MakerFarm.Models
 
         [Display(Name = "Loaded Material(s)", Description = "This the the current type of material(s) loaded (Or thought to be) in the printer")]
         public virtual ICollection<MaterialCheckout> MaterialsInUse { set; get; }
-        
+
+        public virtual PrinterType PrinterType; /*Provides easier access to the Associated Printer! */
     }
 }

@@ -62,3 +62,45 @@
     @Html.ActionLink("Edit", "Edit", new { id=Model.PrinterTypeId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<h3>Print Log:</h3>
+<table class="table">
+    <tr>
+        <th>
+            Event TimeStamp
+        </th>
+        <th>
+            Event Type
+        </th>
+        <th>
+            Printer
+        </th>
+        <th>
+            User
+        </th>
+        <th>
+            Material Used
+        </th>
+    </tr>
+
+    @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.EventTimeStamp))
+    {
+        <tr>
+            <td>
+                @p.EventTimeStamp
+            </td>
+            <td>
+                @p.EventType
+            </td>
+            <td>
+                @p.Printer.PrinterName
+            </td>
+            <td>
+                @p.UserName
+            </td>
+            <td>
+                @p.MaterialUsed
+            </td>
+        </tr>
+    }
+</table>
