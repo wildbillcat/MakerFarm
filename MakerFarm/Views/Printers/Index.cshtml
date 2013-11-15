@@ -23,7 +23,7 @@
             @Html.DisplayFor(modelItem => item.PrinterName)
         </td>
         <td>
-            @ViewBag.PrinterNames[item.PrinterId].PrinterNames
+            @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PrinterId }) |

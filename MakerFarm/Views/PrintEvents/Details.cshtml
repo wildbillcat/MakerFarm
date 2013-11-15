@@ -1,0 +1,66 @@
+﻿@model MakerFarm.Models.PrintEvent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PrintEvent</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Print.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Print.FileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Printer.PrinterName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Printer.PrinterName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventTimeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventTimeStamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialUsed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialUsed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PrintEventId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

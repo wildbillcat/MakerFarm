@@ -6,9 +6,6 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -38,8 +35,7 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            @ViewBag.PrinterNames[item.PrinterId].TypeName
-            @Html.DisplayFor(modelItem => item.PrinterId)
+            @ViewBag.PrinterNames[item.PrinterId].PrinterName
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PrinterStatusLogId }) |
