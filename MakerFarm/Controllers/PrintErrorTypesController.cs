@@ -10,17 +10,17 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
-    public class PrinterErrorTypesController : Controller
+    public class PrintErrorTypesController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
 
-        // GET: /PrinterErrorTypes/
+        // GET: /PrintErrorTypes/
         public ActionResult Index()
         {
             return View(db.PrintErrorTypes.ToList());
         }
 
-        // GET: /PrinterErrorTypes/Details/5
+        // GET: /PrintErrorTypes/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -35,13 +35,13 @@ namespace MakerFarm.Controllers
             return View(printerrortype);
         }
 
-        // GET: /PrinterErrorTypes/Create
+        // GET: /PrintErrorTypes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: /PrinterErrorTypes/Create
+        // POST: /PrintErrorTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -58,7 +58,7 @@ namespace MakerFarm.Controllers
             return View(printerrortype);
         }
 
-        // GET: /PrinterErrorTypes/Edit/5
+        // GET: /PrintErrorTypes/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -73,7 +73,7 @@ namespace MakerFarm.Controllers
             return View(printerrortype);
         }
 
-        // POST: /PrinterErrorTypes/Edit/5
+        // POST: /PrintErrorTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -89,7 +89,7 @@ namespace MakerFarm.Controllers
             return View(printerrortype);
         }
 
-        // GET: /PrinterErrorTypes/Delete/5
+        // GET: /PrintErrorTypes/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -104,7 +104,7 @@ namespace MakerFarm.Controllers
             return View(printerrortype);
         }
 
-        // POST: /PrinterErrorTypes/Delete/5
+        // POST: /PrintErrorTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
