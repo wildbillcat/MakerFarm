@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <title>@ViewBag.Title - MakerFarm</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -22,6 +22,14 @@
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("Submit Print", "Index", "PrinterTypes")</li>
+                        </ul>
+                    </nav>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Materials", "Index", "Materials")</li>
+                            <li>@Html.ActionLink("Printer Types", "Administration", "PrinterTypes")</li>
+                            <li>@Html.ActionLink("Printers", "Index", "Printers")</li>
+                            <li>@Html.ActionLink("Print Logs", "Index", "PrintStatusLogs")</li>
                         </ul>
                     </nav>
                 </div>

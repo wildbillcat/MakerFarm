@@ -228,6 +228,7 @@
     <Compile Include="Controllers\PrintersController.cs" />
     <Compile Include="Controllers\PrinterTypesController.cs" />
     <Compile Include="Controllers\PrintsController.cs" />
+    <Compile Include="Controllers\PrintStatusLogsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -433,6 +434,11 @@
     <Content Include="Views\Printers\Details.cshtml" />
     <Content Include="Views\Printers\Edit.cshtml" />
     <Content Include="Views\Printers\Index.cshtml" />
+    <Content Include="Views\PrintStatusLogs\Create.cshtml" />
+    <Content Include="Views\PrintStatusLogs\Delete.cshtml" />
+    <Content Include="Views\PrintStatusLogs\Details.cshtml" />
+    <Content Include="Views\PrintStatusLogs\Edit.cshtml" />
+    <Content Include="Views\PrintStatusLogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

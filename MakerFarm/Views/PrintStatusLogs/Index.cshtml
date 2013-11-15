@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MakerFarm.Models.PrinterStatusLog>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LogEntryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoggedPrinterStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrinterId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LogEntryDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoggedPrinterStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @ViewBag.PrinterNames[item.PrinterId].TypeName
+            @Html.DisplayFor(modelItem => item.PrinterId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterStatusLogId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PrinterStatusLogId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterStatusLogId })
+        </td>
+    </tr>
+}
+
+</table>

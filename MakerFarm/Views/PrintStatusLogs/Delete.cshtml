@@ -1,0 +1,56 @@
+﻿@model MakerFarm.Models.PrinterStatusLog
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PrinterStatusLog</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LogEntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LogEntryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoggedPrinterStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoggedPrinterStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrinterId)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
