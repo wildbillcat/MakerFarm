@@ -227,6 +227,7 @@
     <Compile Include="Controllers\MaterialsController.cs" />
     <Compile Include="Controllers\PrintErrorTypesController.cs" />
     <Compile Include="Controllers\PrintersController.cs" />
+    <Compile Include="Controllers\PrinterTypesController.cs" />
     <Compile Include="Controllers\PrintEventsController.cs" />
     <Compile Include="Controllers\PrintsController.cs" />
     <Compile Include="Controllers\PrintStatusLogsController.cs" />
