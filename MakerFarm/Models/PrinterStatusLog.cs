@@ -24,5 +24,7 @@ namespace MakerFarm.Models
 
         [Display(Name = "Printer", Description = "Printer associated with the status")]
         public long PrinterId { set; get; }
+
+        public virtual Printer Printer { set; get; }
     }
 }
