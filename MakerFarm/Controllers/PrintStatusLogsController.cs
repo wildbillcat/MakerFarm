@@ -44,10 +44,12 @@ namespace MakerFarm.Controllers
             {
                 return RedirectToAction("Index", "PrinterTypes");
             }
-            else
+            Print Print = db.Prints.Find(id);
+            if (null == Print)
             {
-                ViewData["PrinterID"] = id;
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ViewBag.Print = Print;
             return View();
         }
 

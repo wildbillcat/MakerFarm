@@ -37,10 +37,29 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintEvents/Create
-        public ActionResult Create()
+        public ActionResult Create(long id = 0)
         {
-            ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName");
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName");
+            Print Print = db.Prints.Find(id);
+            PrintEvent LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).Last();
+            ViewBag.PrintId = id;
+            ViewBag.Print = Print;
+            List<PrintEventType> evts = new List<PrintEventType>();
+            evts.Add(PrintEventType.PRINT_START);
+            if (null == LastStatus || LastStatus.EventType != PrintEventType.PRINT_START) //Print Needs to be Sent!
+            {
+                ViewBag.PrinterId = new SelectList(db.Printers.Where(p => p.PrinterType.Equals(Print.PrinterType)), "PrinterId", "PrinterName");
+            }
+            else //Print was sent, updating status of print
+            {
+                List<SelectListItem> Printerlist = new List<SelectListItem>();
+                Printerlist.Add(new SelectListItem() { Text = LastStatus.Printer.PrinterName, Value = LastStatus.Printer.PrinterId.ToString(), Selected = true });
+                ViewBag.PrinterId = new SelectList(Printerlist, "Value", "Text");
+                evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+                evts.Remove(PrintEventType.PRINT_START);
+            }
+            
+            
+            ViewBag.EventTypes = evts;
             return View();
         }
 
@@ -49,8 +68,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="PrintEventId,EventType,EventTimeStamp,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
+        public ActionResult Create([Bind(Include="PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
         {
+            printevent.EventTimeStamp = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.PrintEvents.Add(printevent);

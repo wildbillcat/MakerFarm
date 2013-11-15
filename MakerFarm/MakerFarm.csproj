@@ -255,6 +255,10 @@
     <Compile Include="Migrations\201311121920232_AddVirtualReferencesUpdatedModels.Designer.cs">
       <DependentUpon>201311121920232_AddVirtualReferencesUpdatedModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311151948427_updatedModelsPrintStatus.cs" />
+    <Compile Include="Migrations\201311151948427_updatedModelsPrintStatus.Designer.cs">
+      <DependentUpon>201311151948427_updatedModelsPrintStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -471,6 +475,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311121920232_AddVirtualReferencesUpdatedModels.resx">
       <DependentUpon>201311121920232_AddVirtualReferencesUpdatedModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311151948427_updatedModelsPrintStatus.resx">
+      <DependentUpon>201311151948427_updatedModelsPrintStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

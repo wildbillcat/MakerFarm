@@ -68,7 +68,7 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.OrderByDescending(p => p.SubmissionTime))
         {
             <tr>
                 <td>
@@ -103,6 +103,7 @@
                     @Html.ActionLink("Edit", "Edit", new { id = item.PrinterTypeId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.PrinterTypeId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.PrinterTypeId })
+                    @Html.ActionLink("Print", "Create", "PrintEvents", new { id = item.PrintId})
                 </td>
             </tr>
         }

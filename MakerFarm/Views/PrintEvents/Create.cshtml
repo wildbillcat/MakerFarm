@@ -19,16 +19,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventType, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EventType)
+                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes))
                 @Html.ValidationMessageFor(model => model.EventType)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EventTimeStamp, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EventTimeStamp)
-                @Html.ValidationMessageFor(model => model.EventTimeStamp)
             </div>
         </div>
 
@@ -43,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrinterId, "PrinterId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PrinterId", String.Empty)
+                @Html.DropDownListFor(model => model.PrinterId, new SelectList(ViewBag.PrinterId))
                 @Html.ValidationMessageFor(model => model.PrinterId)
             </div>
         </div>
