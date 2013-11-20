@@ -40,25 +40,41 @@ namespace MakerFarm.Controllers
         public ActionResult Create(long id = 0)
         {
             Print Print = db.Prints.Find(id);
-            PrintEvent LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).Last();
+            List<PrintEvent> LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).ToList();
             ViewBag.PrintId = id;
             ViewBag.Print = Print;
             List<PrintEventType> evts = new List<PrintEventType>();
             evts.Add(PrintEventType.PRINT_START);
-            if (null == LastStatus || LastStatus.EventType != PrintEventType.PRINT_START) //Print Needs to be Sent!
+            SelectList PrinterIds;
+            if (0 == LastStatus.Count() || !LastStatus.Last().Equals(PrintEventType.PRINT_START)) //Print Needs to be Sent!
             {
-                ViewBag.PrinterId = new SelectList(db.Printers.Where(p => p.PrinterType.Equals(Print.PrinterType)), "PrinterId", "PrinterName");
+                //This is in need of some query optimization!
+                List<Printer> PrinterList = new List<Printer>();
+                List<Printer> PrinterList2 = db.Printers.Where(p => p.PrinterTypeId.Equals(Print.PrinterTypeId)).ToList();
+                foreach (Printer Pter in PrinterList2)
+                {
+                    try
+                    {
+                        PrinterStatusLog status = db.PrinterStatusLogs.Last(p => p.PrinterId.Equals(Pter.PrinterId));
+                        if (status.LoggedPrinterStatus.Equals(PrinterStatus.Online))
+                        {
+                            PrinterList.Add(Pter);
+                        }
+                    }
+                    catch (Exception e) { }
+                }
+                PrinterIds = new SelectList(PrinterList, "PrinterId", "PrinterName");
             }
             else //Print was sent, updating status of print
             {
                 List<SelectListItem> Printerlist = new List<SelectListItem>();
-                Printerlist.Add(new SelectListItem() { Text = LastStatus.Printer.PrinterName, Value = LastStatus.Printer.PrinterId.ToString(), Selected = true });
-                ViewBag.PrinterId = new SelectList(Printerlist, "Value", "Text");
+                Printerlist.Add(new SelectListItem() { Text = LastStatus.Last().Printer.PrinterName, Value = LastStatus.Last().Printer.PrinterId.ToString(), Selected = true });
+                PrinterIds = new SelectList(Printerlist, "Value", "Text");
                 evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
                 evts.Remove(PrintEventType.PRINT_START);
             }
-            
-            
+
+            ViewBag.PrinterId = PrinterIds;
             ViewBag.EventTypes = evts;
             return View();
         }

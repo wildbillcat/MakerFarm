@@ -33,9 +33,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PrinterId, "PrinterId", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PrinterId, "Printer:", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PrinterId, new SelectList(ViewBag.PrinterId))
+                @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
                 @Html.ValidationMessageFor(model => model.PrinterId)
             </div>
         </div>
@@ -49,9 +49,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PrintId, "PrintId", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PrintId, "File Name:", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PrintId", String.Empty)
+                @ViewBag.Print.FileName
+                @Html.TextBoxFor(model => model.PrintId, null, new { @type = "hidden", @Value = ViewBag.Print.PrintId })
                 @Html.ValidationMessageFor(model => model.PrintId)
             </div>
         </div>
