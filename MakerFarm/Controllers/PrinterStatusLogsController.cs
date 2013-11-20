@@ -10,7 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
-    public class PrintStatusLogsController : Controller
+    public class PrinterStatusLogsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
 

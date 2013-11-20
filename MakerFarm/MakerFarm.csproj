@@ -230,7 +230,7 @@
     <Compile Include="Controllers\PrinterTypesController.cs" />
     <Compile Include="Controllers\PrintEventsController.cs" />
     <Compile Include="Controllers\PrintsController.cs" />
-    <Compile Include="Controllers\PrintStatusLogsController.cs" />
+    <Compile Include="Controllers\PrinterStatusLogsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -266,7 +266,7 @@
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\PrinterModel.cs" />
     <Compile Include="Models\PrintErrorTypeModel.cs" />
-    <Compile Include="Models\PrinterStatusLog.cs" />
+    <Compile Include="Models\PrinterStatusLogModel.cs" />
     <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
@@ -440,11 +440,11 @@
     <Content Include="Views\Printers\Details.cshtml" />
     <Content Include="Views\Printers\Edit.cshtml" />
     <Content Include="Views\Printers\Index.cshtml" />
-    <Content Include="Views\PrintStatusLogs\Create.cshtml" />
-    <Content Include="Views\PrintStatusLogs\Delete.cshtml" />
-    <Content Include="Views\PrintStatusLogs\Details.cshtml" />
-    <Content Include="Views\PrintStatusLogs\Edit.cshtml" />
-    <Content Include="Views\PrintStatusLogs\Index.cshtml" />
+    <Content Include="Views\PrinterStatusLogs\Create.cshtml" />
+    <Content Include="Views\PrinterStatusLogs\Delete.cshtml" />
+    <Content Include="Views\PrinterStatusLogs\Details.cshtml" />
+    <Content Include="Views\PrinterStatusLogs\Edit.cshtml" />
+    <Content Include="Views\PrinterStatusLogs\Index.cshtml" />
     <Content Include="Views\PrintEvents\Create.cshtml" />
     <Content Include="Views\PrintEvents\Delete.cshtml" />
     <Content Include="Views\PrintEvents\Details.cshtml" />
