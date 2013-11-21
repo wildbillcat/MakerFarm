@@ -259,6 +259,18 @@
     <Compile Include="Migrations\201311151948427_updatedModelsPrintStatus.Designer.cs">
       <DependentUpon>201311151948427_updatedModelsPrintStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311211601239_Making Sure all IDs are up to Date and no Model changes have happened..cs" />
+    <Compile Include="Migrations\201311211601239_Making Sure all IDs are up to Date and no Model changes have happened..Designer.cs">
+      <DependentUpon>201311211601239_Making Sure all IDs are up to Date and no Model changes have happened..cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201311211736121_corrected the Print model to store MaterialIds of prints in a string that can be parsed..cs" />
+    <Compile Include="Migrations\201311211736121_corrected the Print model to store MaterialIds of prints in a string that can be parsed..Designer.cs">
+      <DependentUpon>201311211736121_corrected the Print model to store MaterialIds of prints in a string that can be parsed..cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201311212112451_Updated Spelling of User Assist on Print Model.cs" />
+    <Compile Include="Migrations\201311212112451_Updated Spelling of User Assist on Print Model.Designer.cs">
+      <DependentUpon>201311212112451_Updated Spelling of User Assist on Print Model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -478,6 +490,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311151948427_updatedModelsPrintStatus.resx">
       <DependentUpon>201311151948427_updatedModelsPrintStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311211601239_Making Sure all IDs are up to Date and no Model changes have happened..resx">
+      <DependentUpon>201311211601239_Making Sure all IDs are up to Date and no Model changes have happened..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311211736121_corrected the Print model to store MaterialIds of prints in a string that can be parsed..resx">
+      <DependentUpon>201311211736121_corrected the Print model to store MaterialIds of prints in a string that can be parsed..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311212112451_Updated Spelling of User Assist on Print Model.resx">
+      <DependentUpon>201311212112451_Updated Spelling of User Assist on Print Model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -10,56 +10,66 @@
     <legend>Print</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FileName)
+         @Html.LabelFor(model => model.FileName)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FileName)
     </div>
 
+    @foreach (string S in (List<string>)ViewData["MaterialsList"])
+    {
+        <div class="editor-label">
+            @Html.Label("Material:")
+        </div>
+        <div class="editor-field">
+            @S
+        </div>
+    }
+
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserName)
+         @Html.LabelFor(model => model.UserName)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.UserName)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SubmissionTime)
+         @Html.LabelFor(model => model.SubmissionTime)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SubmissionTime)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.EstToolpathTime)
+         @Html.LabelFor(model => model.EstToolpathTime)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EstToolpathTime)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.AuthorizedAttempts)
+         @Html.LabelFor(model => model.AuthorizedAttempts)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.AuthorizedAttempts)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.PrinterTypeId)
+         @Html.LabelFor(model => model.PrinterTypeId)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PrinterTypeId)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.StaffAssitedPrint)
+         @Html.LabelFor(model => model.StaffAssistedPrint)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.StaffAssitedPrint)
+        @Html.DisplayFor(model => model.StaffAssistedPrint)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.PrinterTypeId }) |
+    @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

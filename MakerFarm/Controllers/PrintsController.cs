@@ -39,8 +39,13 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            //List<PrintEvent> Events = db.PrintEvents.Where(p => p.PrintId.Equals(id)).OrderByDescending(x => x.EventTimeStamp).ToList();
-            //ViewBag.Events = Events;
+            List<string> materials = new List<string>();
+            foreach(string S in print.MaterialIds.Split(',')){
+                Material M = db.Materials.Find(long.Parse(S));
+                materials.Add(M.MaterialName);
+            }
+            ViewData["MaterialsList"] = materials;
+
             return View(print);
         }
 
@@ -66,7 +71,7 @@ namespace MakerFarm.Controllers
                 //The printer you attempted to use does not have any materials available
                 return RedirectToAction("Index", "Materials");
             }
-            ViewData["MaterialsList"] = new SelectList(materials, "PrinterTypeId", "MaterialName");
+            ViewData["MaterialsList"] = new SelectList(materials, "MaterialId", "MaterialName");
             List<string> MNUA = new List<string>();
             for(int i = 1; i <= printerType.MaxNumberUserAttempts; i++)
             {
@@ -95,10 +100,10 @@ namespace MakerFarm.Controllers
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
-            long[] matIds = new long[tempMaterial.Length];
-            for (int i = 0; i < tempMaterial.Length; i++ )
+            string matIds = tempMaterial[0];
+            for (int i = 1; i < tempMaterial.Length; i++ )
             {
-                matIds[i] = long.Parse(tempMaterial[i]);
+                matIds = string.Concat(matIds, ",", tempMaterial[i]);
             }
             print.MaterialIds = matIds;
 
@@ -118,7 +123,7 @@ namespace MakerFarm.Controllers
             print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
 
             /*Staff Assistance*/
-            print.StaffAssitedPrint = false;
+            print.StaffAssistedPrint = false;
 
 
             if (ModelState.IsValid)
@@ -148,6 +153,20 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
+            List<Material> materials = db.Materials.Where(s => s.PrinterTypeId.Equals(print.PrinterTypeId) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
+            List<SelectList> MaterialsList = new List<SelectList>();
+            foreach(string matID in print.MaterialIds.Split(',')){
+                MaterialsList.Add(new SelectList(materials, "MaterialId", "MaterialName", materials.Find(p => p.MaterialId.Equals(long.Parse(matID)))));
+            }
+            ViewData["MaterialsList"] = MaterialsList;
+
+            List<string> MNUA = new List<string>();
+            for (int i = 1; i <= print.PrinterType.MaxNumberUserAttempts; i++)
+            {
+                MNUA.Add(i.ToString());
+            }
+            ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA, print.AuthorizedAttempts.ToString());
+            
             return View(print);
         }
 
@@ -156,8 +175,32 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Print print)
+        public ActionResult Edit(FormCollection values)
         {
+            Print print = db.Prints.Find(long.Parse(values["PrintId"]));
+            print.UserName = values["UserName"];
+
+            /* Material ID Parsing */
+            string[] tempMaterial = values.GetValues("MaterialIDs");
+            string matIds = tempMaterial[0];
+            for (int i = 1; i < tempMaterial.Length; i++ )
+            {
+                matIds = string.Concat(matIds, ",", tempMaterial[i]);
+            }
+            print.MaterialIds = matIds;
+
+            /*Estimated Material Usage*/
+            print.EstMaterialUse = double.Parse(values["EstMaterialUse"]);
+
+            /*Estimated Toolpath Time*/
+            print.EstToolpathTime = int.Parse(values["EstToolpathTime"]);
+
+            /*Authorized number of attempts*/
+            print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
+
+            /*Staff Assistance*/
+            print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");
+
             if (ModelState.IsValid)
             {
                 db.Entry(print).State = EntityState.Modified;

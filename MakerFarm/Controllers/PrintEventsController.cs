@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
+using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
@@ -49,21 +50,29 @@ namespace MakerFarm.Controllers
             if (0 == LastStatus.Count() || !LastStatus.Last().Equals(PrintEventType.PRINT_START)) //Print Needs to be Sent!
             {
                 //This is in need of some query optimization!
-                List<Printer> PrinterList = new List<Printer>();
-                List<Printer> PrinterList2 = db.Printers.Where(p => p.PrinterTypeId.Equals(Print.PrinterTypeId)).ToList();
-                foreach (Printer Pter in PrinterList2)
+                SqlParameter[] Params = {new SqlParameter("@PrinterTypeId", Print.PrinterTypeId), new SqlParameter("@PrinterStatus", PrinterStatus.Online)};
+                //Optimised the Query! Not sure why EF isn't following my models naming syntax for Id vs ID sporatically, will have to review at a later date.
+                List<Printer> PrinterList = db.Printers.SqlQuery("Select * FROM dbo.Printers INNER JOIN dbo.PrinterStatusLogs ON dbo.Printers.PrinterID = dbo.PrinterStatusLogs.PrinterId WHERE ((dbo.Printers.PrinterTypeId = @PrinterTypeId) AND (dbo.PrinterStatusLogs.LoggedPrinterStatus = @PrinterStatus))", Params).ToList();
+                List<Printer> MaterialCompatible = new List<Printer>();
+                foreach (Printer P in PrinterList)
                 {
-                    try
+                    int materialCompatability = 0;
+                    foreach (long M in Print.MaterialIds)
                     {
-                        PrinterStatusLog status = db.PrinterStatusLogs.Last(p => p.PrinterId.Equals(Pter.PrinterId));
-                        if (status.LoggedPrinterStatus.Equals(PrinterStatus.Online))
+                        foreach (MaterialCheckout Mat in P.MaterialsInUse)
                         {
-                            PrinterList.Add(Pter);
+                            if (Mat.MaterialId == M)
+                            {
+                                materialCompatability++;
+                            }
                         }
                     }
-                    catch (Exception e) { }
+                    if (materialCompatability == Print.MaterialIds.Length)
+                    {
+                        MaterialCompatible.Add(P);
+                    }
                 }
-                PrinterIds = new SelectList(PrinterList, "PrinterId", "PrinterName");
+                PrinterIds = new SelectList(MaterialCompatible, "PrinterId", "PrinterName");
             }
             else //Print was sent, updating status of print
             {

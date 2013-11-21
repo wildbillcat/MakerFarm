@@ -13,70 +13,47 @@
     <fieldset>
         <legend>Print</legend>
 
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.PrintId)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.FileName)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FileName)
-            @Html.ValidationMessageFor(model => model.FileName)
+            @Model.FileName
+        </div>
+
+        @foreach(SelectList S in (List<SelectList>)ViewData["MaterialsList"])
+        {
+            <div class="editor-label">
+                @Html.Label("Material")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.MaterialIds, S)
+                @Html.ValidationMessageFor(model => model.MaterialIds)
+            </div>
+        }
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UserID)
+            @Html.LabelFor(model => model.EstMaterialUse)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UserID)
-            @Html.ValidationMessageFor(model => model.UserID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SMBPath)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SMBPath)
-            @Html.ValidationMessageFor(model => model.SMBPath)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StaffProcessingFee)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.StaffProcessingFee)
-            @Html.ValidationMessageFor(model => model.StaffProcessingFee)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.EstPrintCost)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.EstPrintCost)
-            @Html.ValidationMessageFor(model => model.EstPrintCost)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FinalPrintCost)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FinalPrintCost)
-            @Html.ValidationMessageFor(model => model.FinalPrintCost)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Success)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Success)
-            @Html.ValidationMessageFor(model => model.Success)
+            @Html.EditorFor(model => model.EstMaterialUse)
+            @Html.ValidationMessageFor(model => model.EstMaterialUse)
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.SubmissionTime)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SubmissionTime)
-            @Html.ValidationMessageFor(model => model.SubmissionTime)
+            @Model.SubmissionTime
         </div>
 
         <div class="editor-label">
@@ -88,35 +65,27 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CompletionTime)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CompletionTime)
-            @Html.ValidationMessageFor(model => model.CompletionTime)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.AuthorizedAttempts)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.AuthorizedAttempts)
+            @Html.DropDownListFor(model => model.AuthorizedAttempts, (SelectList)ViewData["MaxNumberUserAttempts"])
             @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.PrinterTypeID)
+            @Html.LabelFor(model => model.PrinterTypeId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.PrinterTypeID)
-            @Html.ValidationMessageFor(model => model.PrinterTypeID)
+            @Model.PrinterType.TypeName
+            @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.StaffAssitedPrint)
+            @Html.LabelFor(model => model.StaffAssistedPrint)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.StaffAssitedPrint)
-            @Html.ValidationMessageFor(model => model.StaffAssitedPrint)
+            @Html.EditorFor(model => model.StaffAssistedPrint)
+            @Html.ValidationMessageFor(model => model.StaffAssistedPrint)
         </div>
 
         <p>

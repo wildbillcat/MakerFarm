@@ -31,7 +31,7 @@
             @Html.DisplayNameFor(model => model.PrinterTypeId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StaffAssitedPrint)
+            @Html.DisplayNameFor(model => model.StaffAssistedPrint)
         </th>
         <th></th>
     </tr>
@@ -63,7 +63,7 @@
                 @Html.DisplayNameFor(model => model.PrinterTypeId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StaffAssitedPrint)
+                @Html.DisplayNameFor(model => model.StaffAssistedPrint)
             </th>
             <th></th>
         </tr>
@@ -73,7 +73,7 @@
             <tr>
                 <td>
                     @if(Request.IsAuthenticated){
-                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrinterTypeId })
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
                     }else{
                         @Html.DisplayFor(modelItem => item.FileName)
                     }                    
@@ -97,12 +97,12 @@
                     @Html.DisplayFor(modelItem => item.PrinterTypeId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StaffAssitedPrint)
+                    @Html.DisplayFor(modelItem => item.StaffAssistedPrint)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PrinterTypeId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.PrinterTypeId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PrinterTypeId })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PrintId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PrintId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PrintId })
                     @Html.ActionLink("Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
                 </td>
             </tr>
