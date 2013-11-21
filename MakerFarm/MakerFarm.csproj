@@ -224,6 +224,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MaterialCheckoutsController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
     <Compile Include="Controllers\PrintErrorTypesController.cs" />
     <Compile Include="Controllers\PrintersController.cs" />
@@ -467,6 +468,11 @@
     <Content Include="Views\PrintErrorTypes\Details.cshtml" />
     <Content Include="Views\PrintErrorTypes\Edit.cshtml" />
     <Content Include="Views\PrintErrorTypes\Index.cshtml" />
+    <Content Include="Views\MaterialCheckouts\Create.cshtml" />
+    <Content Include="Views\MaterialCheckouts\Delete.cshtml" />
+    <Content Include="Views\MaterialCheckouts\Details.cshtml" />
+    <Content Include="Views\MaterialCheckouts\Edit.cshtml" />
+    <Content Include="Views\MaterialCheckouts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

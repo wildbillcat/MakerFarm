@@ -22,5 +22,7 @@ namespace MakerFarm.Models
         public DbSet<Printer> Printers { get; set; }
         public DbSet<PrinterStatusLog> PrinterStatusLogs { set; get; }
 
+        public System.Data.Entity.DbSet<MakerFarm.Models.MaterialCheckout> MaterialCheckouts { get; set; }
+
     }
 }
