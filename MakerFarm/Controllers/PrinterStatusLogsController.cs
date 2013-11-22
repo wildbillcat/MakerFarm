@@ -45,6 +45,12 @@ namespace MakerFarm.Controllers
                 return RedirectToAction("Index", "PrinterTypes");
             }
             ViewData["PrinterID"] = id;
+            Printer printer = db.Printers.Find(id);
+            if (printer == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Title = string.Concat("Update Status: ", printer.PrinterName);
             return View();
         }
 
@@ -60,7 +66,7 @@ namespace MakerFarm.Controllers
             {
                 db.PrinterStatusLogs.Add(printerstatuslog);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Printers", new { id = printerstatuslog.PrinterId });
             }
 
             return View(printerstatuslog);

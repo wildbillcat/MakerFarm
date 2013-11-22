@@ -32,6 +32,11 @@ namespace MakerFarm.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Printer printer = db.Printers.Find(id);
+            if (printer == null)
+            {
+                return HttpNotFound();
+            }
+
             ViewBag.Title = String.Concat("Details: ", printer.PrinterName);
             SqlParameter[] Params = { new SqlParameter("@PrinterTypeID", printer.PrinterTypeId) };
             List<Material> Materials = db.Materials.SqlQuery(
@@ -41,10 +46,31 @@ namespace MakerFarm.Controllers
                 "GROUP BY dbo.Materials.MaterialId, dbo.Materials.MaterialName, dbo.Materials.MaterialSpoolQuantity, dbo.Materials.PrinterTypeId " +
                 "HAVING ((Count(dbo.MaterialCheckouts.MaterialId) < dbo.Materials.MaterialSpoolQuantity) or dbo.Materials.MaterialSpoolQuantity < 0) and (dbo.Materials.PrinterTypeId = @PrinterTypeID)", Params).ToList();
             ViewData["Materials"] = new SelectList(Materials, "MaterialId", "MaterialName");
-            if (printer == null)
+            
+            string status = "Unknown";
+            try
             {
-                return HttpNotFound();
+                SqlParameter[] Params1 = { new SqlParameter("@PrinterID", printer.PrinterId) };
+                PrinterStatusLog P = db.PrinterStatusLogs.SqlQuery(
+                "Select dbo.PrinterStatusLogs.* " +
+                "From dbo.PrinterStatusLogs " +
+                "inner join " +
+                    "(" +
+                    "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.LogEntryDate) as MaxEntryTime " +
+                    "from dbo.PrinterStatusLogs " +
+                    "group by dbo.PrinterStatusLogs.PrinterID" +
+                    ") " +
+                "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime " +
+                "where (dbo.PrinterStatusLogs.PrinterID = @PrinterID)", Params1).First();
+                status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
             }
+            catch (Exception e)
+            {
+                //oh myyyyy
+            }
+            
+            ViewData["Status"] = status;
+        
             return View(printer);
         }
 

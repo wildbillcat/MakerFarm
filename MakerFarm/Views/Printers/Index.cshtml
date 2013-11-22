@@ -26,10 +26,8 @@
             @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrinterId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterId }) | 
-            @Html.ActionLink("Update Status", "Create", "PrintStatusLogs", new { id = item.PrinterId }, null)
+            @Html.ActionLink("Details", "Details", new { id=item.PrinterId }) | 
+            @Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)
         </td>
     </tr>
 }

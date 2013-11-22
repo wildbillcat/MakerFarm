@@ -1,9 +1,5 @@
 ﻿@model MakerFarm.Models.Printer
 
-@{
-    ViewBag.Title = "Details";
-}
-
 <h2>Details</h2>
 
 <div>
@@ -26,12 +22,22 @@
             @Html.DisplayFor(model => model.PrinterTypeId)
         </dd>
 
+        <dt>
+            @Html.Label("Printer Status")
+        </dt>
+
+        <dd>
+            @ViewData["Status"] | 
+            @Html.ActionLink("Update", "Create", "PrinterStatusLogs", new { id = Model.PrinterId }, null)
+        </dd>
+
     </dl>
 
 </div>
 
         @if (Model.MaterialsInUse.Count() < Model.PrinterType.SupportedNumberMaterials)
         {
+            <h4>Warning! Machine Needs Material:</h4>
             //Add Material Dropdown and Button
             using (Html.BeginForm("Create","MaterialCheckouts")) 
             {
@@ -46,6 +52,10 @@
             }
 
         }
+        
+        @if (Model.MaterialsInUse.Count() > 0)
+        {
+            
         
         <table class="table">
             <tr>
@@ -62,14 +72,26 @@
                         @Html.DisplayFor(modelItem => M.Material.MaterialName)
                     </td>
                     <td>
-                        @Html.ActionLink("Delete", "Delete", "MaterialCheckouts", new { id = M.MaterialCheckoutId }, null)
+                        @using (Html.BeginForm("Delete","MaterialCheckouts"))
+                        {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                @Html.Hidden("MaterialCheckoutId", M.MaterialCheckoutId.ToString())
+                                <input type="submit" value="Remove Material" class="btn btn-default" />
+                            </div>
+                        </div>
+                        }
                     </td>
                 </tr>
             }
 
         </table>
+        }
 
+<h4>Administrative Actions:</h4>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.PrinterId }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.PrinterId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
