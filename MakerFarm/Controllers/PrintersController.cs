@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
+using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
@@ -32,6 +33,14 @@ namespace MakerFarm.Controllers
             }
             Printer printer = db.Printers.Find(id);
             ViewBag.Title = String.Concat("Details: ", printer.PrinterName);
+            SqlParameter[] Params = { new SqlParameter("@PrinterTypeID", printer.PrinterTypeId) };
+            List<Material> Materials = db.Materials.SqlQuery(
+                "Select dbo.Materials.MaterialId, dbo.Materials.MaterialName, dbo.Materials.MaterialSpoolQuantity, dbo.Materials.PrinterTypeId " +
+                "FROM dbo.Materials LEFT JOIN dbo.MaterialCheckouts " +
+                "ON dbo.Materials.MaterialId = dbo.MaterialCheckouts.MaterialId " +
+                "GROUP BY dbo.Materials.MaterialId, dbo.Materials.MaterialName, dbo.Materials.MaterialSpoolQuantity, dbo.Materials.PrinterTypeId " +
+                "HAVING ((Count(dbo.MaterialCheckouts.MaterialId) < dbo.Materials.MaterialSpoolQuantity) or dbo.Materials.MaterialSpoolQuantity < 0) and (dbo.Materials.PrinterTypeId = @PrinterTypeID)", Params).ToList();
+            ViewData["Materials"] = new SelectList(Materials, "MaterialId", "MaterialName");
             if (printer == null)
             {
                 return HttpNotFound();

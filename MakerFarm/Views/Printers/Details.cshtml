@@ -8,10 +8,10 @@
 
 <div>
     <h4>Printer</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PrinterName)
+            @Html.LabelFor(model => model.PrinterName)
         </dt>
 
         <dd>
@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PrinterTypeId)
+            @Html.LabelFor(model => model.PrinterTypeId)
         </dt>
 
         <dd>
@@ -27,7 +27,48 @@
         </dd>
 
     </dl>
+
 </div>
+
+        @if (Model.MaterialsInUse.Count() < Model.PrinterType.SupportedNumberMaterials)
+        {
+            //Add Material Dropdown and Button
+            using (Html.BeginForm("Create","MaterialCheckouts")) 
+            {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.Hidden("PrinterId", Model.PrinterId)
+                        @Html.DropDownList("MaterialId", (SelectList)ViewData["Materials"])
+                        <input type="submit" value="Add Material" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+
+        }
+        
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Material Type")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (MakerFarm.Models.MaterialCheckout M in Model.MaterialsInUse)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => M.Material.MaterialName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", "MaterialCheckouts", new { id = M.MaterialCheckoutId }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.PrinterId }) |
     @Html.ActionLink("Back to List", "Index")

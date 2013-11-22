@@ -55,7 +55,7 @@ namespace MakerFarm.Controllers
             {
                 db.MaterialCheckouts.Add(materialcheckout);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Printers", new { id = materialcheckout.PrinterId });
             }
 
             ViewBag.MaterialId = new SelectList(db.Materials, "MaterialId", "MaterialName", materialcheckout.MaterialId);
