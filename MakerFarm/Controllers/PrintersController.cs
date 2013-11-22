@@ -21,6 +21,32 @@ namespace MakerFarm.Controllers
             ViewBag.Title = "Printers";
             Dictionary<int, PrinterType> PrinterTypes = db.PrinterTypes.ToDictionary(p => p.PrinterTypeId);
             ViewBag.PrinterNames = PrinterTypes;
+            Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
+            "Select dbo.PrinterStatusLogs.* " +
+            "From dbo.PrinterStatusLogs " +
+            "inner join " +
+                "(" +
+                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.LogEntryDate) as MaxEntryTime " +
+                "from dbo.PrinterStatusLogs " +
+                "group by dbo.PrinterStatusLogs.PrinterID" +
+                ") " +
+            "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
+            ViewBag.PrinterStatus = PrinterStatus;
+            
+            List<Printer> ValidMaterialStatus = db.Printers.SqlQuery(
+                "Select dbo.Printers.* " +
+                "From dbo.Printers " +
+                "inner join " +
+                "( " +
+                    "select dbo.MaterialCheckouts.PrinterId, Count(Distinct dbo.MaterialCheckouts.MaterialCheckoutId) as MaterialsAssigned " +
+                    "from dbo.MaterialCheckouts " +
+                    "group by dbo.MaterialCheckouts.PrinterId " +
+                    ") cnt ON dbo.Printers.PrinterID = cnt.PrinterId " +
+                "inner join dbo.PrinterTypes on dbo.Printers.PrinterTypeId = dbo.PrinterTypes.PrinterTypeId " +
+                "where MaterialsAssigned = SupportedNumberMaterials").ToList();
+
+            ViewBag.ValidMaterialStatus = ValidMaterialStatus;
+            
             return View(db.Printers.ToList());
         }
 
