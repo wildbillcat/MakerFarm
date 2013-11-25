@@ -8,11 +8,7 @@ namespace MakerFarm.Models
 {
     public class MakerfarmDBContext : DbContext
     {
-        public MakerfarmDBContext() : base("DefaultConnection")
-        {
-            //Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
-        }
-
+        
         public DbSet<PrinterType> PrinterTypes { get; set; }
         public DbSet<PrintEvent> PrintEvents { get; set; }
         public DbSet<Print> Prints { get; set; }
@@ -21,8 +17,12 @@ namespace MakerFarm.Models
         public DbSet<PrintErrorType> PrintErrorTypes { get; set; }
         public DbSet<Printer> Printers { get; set; }
         public DbSet<PrinterStatusLog> PrinterStatusLogs { set; get; }
+        public DbSet<MaterialCheckout> MaterialCheckouts { get; set; }
 
-        public System.Data.Entity.DbSet<MakerFarm.Models.MaterialCheckout> MaterialCheckouts { get; set; }
+        public MakerfarmDBContext() : base("DefaultConnection")
+        {
+            //Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
+        }
 
     }
 }

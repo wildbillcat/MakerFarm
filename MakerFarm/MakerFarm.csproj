@@ -272,6 +272,14 @@
     <Compile Include="Migrations\201311212112451_Updated Spelling of User Assist on Print Model.Designer.cs">
       <DependentUpon>201311212112451_Updated Spelling of User Assist on Print Model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311251547148_Updated Printer Types and Errors for Many to Many Relationship.cs" />
+    <Compile Include="Migrations\201311251547148_Updated Printer Types and Errors for Many to Many Relationship.Designer.cs">
+      <DependentUpon>201311251547148_Updated Printer Types and Errors for Many to Many Relationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201311251740466_Added comment Fields and Error Tracking.cs" />
+    <Compile Include="Migrations\201311251740466_Added comment Fields and Error Tracking.Designer.cs">
+      <DependentUpon>201311251740466_Added comment Fields and Error Tracking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -505,6 +513,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311212112451_Updated Spelling of User Assist on Print Model.resx">
       <DependentUpon>201311212112451_Updated Spelling of User Assist on Print Model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311251547148_Updated Printer Types and Errors for Many to Many Relationship.resx">
+      <DependentUpon>201311251547148_Updated Printer Types and Errors for Many to Many Relationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311251740466_Added comment Fields and Error Tracking.resx">
+      <DependentUpon>201311251740466_Added comment Fields and Error Tracking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

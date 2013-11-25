@@ -10,28 +10,19 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayName("Assigned Printer")
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.FileName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.UserName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EstMaterialUse)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SubmissionTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EstToolpathTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorizedAttempts)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrinterTypeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StaffAssistedPrint)
         </th>
         <th></th>
     </tr>
@@ -48,22 +39,10 @@
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstMaterialUse)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SubmissionTime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EstToolpathTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuthorizedAttempts)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrinterTypeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StaffAssistedPrint)
             </th>
             <th></th>
         </tr>
@@ -82,22 +61,10 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EstMaterialUse)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.SubmissionTime)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.EstToolpathTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AuthorizedAttempts)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrinterTypeId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StaffAssistedPrint)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.PrintId }) |

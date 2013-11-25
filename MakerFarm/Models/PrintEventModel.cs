@@ -34,6 +34,12 @@ namespace MakerFarm.Models
         [Display(Name = "Print", Description = "The Print associated with the Print Event")]
         public long PrintId { get; set; }
 
+        [Display(Name = "Printer Error Type", Description = "The Print Error Type associated with the Print Event")]
+        public long? PrintErrorTypeId { get; set; } //If there was an error, this denotes what kind!
+
+        [Display(Name = "Comment", Description = "A comment field for the user to make any important notes")]
+        public string Comment { get; set; }
+
         public virtual Print Print { get; set; }
 
         public virtual Printer Printer { get; set; }

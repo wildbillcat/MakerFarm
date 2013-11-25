@@ -81,6 +81,7 @@ namespace MakerFarm.Controllers
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
             ViewData["CurrentUser"] = User.Identity.Name;
+            ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
             return View();
         }
         

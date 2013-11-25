@@ -40,7 +40,7 @@ namespace MakerFarm.Controllers
         // GET: /PrintEvents/Create
         public ActionResult Create(long id = 0)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -88,9 +88,17 @@ namespace MakerFarm.Controllers
                     }
                 }
                 PrinterIds = new SelectList(MaterialCompatible, "PrinterId", "PrinterName");
+                int i = 0;
                 foreach (string MatString in Print.MaterialIds.Split(','))
                 {
-                    PrintMaterials = string.Concat(PrintMaterials, ", ", db.Materials.Find(long.Parse(MatString)).MaterialName);
+                    if (i == 0)
+                    {
+                        PrintMaterials = MatString;
+                    }
+                    else
+                    {
+                        PrintMaterials = string.Concat(PrintMaterials, ", ", db.Materials.Find(long.Parse(MatString)).MaterialName);
+                    }
                 }
                 ViewBag.PrintMaterials = PrintMaterials;
             }
@@ -102,7 +110,7 @@ namespace MakerFarm.Controllers
                 evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
                 evts.Remove(PrintEventType.PRINT_START);
             }
-
+            ViewBag.PrintErrorTypeId = new SelectList(db.PrintErrorTypes.ToList(), "PrintErrorTypeId", "PrintErrorName");
             ViewBag.PrinterId = PrinterIds;
             ViewBag.EventTypes = evts;
             ViewBag.Send = evts.Count() == 1;

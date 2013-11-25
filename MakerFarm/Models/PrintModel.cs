@@ -22,7 +22,7 @@ namespace MakerFarm.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Submission Time", Description = "Time the Submission was made")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yy H:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionTime { get; set; } /* This is the time the print is submitted to the application */
 
         [Display(Name = "Estimated Print Time (Minutes)", Description = "Estimated amount of time print will take in minutes")]
@@ -36,6 +36,8 @@ namespace MakerFarm.Models
 
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssistedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
+
+        public string Comment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
