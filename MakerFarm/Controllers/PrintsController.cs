@@ -25,6 +25,7 @@ namespace MakerFarm.Controllers
             {
                 ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
                 ViewBag.id = id;
+                ViewBag.Assigned = "To be Defined";
                 return View(db.Prints.Where(s => s.PrinterTypeId.Equals(id)).ToList());
             }
         }
@@ -176,6 +177,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(FormCollection values)
         {
             Print print = db.Prints.Find(long.Parse(values["PrintId"]));
@@ -213,7 +215,7 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Delete/5
-
+        [Authorize]
         public ActionResult Delete(long id = 0)
         {
             Print print = db.Prints.Find(id);
@@ -229,6 +231,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(long id)
         {
             Print print = db.Prints.Find(id);

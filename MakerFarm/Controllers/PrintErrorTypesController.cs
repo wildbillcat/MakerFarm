@@ -10,6 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize]
     public class PrintErrorTypesController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();

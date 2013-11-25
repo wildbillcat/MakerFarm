@@ -10,6 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize]
     public class MaterialCheckoutsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();

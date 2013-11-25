@@ -49,7 +49,7 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["CurrentUser"] = User.Identity.Name;
+            ViewBag.CurrentUser = User.Identity.Name;
             List<PrintEvent> LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).ToList();
             ViewBag.PrintId = id;
             ViewBag.Print = Print;
@@ -57,7 +57,7 @@ namespace MakerFarm.Controllers
             evts.Add(PrintEventType.PRINT_START);
             SelectList PrinterIds;
             string PrintMaterials = "";
-            if (0 == LastStatus.Count() || !LastStatus.Last().Equals(PrintEventType.PRINT_START)) //Print Needs to be Sent!
+            if (0 == LastStatus.Count() || !LastStatus.Last().EventType.Equals(PrintEventType.PRINT_START)) //Print Needs to be Sent!
             {
                 //This is in need of some query optimization!
                 SqlParameter[] Params = {new SqlParameter("@PrinterTypeId", Print.PrinterTypeId), new SqlParameter("@PrinterStatus", PrinterStatus.Online)};
@@ -93,7 +93,7 @@ namespace MakerFarm.Controllers
                 {
                     if (i == 0)
                     {
-                        PrintMaterials = MatString;
+                        PrintMaterials = db.Materials.Find(long.Parse(MatString)).MaterialName;
                     }
                     else
                     {
@@ -122,14 +122,14 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
+        public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent)
         {
             printevent.EventTimeStamp = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.PrintEvents.Add(printevent);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Prints", new { id = printevent.Printer.PrinterTypeId });
             }
 
             ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);

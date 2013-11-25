@@ -40,8 +40,8 @@
             <div class="col-md-10">
                 @if (ViewBag.Send)
                 {
-                    @Html.HiddenFor(model => model.MaterialUsed, 0)
-                    @ViewBag.PrintMaterials
+                    @Html.Hidden("MaterialUsed", 0)
+                    @ViewBag.PrintMaterials.ToString()
                 }
                 else
                 {
@@ -61,7 +61,7 @@
 
         <div class="form-group">
             <div class="col-md-10">
-                @Html.HiddenFor(model => model.UserName, ViewData["CurrentUser"])
+                @Html.Hidden("UserName", (string)ViewBag.CurrentUser)
             </div>
         </div>
 
@@ -69,7 +69,7 @@
             @Html.LabelFor(model => model.PrintId, "File Name:", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @ViewBag.Print.FileName
-                @Html.TextBoxFor(model => model.PrintId, null, new { @type = "hidden", @Value = ViewBag.Print.PrintId })
+                @Html.Hidden("PrintId", (long)ViewBag.Print.PrintId)
                 @Html.ValidationMessageFor(model => model.PrintId)
             </div>
         </div>
