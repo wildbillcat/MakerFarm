@@ -40,19 +40,33 @@ namespace MakerFarm.Controllers
         // GET: /PrintEvents/Create
         public ActionResult Create(long id = 0)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Print Print = db.Prints.Find(id);
+            if (Print == null)
+            {
+                return HttpNotFound();
+            }
+            ViewData["CurrentUser"] = User.Identity.Name;
             List<PrintEvent> LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).ToList();
             ViewBag.PrintId = id;
             ViewBag.Print = Print;
             List<PrintEventType> evts = new List<PrintEventType>();
             evts.Add(PrintEventType.PRINT_START);
             SelectList PrinterIds;
+            string PrintMaterials = "";
             if (0 == LastStatus.Count() || !LastStatus.Last().Equals(PrintEventType.PRINT_START)) //Print Needs to be Sent!
             {
                 //This is in need of some query optimization!
                 SqlParameter[] Params = {new SqlParameter("@PrinterTypeId", Print.PrinterTypeId), new SqlParameter("@PrinterStatus", PrinterStatus.Online)};
                 //Optimised the Query! Not sure why EF isn't following my models naming syntax for Id vs ID sporatically, will have to review at a later date.
-                List<Printer> PrinterList = db.Printers.SqlQuery("Select * FROM dbo.Printers INNER JOIN dbo.PrinterStatusLogs ON dbo.Printers.PrinterID = dbo.PrinterStatusLogs.PrinterId WHERE ((dbo.Printers.PrinterTypeId = @PrinterTypeId) AND (dbo.PrinterStatusLogs.LoggedPrinterStatus = @PrinterStatus))", Params).ToList();
+                List<Printer> PrinterList = db.Printers.SqlQuery(
+                "Select * FROM dbo.Printers INNER JOIN dbo.PrinterStatusLogs " +
+                "ON dbo.Printers.PrinterID = dbo.PrinterStatusLogs.PrinterId " +
+                "WHERE ((dbo.Printers.PrinterTypeId = @PrinterTypeId) " +
+                "AND (dbo.PrinterStatusLogs.LoggedPrinterStatus = @PrinterStatus))", Params).ToList();
                 List<Printer> MaterialCompatible = new List<Printer>();
                 foreach (Printer P in PrinterList)
                 {
@@ -74,6 +88,11 @@ namespace MakerFarm.Controllers
                     }
                 }
                 PrinterIds = new SelectList(MaterialCompatible, "PrinterId", "PrinterName");
+                foreach (string MatString in Print.MaterialIds.Split(','))
+                {
+                    PrintMaterials = string.Concat(PrintMaterials, ", ", db.Materials.Find(long.Parse(MatString)).MaterialName);
+                }
+                ViewBag.PrintMaterials = PrintMaterials;
             }
             else //Print was sent, updating status of print
             {
@@ -86,6 +105,7 @@ namespace MakerFarm.Controllers
 
             ViewBag.PrinterId = PrinterIds;
             ViewBag.EventTypes = evts;
+            ViewBag.Send = evts.Count() == 1;
             return View();
         }
 
