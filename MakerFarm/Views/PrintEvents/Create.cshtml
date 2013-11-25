@@ -19,20 +19,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventType, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes))
+                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes), new { onchange = "changeError()"})
                 @Html.ValidationMessageFor(model => model.EventType)
             </div>
         </div>
         @if (!ViewBag.Send)
-        {
-        <div class="form-group">
-            @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PrintErrorTypeId, (SelectList)ViewBag.PrintErrorTypeId)
-                @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
-            </div>
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
+            @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
         </div>
-        }
+    </div>
+}
         
 
         <div class="form-group">
@@ -86,6 +86,25 @@
     @Html.ActionLink("Back to List", "Index", "Prints", new { id=ViewBag.Print.PrinterTypeId }, null)
 </div>
 
+<script>
+    function changeError() {
+        if ($('#EventType').val() == 'PRINT_FAILURE_FILE') {
+            $('#PrintErrorTypeId').html('');
+            $('#PrintErrorTypeId').html('@ViewBag.HumanHTML.ToString()');
+        }
+        else if ($('#EventType').val() == 'PRINT_FAILURE_MACHINE') {
+            $('#PrintErrorTypeId').html('');
+            $('#PrintErrorTypeId').html('@ViewBag.MachineHTML.ToString()');
+        }
+        else {
+            $('#PrintErrorTypeId').html('');
+        }
+        return false;
+    }
+</script>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
