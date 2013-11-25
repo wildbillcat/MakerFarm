@@ -57,8 +57,9 @@ namespace MakerFarm.Controllers
                 foreach (Printer P in PrinterList)
                 {
                     int materialCompatability = 0;
-                    foreach (long M in Print.MaterialIds)
+                    foreach (string MatString in Print.MaterialIds.Split(','))
                     {
+                        long M = long.Parse(MatString);
                         foreach (MaterialCheckout Mat in P.MaterialsInUse)
                         {
                             if (Mat.MaterialId == M)
