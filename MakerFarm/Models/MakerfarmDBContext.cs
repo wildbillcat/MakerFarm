@@ -10,7 +10,7 @@ namespace MakerFarm.Models
     {
         public MakerfarmDBContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
+            //Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
         }
 
         public DbSet<PrinterType> PrinterTypes { get; set; }
