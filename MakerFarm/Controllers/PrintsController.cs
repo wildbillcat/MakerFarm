@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
+using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
@@ -23,10 +24,36 @@ namespace MakerFarm.Controllers
             }
             else
             {
+                //Need to edit it to pull prints 
+                string PrintStartQuery = "Select * " +
+            "from dbo.PrintEvents " +
+            "inner join ( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+            "where dbo.PrintEvents.EventType = @EventType1";
+                string WaitingPrintFilesQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join " +
+                "( " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType " +
+                "from dbo.PrintEvents " +
+                "inner join " +
+                "( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+                "where pnt.EventType != @EventType1 or pnt.EventType != @EventType1 or pnt.EventType != @EventType3";
+                SqlParameter PrintingEventStart = new SqlParameter("@EventType1", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventComplete = new SqlParameter("@EventType2", PrintEventType.PRINT_COMPLETED);
+                SqlParameter PrintingEventCanceled = new SqlParameter("@EventType3", PrintEventType.PRINT_CANCELED);
                 ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
                 ViewBag.id = id;
-                ViewBag.Assigned = "To be Defined";
-                return View(db.Prints.Where(s => s.PrinterTypeId.Equals(id)).ToList());
+                ViewBag.Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart);//Print Start Query
+                return View(db.Prints.SqlQuery(WaitingPrintFilesQuery, PrintingEventStart, PrintingEventCanceled, PrintingEventComplete).ToList());
             }
         }
 
