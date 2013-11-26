@@ -58,7 +58,7 @@
          @Html.LabelFor(model => model.PrinterTypeId)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.PrinterTypeId)
+        @Model.PrinterType.TypeName
     </div>
 
     <div class="display-label">
@@ -67,10 +67,20 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.StaffAssistedPrint)
     </div>
+
+    @if (Model.Comment != null)
+    {
+    <div class="display-label">
+        @Html.LabelFor(model => model.Comment)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comment)
+    </div>
+    }
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { id = Model.PrinterTypeId })
 </p>
 
 <h3>Print Log:</h3>
@@ -91,6 +101,12 @@
         <th>
             Material Used
         </th>
+        @if (true)
+        {
+        <th>
+            Comment
+        </th> 
+        }
     </tr>
 
     @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.EventTimeStamp))
@@ -111,6 +127,12 @@
             <td>
                 @p.MaterialUsed
             </td>
+           @if (true)
+           {
+            <td>
+               @p.Comment 
+            </td>
+           }
         </tr>
     }
 </table>

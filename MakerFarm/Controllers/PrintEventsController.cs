@@ -112,7 +112,7 @@ namespace MakerFarm.Controllers
             }
             List<PrintErrorType> HumanError = db.PrintErrorTypes.Where(p => p.UserError.Equals(true)).ToList();
             string HumanHTML = "";
-            if (HumanError.Count == 0)
+            if (HumanError.Count > 0)
             {
                 foreach (PrintErrorType P in HumanError)
                 {
@@ -123,14 +123,14 @@ namespace MakerFarm.Controllers
             
             List<PrintErrorType> MachineError = db.PrintErrorTypes.Where(p => p.UserError.Equals(false)).ToList();
             string MachineHTML = "";
-            if (MachineError.Count == 0)
+            if (MachineError.Count > 0)
             {
                 foreach (PrintErrorType P in MachineError)
                 {
                     MachineHTML = string.Concat(MachineHTML, "<option value=\"", P.PrintErrorTypeId, "\">", P.PrintErrorName, "</option>");
                 }
             }
-            
+            ViewBag.FileErrors = new SelectList(HumanError, "PrintErrorTypeId", "PrintErrorName");
             ViewBag.HumanHTML = HumanHTML;
             ViewBag.MachineHTML = MachineHTML;
             ViewBag.PrinterId = PrinterIds;
@@ -151,7 +151,8 @@ namespace MakerFarm.Controllers
             {
                 db.PrintEvents.Add(printevent);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Prints", new { id = printevent.Printer.PrinterTypeId });
+                int printerID = db.Printers.Find(printevent.PrinterId).PrinterTypeId;
+                return RedirectToAction("Index", "Prints", new { id = printerID });
             }
 
             ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);

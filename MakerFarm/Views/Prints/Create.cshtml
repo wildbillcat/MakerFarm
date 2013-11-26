@@ -14,7 +14,7 @@
         <legend>Print</legend>
 
         <div class="editor-field">
-            @Html.HiddenFor(model => model.UserName, ViewData["CurrentUser"])
+            @Html.Hidden("UserName", ViewData["CurrentUser"])
         </div>
 
         <div class="editor-label">

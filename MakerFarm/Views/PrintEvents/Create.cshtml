@@ -28,7 +28,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
+            @Html.DropDownListFor(model => model.PrintErrorTypeId, (SelectList)ViewBag.FileErrors)
             @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
         </div>
     </div>
@@ -36,7 +36,7 @@
         
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MaterialUsed, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.MaterialUsed, string.Concat("Material Used: (", (string)ViewBag.Print.PrinterType.MaterialUseUnit, ")"), new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @if (ViewBag.Send)
                 {
@@ -75,6 +75,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Comment, "Comments:", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Comment)
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -86,15 +94,16 @@
     @Html.ActionLink("Back to List", "Index", "Prints", new { id=ViewBag.Print.PrinterTypeId }, null)
 </div>
 
+<text>
 <script>
     function changeError() {
         if ($('#EventType').val() == 'PRINT_FAILURE_FILE') {
             $('#PrintErrorTypeId').html('');
-            $('#PrintErrorTypeId').html('@ViewBag.HumanHTML.ToString()');
+            $('#PrintErrorTypeId').html('@Html.Raw(ViewBag.HumanHTML)');
         }
         else if ($('#EventType').val() == 'PRINT_FAILURE_MACHINE') {
             $('#PrintErrorTypeId').html('');
-            $('#PrintErrorTypeId').html('@ViewBag.MachineHTML.ToString()');
+            $('#PrintErrorTypeId').html('@Html.Raw(ViewBag.MachineHTML)');
         }
         else {
             $('#PrintErrorTypeId').html('');

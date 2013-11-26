@@ -127,6 +127,7 @@ namespace MakerFarm.Controllers
             /*Staff Assistance*/
             print.StaffAssistedPrint = false;
 
+            print.Comment = values.Get("Comment");
 
             if (ModelState.IsValid)
             {
@@ -139,7 +140,7 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
                 string printFileName = string.Concat(saveAsDirectory, "\\", print.PrinterTypeId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = print.PrintId });
             }
 
             return View(print);
@@ -204,11 +205,13 @@ namespace MakerFarm.Controllers
             /*Staff Assistance*/
             print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");
 
+            print.Comment = values.Get("Comment");
+
             if (ModelState.IsValid)
             {
                 db.Entry(print).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = print.PrintId });
             }
             return View(print);
         }
@@ -244,6 +247,11 @@ namespace MakerFarm.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult Download(long id)
+        {
+            string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
         }
     }
 }
