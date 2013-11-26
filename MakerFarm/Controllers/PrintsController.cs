@@ -138,7 +138,7 @@ namespace MakerFarm.Controllers
 
                 db.Prints.Add(print);
                 db.SaveChanges();
-                string printFileName = string.Concat(saveAsDirectory, "\\", print.PrinterTypeId, "_", PrintFile.FileName);
+                string printFileName = string.Concat(saveAsDirectory, "\\", print.PrintId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
                 return RedirectToAction("Details", new { id = print.PrintId });
             }
@@ -238,9 +238,14 @@ namespace MakerFarm.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Print print = db.Prints.Find(id);
+            long pid = print.PrinterTypeId;
+            string path = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            if(System.IO.File.Exists(path)){
+                System.IO.File.Delete(path);
+            }
             db.Prints.Remove(print);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = pid });
         }
 
         protected override void Dispose(bool disposing)
@@ -251,7 +256,18 @@ namespace MakerFarm.Controllers
 
         public ActionResult Download(long id)
         {
-            string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
+            Print print = db.Prints.Find(id);
+            if (print == null)
+            {
+                return HttpNotFound();
+            }
+            string path = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            if (!System.IO.File.Exists(path))
+            {
+                return HttpNotFound();
+            }
+            var contentType = "text/plain";
+            return File(path, contentType, string.Concat(print.PrintId, "_", print.FileName));
         }
     }
 }

@@ -61,6 +61,14 @@
             @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comment)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Comment)
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+
         <div class="editor-field">
             @Html.TextBoxFor(model => model.PrinterTypeId, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
             @Html.ValidationMessageFor(model => model.PrinterTypeId)

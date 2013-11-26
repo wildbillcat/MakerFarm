@@ -77,6 +77,14 @@
         @Html.DisplayFor(model => model.Comment)
     </div>
     }
+    
+    <div class="display-label">
+        @Html.LabelFor(model => model.FileName, "File Download")
+    </div>
+    <div class="display-field">
+        @Html.ActionLink(string.Concat("Download: ", Model.FileName), "Download", new { id = Model.PrintId })
+    </div>
+    
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId }) |
