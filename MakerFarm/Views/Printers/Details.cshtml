@@ -37,7 +37,7 @@
 
         @if (Model.MaterialsInUse.Count() < Model.PrinterType.SupportedNumberMaterials)
         {
-            <h4>Warning! Machine Needs Material:</h4>
+            <h3><font color="red">Warning! Machine Needs Material:</font></h3>
             //Add Material Dropdown and Button
             using (Html.BeginForm("Create","MaterialCheckouts")) 
             {
