@@ -47,7 +47,38 @@ namespace MakerFarm.Controllers
                 "where MaterialsAssigned = SupportedNumberMaterials").ToList();
 
             ViewBag.ValidMaterialStatus = ValidMaterialStatus;
-            
+
+            string PrintAssignmentsQuery = "Select * " +
+             "from dbo.PrintEvents " +
+             "inner join ( " +
+             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+             "from dbo.PrintEvents " +
+             "group by dbo.PrintEvents.PrintID " +
+             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
+
+            string PrintStartQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "inner join (" +
+                    "Select dbo.PrintEvents.* " +
+            "from dbo.PrintEvents " +
+            "inner join ( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+            "where dbo.PrintEvents.EventType = @PrintingEventStart" +
+            ") tde on dbo.Prints.PrintId = tde.PrintID ";
+
+            SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
+            List<Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2).ToList();
+
+            ViewData["PrintingAssignments"] = PrintingAssignments;
+            ViewData["Assigned"] = Assigned;
+
+
             return View(db.Printers.ToList());
         }
 

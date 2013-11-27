@@ -35,7 +35,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TypeName)
+            @Html.ActionLink(item.TypeName, "Details", new { id = item.PrinterTypeId })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SupportedNumberMaterials)
@@ -53,9 +53,7 @@
             @Html.DisplayFor(modelItem => item.SupportedFileTypes)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrinterTypeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrinterTypeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrinterTypeId })
+            @Html.ActionLink("Details", "Details", new { id = item.PrinterTypeId })
         </td>
     </tr>
 }

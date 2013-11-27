@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<MakerFarm.Models.Printer>
 @{
     ViewBag.Title = "Index";
+    Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
+    List<MakerFarm.Models.Print> Assigned = (List<MakerFarm.Models.Print>)ViewData["Assigned"];
 }
 
 <h2>Index</h2>
@@ -32,16 +34,20 @@
         <td>
             @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
         </td>
-        <th>
-            @if(ViewBag.PrinterStatus.ContainsKey(item.PrinterId)){
+        <td>
+            @if(PrintingAssignments.ContainsKey(item.PrinterId)){
+                <text>Printing: </text>
+                @Html.ActionLink(Assigned.Find(p => p.PrintId.Equals(PrintingAssignments[item.PrinterId].PrintId)).FileName, "Details", "Prints", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)
+            }else 
+            if(ViewBag.PrinterStatus.ContainsKey(item.PrinterId)){
                 @ViewBag.PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString()
             }
             else
             {
                 <text>Unknown</text>
             }
-        </th>
-        <th>
+        </td>
+        <td>
             @if (ViewBag.ValidMaterialStatus.Contains(item))
             {
                 <text>Ready</text>
@@ -50,7 +56,7 @@
             {
                 <text>Invalid</text>
             }
-        </th>
+        </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.PrinterId }) | 
             @Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)
