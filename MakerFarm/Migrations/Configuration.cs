@@ -26,6 +26,24 @@ namespace MakerFarm.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            string CreateAdministratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Administrator')";
+            string CreateModeratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Moderator')";
+            try
+            {
+                context.Database.ExecuteSqlCommand(CreateAdministratorRoleSQL);
+            }
+            catch (Exception e)
+            {
+
+            }
+            try
+            {
+                context.Database.ExecuteSqlCommand(CreateModeratorRoleSQL);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }
