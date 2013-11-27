@@ -127,6 +127,14 @@ namespace MakerFarm.Controllers
             {
                 MNUA.Add(i.ToString());
             }
+            if (printerType.CommentField == null)
+            {
+                ViewData["PrinterComment"] = "";
+            }
+            else
+            {
+                ViewData["PrinterComment"] = printerType.CommentField;
+            }
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;

@@ -65,7 +65,7 @@
             @Html.LabelFor(model => model.Comment)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Comment)
+            @Html.TextAreaFor(model => model.Comment, new { placeholder = ViewData["PrinterComment"] })
             @Html.ValidationMessageFor(model => model.Comment)
         </div>
 

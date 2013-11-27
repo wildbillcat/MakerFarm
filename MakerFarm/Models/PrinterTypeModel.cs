@@ -25,6 +25,9 @@ namespace MakerFarm.Models
 
         [Display(Name = "Supported File Types", Description = "A comma separated list of file types accepted by this printer. Ie: gcode,x3g,s3g,etc")]
         public string SupportedFileTypes { get; set; } /* This is a comma separated list of the printers file extensions */
+
+        [Display(Name = "Print Submission Comment Field", Description = "This text will be prepopulated into the Print Submission Form Comment Field, and should give printer specific instructions for the user")]
+        public string CommentField { set; get; }
     }
         
 }

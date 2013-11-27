@@ -53,7 +53,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype, HttpPostedFileBase IconFile)
+        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
@@ -74,7 +74,7 @@ namespace MakerFarm.Controllers
                 printertype.PrinterIcon = printerIconPath;
                 db.Entry(printertype).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Administration");
             }
 
             return View(printertype);
@@ -100,13 +100,13 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes")] PrinterType printertype)
+        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(printertype).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Administration");
             }
             return View(printertype);
         }

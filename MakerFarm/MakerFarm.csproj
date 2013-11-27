@@ -280,6 +280,10 @@
     <Compile Include="Migrations\201311251740466_Added comment Fields and Error Tracking.Designer.cs">
       <DependentUpon>201311251740466_Added comment Fields and Error Tracking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311271953174_Added Comment field to the Printer Type.cs" />
+    <Compile Include="Migrations\201311271953174_Added Comment field to the Printer Type.Designer.cs">
+      <DependentUpon>201311271953174_Added Comment field to the Printer Type.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -519,6 +523,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311251740466_Added comment Fields and Error Tracking.resx">
       <DependentUpon>201311251740466_Added comment Fields and Error Tracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311271953174_Added Comment field to the Printer Type.resx">
+      <DependentUpon>201311271953174_Added Comment field to the Printer Type.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
