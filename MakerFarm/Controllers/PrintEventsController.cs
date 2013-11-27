@@ -51,6 +51,7 @@ namespace MakerFarm.Controllers
             }
             ViewBag.CurrentUser = User.Identity.Name;
             List<PrintEvent> LastStatus = db.PrintEvents.Where(p => p.PrintId.Equals(id)).ToList();
+            string PrinterAssignmentError = "";
             ViewBag.PrintId = id;
             ViewBag.Print = Print;
             List<PrintEventType> evts = new List<PrintEventType>();
@@ -98,6 +99,12 @@ namespace MakerFarm.Controllers
                         MaterialCompatible.Add(P);
                     }
                 }
+                if(PrinterList.Count() == 0){
+                    PrinterAssignmentError = string.Concat(PrinterAssignmentError, "There are no compatible Printers Online. \n");
+                } else if(MaterialCompatible.Count() == 0)
+                { 
+                    PrinterAssignmentError = string.Concat(PrinterAssignmentError, "No Printers that are Online are loaded with Compatible Material. \n"); 
+                }
                 PrinterIds = new SelectList(MaterialCompatible, "PrinterId", "PrinterName");
                 int i = 0;
                 foreach (string MatString in Print.MaterialIds.Split(','))
@@ -141,6 +148,7 @@ namespace MakerFarm.Controllers
                     MachineHTML = string.Concat(MachineHTML, "<option value=\"", P.PrintErrorTypeId, "\">", P.PrintErrorName, "</option>");
                 }
             }
+            ViewBag.PrinterAssignmentError = PrinterAssignmentError;
             ViewBag.FileErrors = new SelectList(HumanError, "PrintErrorTypeId", "PrintErrorName");
             ViewBag.HumanHTML = HumanHTML;
             ViewBag.MachineHTML = MachineHTML;
@@ -158,6 +166,10 @@ namespace MakerFarm.Controllers
         public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent)
         {
             printevent.EventTimeStamp = DateTime.Now;
+            if (printevent.PrinterId == 0)
+            {
+                ModelState.AddModelError("Printer ID Invalid", new Exception("Invalid Printer ID!!!!"));
+            }
             if (ModelState.IsValid)
             {
                 db.PrintEvents.Add(printevent);

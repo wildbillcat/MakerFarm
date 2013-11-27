@@ -51,11 +51,18 @@
             </div>
         </div>
 
+        @{string Error = ViewBag.PrinterAssignmentError;}
         <div class="form-group">
             @Html.LabelFor(model => model.PrinterId, "Printer:", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
-                @Html.ValidationMessageFor(model => model.PrinterId)
+                @if (ViewBag.Send && !Error.Equals(""))
+                {
+                    <font color="red">@Error</font>
+                }
+                else {
+                    @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
+                    @Html.ValidationMessageFor(model => model.PrinterId)
+                }
             </div>
         </div>
 
@@ -84,7 +91,13 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                @if (ViewBag.Send && !Error.Equals(""))
+                {
+
+                }
+                else {
                 <input type="submit" value="Create" class="btn btn-default" />
+                }
             </div>
         </div>
     </div>
@@ -94,7 +107,6 @@
     @Html.ActionLink("Back to List", "Index", "Prints", new { id=ViewBag.Print.PrinterTypeId }, null)
 </div>
 
-<text>
 <script>
     function changeError() {
         if ($('#EventType').val() == 'PRINT_FAILURE_FILE') {
