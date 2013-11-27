@@ -88,6 +88,47 @@
 
         </table>
         }
+@{MakerFarm.Models.Print Print = (MakerFarm.Models.Print)ViewBag.AssignedPrint;}      
+@if (Print != null)
+{
+    <h4>Assigned Print:</h4>
+
+    <table class="table">
+        <tr>
+
+            <th>
+                File Name
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Submission Time
+            </th>
+            <th>
+                Estimated Print Time
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink(Print.FileName, "Details", new { id = Print.PrintId })
+            </td>
+            <td>
+                @Print.UserName
+            </td>
+            <td>
+                @Print.SubmissionTime
+            </td>
+            <td>
+                @Print.EstToolpathTime
+            </td>
+            <td>
+                <input type="button" value="Download" onclick="location.href='@Url.Action("Download", "Prints", new { id = Print.PrintId})'" />
+            </td>
+        </tr>
+    </table>
+}
 
 <h4>Administrative Actions:</h4>
 <p>

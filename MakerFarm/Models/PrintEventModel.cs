@@ -44,10 +44,6 @@ namespace MakerFarm.Models
 
         public virtual Printer Printer { get; set; }
 
-        
-
-
-       
     }
        
 }

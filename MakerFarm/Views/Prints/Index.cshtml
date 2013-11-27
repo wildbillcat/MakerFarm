@@ -6,6 +6,8 @@
     @Html.ActionLink("Submit Print", "Create", new { id = ViewBag.id })
 </p>
 
+@if (((List<MakerFarm.Models.Print>)ViewBag.Assigned).Count() > 0)
+{
 <h3>At Bat: (Currently Printing)</h3>
 <table class="table">
     <tr>
@@ -26,7 +28,32 @@
         </th>
         <th></th>
     </tr>
+
+@foreach (var item in (List<MakerFarm.Models.Print>)ViewBag.Assigned)
+        {
+    <tr>
+        <td>
+            @Html.ActionLink((string)ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterName, "details", "Printers", new { id = ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterId}, null)
+        </td>
+        <td>
+            @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })    
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubmissionTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstToolpathTime)
+        </td>
+        <td>
+            @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId}, null)
+        </td>
+    </tr>
+        }
 </table>
+}
 
     <h3>On Deck: (Waiting to be Printed)</h3>
 
@@ -47,15 +74,11 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model.OrderBy(p => p.SubmissionTime))
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @if(Request.IsAuthenticated){
-                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
-                    }else{
-                        @Html.DisplayFor(modelItem => item.FileName)
-                    }                    
+                    @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
@@ -67,10 +90,8 @@
                     @Html.DisplayFor(modelItem => item.EstToolpathTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PrintId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.PrintId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PrintId })
-                    @Html.ActionLink("Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                    @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
                 </td>
             </tr>
         }

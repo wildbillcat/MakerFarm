@@ -97,7 +97,35 @@ namespace MakerFarm.Controllers
             }
             
             ViewData["Status"] = status;
-        
+            
+            string AssignedPrintQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join " +
+                "( " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, dbo.PrintEvents.PrinterID " +
+                "from dbo.PrintEvents " +
+                "inner join " +
+                "( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+                "where EventType = @PrintingEventStart and pnt.PrinterID = @PrinterId";
+            SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            SqlParameter PrinterId = new SqlParameter("@PrinterId", id);
+            Print AssignedPrint = null;
+            try
+            {
+                AssignedPrint = db.Prints.SqlQuery(AssignedPrintQuery, PrintingEventStart, PrinterId).Single();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            ViewBag.AssignedPrint = AssignedPrint;
+
             return View(printer);
         }
 

@@ -173,6 +173,24 @@ namespace MakerFarm.Controllers
                     db.PrinterStatusLogs.Add(StatusUpdate);
                     db.SaveChanges();
                 }
+                if (printevent.EventType.Equals(PrintEventType.PRINT_FAILURE_FILE))
+                {
+                    Print print = db.Prints.Find(printevent.PrintId);
+                    List<PrintEvent> Log = print.PrintEvents.Where(p => p.PrintId.Equals(printevent.PrintId)).ToList();
+                    if (Log.Count() >= print.AuthorizedAttempts)
+                    {
+                        PrintEvent AutoCancel = new PrintEvent();
+                        AutoCancel.PrintId = printevent.PrintId;
+                        AutoCancel.Comment = "Automatic Cancelation: Authorized Number of Attempts Reached";
+                        AutoCancel.EventTimeStamp = DateTime.Now;
+                        AutoCancel.EventType = PrintEventType.PRINT_CANCELED;
+                        AutoCancel.MaterialUsed = 0;
+                        AutoCancel.PrinterId = printevent.PrinterId;
+                        AutoCancel.UserName = printevent.UserName;
+                        db.PrintEvents.Add(AutoCancel);
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToAction("Index", "Prints", new { id = printerID });
             }
             return HttpNotFound("Sorry an error has occured");

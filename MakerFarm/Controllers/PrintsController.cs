@@ -25,14 +25,19 @@ namespace MakerFarm.Controllers
             else
             {
                 //Need to edit it to pull prints 
-                string PrintStartQuery = "Select * " +
+                string PrintStartQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "inner join (" +
+                    "Select dbo.PrintEvents.* " +
             "from dbo.PrintEvents " +
             "inner join ( " +
             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
             "from dbo.PrintEvents " +
             "group by dbo.PrintEvents.PrintID " +
             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
-            "where dbo.PrintEvents.EventType = @EventType1";
+            "where dbo.PrintEvents.EventType = @PrintingEventStart" +
+            ") tde on dbo.Prints.PrintId = tde.PrintID " +
+            "where dbo.Prints.PrinterTypeID = @PrinterTypeID";
                 string WaitingPrintFilesQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
                 "left outer join " +
@@ -46,14 +51,31 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where pnt.EventType != @EventType1 or pnt.EventType != @EventType1 or pnt.EventType != @EventType3";
-                SqlParameter PrintingEventStart = new SqlParameter("@EventType1", PrintEventType.PRINT_START);
-                SqlParameter PrintingEventComplete = new SqlParameter("@EventType2", PrintEventType.PRINT_COMPLETED);
-                SqlParameter PrintingEventCanceled = new SqlParameter("@EventType3", PrintEventType.PRINT_CANCELED);
+                "where (pnt.EventType is null or pnt.EventType = @PrintingEventFile or pnt.EventType = @PrintingEventMachine) and dbo.Prints.PrinterTypeID = @PrinterTypeID";
+                string PrintAssignmentsQuery = "Select * " +
+             "from dbo.PrintEvents " +
+             "inner join ( " +
+             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+             "from dbo.PrintEvents " +
+             "group by dbo.PrintEvents.PrintID " +
+             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
+                SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventFile = new SqlParameter("@PrintingEventFile", PrintEventType.PRINT_FAILURE_FILE);
+                SqlParameter PrintingEventMachine = new SqlParameter("@PrintingEventMachine", PrintEventType.PRINT_FAILURE_MACHINE);
+                SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
+                SqlParameter PrinterTypeId2 = new SqlParameter("@PrinterTypeID", id);
                 ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
                 ViewBag.id = id;
-                ViewBag.Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart);//Print Start Query
-                return View(db.Prints.SqlQuery(WaitingPrintFilesQuery, PrintingEventStart, PrintingEventCanceled, PrintingEventComplete).ToList());
+                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrintId);
+                ViewBag.PrintingAssignments = PrintingAssignments;
+                List<Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2, PrinterTypeId).ToList();
+                Assigned.OrderBy(p => p.SubmissionTime);
+                ViewBag.Assigned = Assigned;//Print Start Query
+                List<Print> Waiting = db.Prints.SqlQuery(WaitingPrintFilesQuery, PrintingEventFile, PrintingEventMachine, PrinterTypeId2).ToList();
+                Waiting.OrderBy(p => p.SubmissionTime);
+                return View(Waiting);
             }
         }
 
