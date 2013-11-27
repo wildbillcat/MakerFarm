@@ -293,7 +293,12 @@ namespace MakerFarm.Controllers
                 System.IO.File.Delete(path);
             }
             db.Prints.Remove(print);
+            List<PrintEvent> AssociatedEvents = db.PrintEvents.Where(p => p.PrintId.Equals(id)).ToList();
+            foreach(PrintEvent AssociatedEvent in AssociatedEvents){
+                db.PrintEvents.Remove(AssociatedEvent);
+            }
             db.SaveChanges();
+
             return RedirectToAction("Index", new { id = pid });
         }
 
