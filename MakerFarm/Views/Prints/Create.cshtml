@@ -74,6 +74,7 @@
             @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
         @{List<string> AgreeDisagree = new List<string>();
+          AgreeDisagree.Add("");
           AgreeDisagree.Add("I Agree");
           AgreeDisagree.Add("I Disagree");
           List<MakerFarm.Models.PrintSubmissionWaiverTerm> Terms = (List<MakerFarm.Models.PrintSubmissionWaiverTerm>)ViewData["PrintSubmissionWaiverTerms"];
@@ -85,8 +86,10 @@
         @foreach (MakerFarm.Models.PrintSubmissionWaiverTerm p in Terms)
         {
             <div class="editor-field">
-            @p.WaiverText
+            @Html.ValidationMessage("PrintSubmissionWaiverTerm", "You must agree to all of the terms in order to submit a print", null)
+            <br />     
             @Html.DropDownList("PrintSubmissionWaiverTerm", new SelectList(AgreeDisagree))
+            @p.WaiverText
             </div>
         }
         @Html.Hidden("PrintSubmissionWaiverTermQt", Terms.Count())

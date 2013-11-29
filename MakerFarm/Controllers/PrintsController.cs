@@ -115,7 +115,7 @@ namespace MakerFarm.Controllers
                 //The printer you attempted to use does not exist in the database!
                 return RedirectToAction("Index", "PrinterTypes");
             }
-            List<Material> materials = db.Materials.Where(s => s.PrinterTypeId.Equals(id) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
+            List<Material> materials = db.Materials.Where(s => (s.PrinterTypeId == id) && !(s.MaterialSpoolQuantity == 0)).ToList<Material>();
             if(materials.Count() == 0)
             {
                 //The printer you attempted to use does not have any materials available
@@ -191,7 +191,8 @@ namespace MakerFarm.Controllers
             int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
             if (TotalWaiverConditions != AcceptedWaiverConditions)
             {
-                ModelState.AddModelError("You must agree to all of the terms in order to submit a print", new Exception("You must agree to all of the terms in order to submit a print"));
+                ModelState.AddModelError("PrintSubmissionWaiverTerm", new Exception("You must agree to all of the terms in order to submit a print"));
+                ViewData["Waiver"] = true;
             }
 
             if (ModelState.IsValid)
@@ -207,7 +208,40 @@ namespace MakerFarm.Controllers
                 PrintFile.SaveAs(printFileName);
                 return RedirectToAction("Details", new { id = print.PrintId });
             }
-
+            long id = print.PrinterTypeId;
+            PrinterType printerType = db.PrinterTypes.Find(id);
+            if (printerType == null)
+            {
+                //The printer you attempted to use does not exist in the database!
+                return RedirectToAction("Index", "PrinterTypes");
+            }
+            List<Material> materials = db.Materials.Where(s => (s.PrinterTypeId == id) && !(s.MaterialSpoolQuantity == 0)).ToList();
+            if (materials.Count() == 0)
+            {
+                //The printer you attempted to use does not have any materials available
+                return RedirectToAction("Index", "Materials");
+            }
+            ViewData["MaterialsList"] = new SelectList(materials, "MaterialId", "MaterialName");
+            List<string> MNUA = new List<string>();
+            for (int i = 1; i <= printerType.MaxNumberUserAttempts; i++)
+            {
+                MNUA.Add(i.ToString());
+            }
+            if (printerType.CommentField == null)
+            {
+                ViewData["PrinterComment"] = "";
+            }
+            else
+            {
+                ViewData["PrinterComment"] = printerType.CommentField;
+            }
+            ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
+            ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
+            ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
+            ViewData["CurrentUser"] = User.Identity.Name;
+            ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
+            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
+            
             return View(print);
         }
 
