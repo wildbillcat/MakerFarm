@@ -140,6 +140,7 @@ namespace MakerFarm.Controllers
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
             ViewData["CurrentUser"] = User.Identity.Name;
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
+            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             return View();
         }
         
@@ -185,6 +186,13 @@ namespace MakerFarm.Controllers
             print.StaffAssistedPrint = false;
 
             print.Comment = values.Get("Comment");
+
+            int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
+            int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
+            if (TotalWaiverConditions != AcceptedWaiverConditions)
+            {
+                ModelState.AddModelError("You must agree to all of the terms in order to submit a print", new Exception("You must agree to all of the terms in order to submit a print"));
+            }
 
             if (ModelState.IsValid)
             {

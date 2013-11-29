@@ -232,6 +232,7 @@
     <Compile Include="Controllers\PrintEventsController.cs" />
     <Compile Include="Controllers\PrintsController.cs" />
     <Compile Include="Controllers\PrinterStatusLogsController.cs" />
+    <Compile Include="Controllers\PrintSubmissionWaiverTermsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -284,6 +285,11 @@
     <Compile Include="Migrations\201311271953174_Added Comment field to the Printer Type.Designer.cs">
       <DependentUpon>201311271953174_Added Comment field to the Printer Type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311290510063_Added PrintSubmissionWaiverTerms to application so that terms can be dynamically added\removed..cs" />
+    <Compile Include="Migrations\201311290510575_Added PrintSubmissionWaiverTerms.cs" />
+    <Compile Include="Migrations\201311290510575_Added PrintSubmissionWaiverTerms.Designer.cs">
+      <DependentUpon>201311290510575_Added PrintSubmissionWaiverTerms.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -295,6 +301,7 @@
     <Compile Include="Models\PrinterTypeModel.cs" />
     <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
+    <Compile Include="Models\PrintSubmissionWaiverTermModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -485,6 +492,11 @@
     <Content Include="Views\MaterialCheckouts\Details.cshtml" />
     <Content Include="Views\MaterialCheckouts\Edit.cshtml" />
     <Content Include="Views\MaterialCheckouts\Index.cshtml" />
+    <Content Include="Views\PrintSubmissionWaiverTerms\Create.cshtml" />
+    <Content Include="Views\PrintSubmissionWaiverTerms\Delete.cshtml" />
+    <Content Include="Views\PrintSubmissionWaiverTerms\Details.cshtml" />
+    <Content Include="Views\PrintSubmissionWaiverTerms\Edit.cshtml" />
+    <Content Include="Views\PrintSubmissionWaiverTerms\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -526,6 +538,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311271953174_Added Comment field to the Printer Type.resx">
       <DependentUpon>201311271953174_Added Comment field to the Printer Type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311290510575_Added PrintSubmissionWaiverTerms.resx">
+      <DependentUpon>201311290510575_Added PrintSubmissionWaiverTerms.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
