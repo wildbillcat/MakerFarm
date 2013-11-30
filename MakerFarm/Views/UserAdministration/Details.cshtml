@@ -1,0 +1,59 @@
+﻿@model MakerFarm.Models.UserProfile
+
+@{
+    ViewBag.Title = "Details";
+    List<MakerFarm.Models.webpages_Role> Roles = (List<MakerFarm.Models.webpages_Role>)ViewData["Roles"];
+    List<MakerFarm.Models.webpages_UsersInRole> UserRoles = (List<MakerFarm.Models.webpages_UsersInRole>)ViewData["UserRoles"];
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UserProfile</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        @if (Roles.Count() > 0)
+        {
+            
+        }
+        <dt>
+            @Html.Label("Roles", "Roles", null)
+        </dt>
+
+        <dd>
+            @foreach(MakerFarm.Models.webpages_UsersInRole PresentRole in UserRoles)
+            {
+                @Roles.Where(p => p.RoleId == PresentRole.RoleId).First().RoleName
+                <br />
+            }
+        </dd>
+
+        <dt>
+            @Html.Label("GroupId", "Add Role", null)
+        </dt>
+
+        <dd>
+            
+            @using (Html.BeginForm("AddRole"))
+            {
+            @Html.AntiForgeryToken()
+                    @Html.Hidden("UserId", Model.UserId)
+                    @Html.DropDownList("GroupId", new SelectList(Roles, "RoleId", "RoleName"))
+                    <input type="submit" value="Add Material" class="btn btn-default" />
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

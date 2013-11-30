@@ -233,6 +233,7 @@
     <Compile Include="Controllers\PrintsController.cs" />
     <Compile Include="Controllers\PrinterStatusLogsController.cs" />
     <Compile Include="Controllers\PrintSubmissionWaiverTermsController.cs" />
+    <Compile Include="Controllers\UserAdministrationController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -302,6 +303,8 @@
     <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
     <Compile Include="Models\PrintSubmissionWaiverTermModel.cs" />
+    <Compile Include="Models\webpages_RoleModel.cs" />
+    <Compile Include="Models\webpages_UsersInRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +500,8 @@
     <Content Include="Views\PrintSubmissionWaiverTerms\Details.cshtml" />
     <Content Include="Views\PrintSubmissionWaiverTerms\Edit.cshtml" />
     <Content Include="Views\PrintSubmissionWaiverTerms\Index.cshtml" />
+    <Content Include="Views\UserAdministration\Details.cshtml" />
+    <Content Include="Views\UserAdministration\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
