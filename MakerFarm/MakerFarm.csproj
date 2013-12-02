@@ -303,6 +303,7 @@
     <Compile Include="Models\PrintEventModel.cs" />
     <Compile Include="Models\PrintModel.cs" />
     <Compile Include="Models\PrintSubmissionWaiverTermModel.cs" />
+    <Compile Include="Models\webpages_Membership.cs" />
     <Compile Include="Models\webpages_RoleModel.cs" />
     <Compile Include="Models\webpages_UsersInRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
