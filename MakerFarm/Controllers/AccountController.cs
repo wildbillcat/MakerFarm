@@ -35,6 +35,7 @@ namespace MakerFarm.Controllers
                     db.UserProfiles.Add(new UserProfile { UserName = User.Identity.Name});
                     db.SaveChanges();
                 }
+                /* Is this Needed?
                 user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
                 webpages_Membership NewUser = db.Database.SqlQuery<webpages_Membership>("Select * from dbo.webpages_Membership where UserId = {0}", user.UserId).FirstOrDefault(u => u.UserId == user.UserId);
                 if (NewUser == null)
@@ -48,12 +49,12 @@ namespace MakerFarm.Controllers
                     string Salt = "";
                     while (Salt.Length < 10)
                     {
-                        Salt = string.Concat(Password, Rand.Next().ToString());
+                        Salt = string.Concat(Salt, Rand.Next().ToString());
                     }
-                    db.Database.ExecuteSqlCommand("Insert into dbo.webpages_Membership(UserId, CreateDate, IsConfirmed, Password, PasswordSalt) Values({1}, {2}, {3}, {4}, {5})", NewUser.UserId, DateTime.Now, true, Password, Salt);
+                    db.Database.ExecuteSqlCommand("Insert into dbo.webpages_Membership(UserId, CreateDate, IsConfirmed, Password, PasswordSalt) Values({0}, {1}, {2}, {3}, {4})", user.UserId, DateTime.Now, true, Password, Salt);
                     db.SaveChanges();
                 }
-
+                */
             }
 
             return RedirectToAction("Index", "Home");
