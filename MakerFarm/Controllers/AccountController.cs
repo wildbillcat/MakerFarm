@@ -22,11 +22,11 @@ namespace MakerFarm.Controllers
         // GET: /Account/Login
 
         [Authorize]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            
             using (MakerfarmDBContext db = new MakerfarmDBContext())
             {
+                /*Adding this section into Filters
                 UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
                 // Check if user already exists
                 if (user == null)
@@ -34,7 +34,7 @@ namespace MakerFarm.Controllers
                     // Insert name into the profile table
                     db.UserProfiles.Add(new UserProfile { UserName = User.Identity.Name});
                     db.SaveChanges();
-                }
+                }*/
                 /* Is this Needed?
                 user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
                 webpages_Membership NewUser = db.Database.SqlQuery<webpages_Membership>("Select * from dbo.webpages_Membership where UserId = {0}", user.UserId).FirstOrDefault(u => u.UserId == user.UserId);

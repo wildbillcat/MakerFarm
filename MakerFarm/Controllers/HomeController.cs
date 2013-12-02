@@ -28,5 +28,12 @@ namespace MakerFarm.Controllers
 
             return View();
         }
+
+        public ActionResult Denied()
+        {
+            ViewBag.Message = "You do not have access to this page.";
+
+            return View();
+        }
     }
 }
