@@ -114,11 +114,14 @@
                     @Html.DisplayFor(modelItem => item.EstToolpathTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.PrintId })
+                @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.PrintId })
+                    }
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
-                    <text> | </text>
-                    @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                        <text> | </text>
+                        @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
                     }
                 </td>
             </tr>
