@@ -1,0 +1,68 @@
+﻿@model MakerFarm.Models.Material
+
+@{
+    ViewBag.Title = "UpdateQuantity";
+}
+
+<h2>UpdateQuantity</h2>
+
+<div>
+    <h4>Material</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterType.TypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrinterType.TypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialSpoolQuantity)
+        </dd>
+
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Update Inve</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.MaterialId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaterialSpoolQuantity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MaterialSpoolQuantity)
+                @Html.ValidationMessageFor(model => model.MaterialSpoolQuantity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<p>
+    @Html.ActionLink("Details", "Details", new { id = Model.MaterialId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

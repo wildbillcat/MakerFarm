@@ -71,6 +71,46 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Materials/Edit/5
+        public ActionResult UpdateQuantity(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Material material = db.Materials.Find(id);
+            if (material == null)
+            {
+                return HttpNotFound();
+            }
+            return View(material);
+        }
+
+        // POST: /Materials/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateQuantity(FormCollection values)
+        {
+            Material material = db.Materials.Find(int.Parse(values["MaterialId"]));
+            try
+            {
+                material.MaterialSpoolQuantity = int.Parse(values["MaterialSpoolQuantity"]);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("You didn't enter a bloody INTEGER!", new Exception("You didn't enter a bloody INTEGER!"));
+            }
+            if (ModelState.IsValid)
+            {
+                db.Entry(material).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(material);
+        }
+
+        // GET: /Materials/Edit/5
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
@@ -94,7 +134,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
+        public ActionResult Edit([Bind(Include = "MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
         {
             if (ModelState.IsValid)
             {

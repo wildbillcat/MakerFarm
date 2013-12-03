@@ -504,6 +504,7 @@
     <Content Include="Views\UserAdministration\Details.cshtml" />
     <Content Include="Views\UserAdministration\Index.cshtml" />
     <Content Include="Views\Home\Denied.cshtml" />
+    <Content Include="Views\Materials\UpdateQuantity.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
