@@ -3,6 +3,8 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
+    @Html.ActionLink("Past Prints", "Completed", new { id = ViewBag.id })
+    <br /><br />
     @Html.ActionLink("Submit Print", "Create", new { id = ViewBag.id })
 </p>
 
@@ -62,7 +64,7 @@
             @Html.DisplayFor(modelItem => item.EstToolpathTime)
         </td>
         <td>
-        @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Moderator"))
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
         {
             @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId}, null)
         }

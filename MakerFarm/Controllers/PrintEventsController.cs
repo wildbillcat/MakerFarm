@@ -189,7 +189,7 @@ namespace MakerFarm.Controllers
                 if (printevent.EventType.Equals(PrintEventType.PRINT_FAILURE_FILE))
                 {
                     Print print = db.Prints.Find(printevent.PrintId);
-                    List<PrintEvent> Log = print.PrintEvents.Where(p => p.PrintId.Equals(printevent.PrintId)).ToList();
+                    List<PrintEvent> Log = print.PrintEvents.Where(p => p.EventType == PrintEventType.PRINT_FAILURE_FILE).ToList();
                     if (Log.Count() >= print.AuthorizedAttempts)
                     {
                         PrintEvent AutoCancel = new PrintEvent();
@@ -198,6 +198,10 @@ namespace MakerFarm.Controllers
                         AutoCancel.EventTimeStamp = DateTime.Now;
                         AutoCancel.EventType = PrintEventType.PRINT_CANCELED;
                         AutoCancel.MaterialUsed = 0;
+                        foreach (PrintEvent E in Log)
+                        {
+                            AutoCancel.MaterialUsed = AutoCancel.MaterialUsed + E.MaterialUsed;
+                        }
                         AutoCancel.PrinterId = printevent.PrinterId;
                         AutoCancel.UserName = printevent.UserName;
                         db.PrintEvents.Add(AutoCancel);
