@@ -6,9 +6,13 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+{
+    <p>
+         @Html.ActionLink("Create New", "Create")
+    </p>  
+}
+
 <table class="table">
     <tr>
         <th>
@@ -35,9 +39,17 @@
             @Html.DisplayFor(modelItem => item.MaterialSpoolQuantity)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MaterialId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MaterialId }) |
+         @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+         {
+            @Html.ActionLink("Edit", "Edit", new { id=item.MaterialId })
+            <text> | </text>
+         }
+            @Html.ActionLink("Details", "Details", new { id=item.MaterialId })
+        @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+        {
+            <text> | </text>
             @Html.ActionLink("Delete", "Delete", new { id=item.MaterialId })
+        }
         </td>
     </tr>
 }

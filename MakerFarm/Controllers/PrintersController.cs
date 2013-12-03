@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Moderator")]
     public class PrintersController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();

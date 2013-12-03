@@ -7,7 +7,12 @@
 
 <h2>Index</h2>
 
-@Html.ActionLink("Create New Printer", "Create")
+@if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+{ 
+    <p>
+        @Html.ActionLink("Create New Printer", "Create")
+    </p>
+}
 
 <table class="table">
     <tr>
@@ -54,7 +59,7 @@
             }
             else
             {
-                <text>Invalid</text>
+                <text>Unknown</text>
             }
         </td>
         <td>

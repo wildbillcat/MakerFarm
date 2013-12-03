@@ -19,7 +19,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PrinterTypeId)
+            @Html.DisplayFor(model => model.PrinterType.TypeName)
         </dd>
 
         <dt>
@@ -129,10 +129,13 @@
         </tr>
     </table>
 }
+<p>@Html.ActionLink("Back to List", "Index")</p>
 
-<h4>Administrative Actions:</h4>
+@if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+{
+<h5>Administrative Actions:</h5>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.PrinterId }) |
     @Html.ActionLink("Delete", "Delete", new { id = Model.PrinterId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+</p>   
+}

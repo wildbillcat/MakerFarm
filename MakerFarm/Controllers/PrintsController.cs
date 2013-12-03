@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize]
     public class PrintsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
@@ -101,7 +102,6 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Create
-        [Authorize]
         public ActionResult Create(int id = 0)
         {
             if (id == 0)
@@ -150,7 +150,6 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
             Print print = new Print();
@@ -247,7 +246,7 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Edit(long id = 0)
         {
             Print print = db.Prints.Find(id);
@@ -277,7 +276,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Edit(FormCollection values)
         {
             Print print = db.Prints.Find(long.Parse(values["PrintId"]));
@@ -317,7 +316,7 @@ namespace MakerFarm.Controllers
 
         //
         // GET: /Prints/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long id = 0)
         {
             Print print = db.Prints.Find(id);
@@ -333,7 +332,7 @@ namespace MakerFarm.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(long id)
         {
             Print print = db.Prints.Find(id);
@@ -358,6 +357,7 @@ namespace MakerFarm.Controllers
             base.Dispose(disposing);
         }
 
+        [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Download(long id)
         {
             Print print = db.Prints.Find(id);

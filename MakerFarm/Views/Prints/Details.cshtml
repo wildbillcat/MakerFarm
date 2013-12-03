@@ -78,19 +78,31 @@
     </div>
     }
     
+    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))) 
+    { 
     <div class="display-label">
         @Html.LabelFor(model => model.FileName, "File Download")
     </div>
     <div class="display-field">
         @Html.ActionLink(string.Concat("Download: ", Model.FileName), "Download", new { id = Model.PrintId })
     </div>
-    
+    }
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId }) |
+@if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+    { 
+    @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId })
+    <text> | </text>
+    }
     @Html.ActionLink("Back to List", "Index", new { id = Model.PrinterTypeId })
 </p>
-
+@if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+{
+    <h5>Administrative Actions:</h5>
+    <p>
+    @Html.ActionLink("Delete", "Delete", new { id = Model.PrintId })
+    </p>
+}
 <h3>Print Log:</h3>
 <table class="table">
     <tr>
@@ -109,7 +121,7 @@
         <th>
             Material Used
         </th>
-        @if (true)
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
         {
         <th>
             Comment
@@ -135,7 +147,7 @@
             <td>
                 @p.MaterialUsed
             </td>
-           @if (true)
+           @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
            {
             <td>
                @p.Comment 

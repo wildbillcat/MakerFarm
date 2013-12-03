@@ -21,13 +21,15 @@ namespace MakerFarm.Controllers
             return View(db.PrinterTypes.ToList());
         }
 
-        // GET: /PrinterTypes/Chooser
+        // GET: /PrinterTypes/Administration
+        [Authorize(Roles = "Administrator")]
         public ActionResult Administration()
         {
             return View(db.PrinterTypes.ToList());
         }
 
         // GET: /PrinterTypes/Details/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -43,6 +45,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrinterTypes/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             return View();
@@ -53,6 +56,8 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+
         public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
@@ -81,6 +86,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrinterTypes/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -100,6 +106,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype)
         {
             if (ModelState.IsValid)
@@ -112,6 +119,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrinterTypes/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -129,6 +137,7 @@ namespace MakerFarm.Controllers
         // POST: /PrinterTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
             PrinterType printertype = db.PrinterTypes.Find(id);

@@ -10,7 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Moderator")]
     public class PrinterStatusLogsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();

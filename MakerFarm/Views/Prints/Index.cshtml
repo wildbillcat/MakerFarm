@@ -33,10 +33,24 @@
         {
     <tr>
         <td>
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))) 
+        {
             @Html.ActionLink((string)ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterName, "details", "Printers", new { id = ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterId}, null)
+        }
+        else
+        {
+            @ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterName
+        }    
         </td>
         <td>
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+        {
             @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })    
+        }
+        else
+        {
+            @item.FileName
+        }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserName)
@@ -48,7 +62,10 @@
             @Html.DisplayFor(modelItem => item.EstToolpathTime)
         </td>
         <td>
+        @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Moderator"))
+        {
             @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId}, null)
+        }
         </td>
     </tr>
         }
@@ -78,7 +95,14 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+                @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                {
+                @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })   
+                }
+                else
+                {
+                @item.FileName
+                }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
@@ -90,8 +114,12 @@
                     @Html.DisplayFor(modelItem => item.EstToolpathTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.PrintId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PrintId })
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+                    {
+                    <text> | </text>
                     @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                    }
                 </td>
             </tr>
         }

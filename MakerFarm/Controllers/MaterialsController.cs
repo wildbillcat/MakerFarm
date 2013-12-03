@@ -10,7 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Moderator")]
     public class MaterialsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
@@ -39,6 +39,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Materials/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             List<PrinterType> printerType = db.PrinterTypes.ToList();
@@ -56,6 +57,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
         {
             if (ModelState.IsValid)
@@ -69,6 +71,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Materials/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -90,6 +93,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
         {
             if (ModelState.IsValid)
@@ -102,6 +106,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Materials/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -119,6 +124,7 @@ namespace MakerFarm.Controllers
         // POST: /Materials/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(long id)
         {
             Material material = db.Materials.Find(id);

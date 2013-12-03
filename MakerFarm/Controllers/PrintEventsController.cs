@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize(Roles = "Administrator, Moderator")]
     public class PrintEventsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
@@ -209,6 +210,8 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintEvents/Edit/5
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -230,6 +233,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include="PrintEventId,EventType,EventTimeStamp,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
         {
             if (ModelState.IsValid)
@@ -244,6 +248,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintEvents/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -261,6 +266,7 @@ namespace MakerFarm.Controllers
         // POST: /PrintEvents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(long id)
         {
             PrintEvent printevent = db.PrintEvents.Find(id);
