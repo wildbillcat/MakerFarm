@@ -27,7 +27,7 @@
                             }
                         </ul>
                     </nav>
-                    @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Moderator"))
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
                     <nav>
                         <ul id="menu">
