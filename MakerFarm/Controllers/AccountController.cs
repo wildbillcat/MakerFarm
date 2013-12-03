@@ -24,39 +24,6 @@ namespace MakerFarm.Controllers
         [Authorize]
         public ActionResult Login()
         {
-            using (MakerfarmDBContext db = new MakerfarmDBContext())
-            {
-                /*Adding this section into Filters
-                UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
-                // Check if user already exists
-                if (user == null)
-                {
-                    // Insert name into the profile table
-                    db.UserProfiles.Add(new UserProfile { UserName = User.Identity.Name});
-                    db.SaveChanges();
-                }*/
-                /* Is this Needed?
-                user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
-                webpages_Membership NewUser = db.Database.SqlQuery<webpages_Membership>("Select * from dbo.webpages_Membership where UserId = {0}", user.UserId).FirstOrDefault(u => u.UserId == user.UserId);
-                if (NewUser == null)
-                {
-                    Random Rand = new Random();
-                    string Password = "";
-                    while (Password.Length < 10)
-                    {
-                        Password = string.Concat(Password, Rand.Next().ToString());
-                    }
-                    string Salt = "";
-                    while (Salt.Length < 10)
-                    {
-                        Salt = string.Concat(Salt, Rand.Next().ToString());
-                    }
-                    db.Database.ExecuteSqlCommand("Insert into dbo.webpages_Membership(UserId, CreateDate, IsConfirmed, Password, PasswordSalt) Values({0}, {1}, {2}, {3}, {4})", user.UserId, DateTime.Now, true, Password, Salt);
-                    db.SaveChanges();
-                }
-                */
-            }
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -168,6 +135,28 @@ namespace MakerFarm.Controllers
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
+            string PrintFileHistory = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join " +
+                "( " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType " +
+                "from dbo.PrintEvents " +
+                "inner join " +
+                "( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+                "where dbo.Prints.UserName = @UserName";
+            string PrintFileHistoryEvents = "Select * " +
+         "from dbo.PrintEvents " +
+         "inner join ( " +
+         "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+         "from dbo.PrintEvents " +
+         "group by dbo.PrintEvents.PrintID " +
+         ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+         "where dbo.PrintEvents.EventType = @PrintingEventStart ";
             return View();
         }
 
