@@ -135,6 +135,7 @@ namespace MakerFarm.Controllers
             {
                 ViewData["PrinterComment"] = printerType.CommentField;
             }
+            ViewData["MNUA"] = MNUA.Count();
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
@@ -167,13 +168,25 @@ namespace MakerFarm.Controllers
             print.MaterialIds = matIds;
 
             /*Estimated Material Usage*/
+            try { 
             print.EstMaterialUse = double.Parse(values["EstMaterialUse"]);
-
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("EstMaterialUse", e);
+            }
             /*Submission Time*/
             print.SubmissionTime = DateTime.Now;
 
             /*Estimated Toolpath Time*/
-            print.EstToolpathTime = int.Parse(values["EstToolpathTime"]);
+            try
+            {
+                print.EstToolpathTime = int.Parse(values["EstToolpathTime"]);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("EstToolpathTime", e);
+            }
 
             /*Authorized number of attempts*/
             print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
@@ -186,14 +199,16 @@ namespace MakerFarm.Controllers
 
             print.Comment = values.Get("Comment");
 
-            int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
-            int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
-            if (TotalWaiverConditions != AcceptedWaiverConditions)
-            {
-                ModelState.AddModelError("PrintSubmissionWaiverTerm", new Exception("You must agree to all of the terms in order to submit a print"));
-                ViewData["Waiver"] = true;
+            try { 
+                int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
+                int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
+                if (TotalWaiverConditions != AcceptedWaiverConditions)
+                {
+                    ModelState.AddModelError("PrintSubmissionWaiverTerm", new Exception("You must agree to all of the terms in order to submit a print"));
+                    ViewData["Waiver"] = true;
+                }
             }
-
+            catch (Exception e) { }
             if (ModelState.IsValid)
             {
                 if (!System.IO.Directory.Exists(saveAsDirectory))
@@ -234,6 +249,7 @@ namespace MakerFarm.Controllers
             {
                 ViewData["PrinterComment"] = printerType.CommentField;
             }
+            ViewData["MNUA"] = MNUA.Count();
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA);
             ViewData["SupportedMaterials"] = printerType.SupportedNumberMaterials;
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;

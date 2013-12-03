@@ -52,15 +52,23 @@
             @Html.EditorFor(model => model.EstToolpathTime)
             @Html.ValidationMessageFor(model => model.EstToolpathTime)
         </div>
-                
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AuthorizedAttempts)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.AuthorizedAttempts, (SelectList)ViewData["MaxNumberUserAttempts"])
-            @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
-        </div>
-
+            
+        @if ((int)ViewData["MNUA"] > 3)
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.AuthorizedAttempts)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.AuthorizedAttempts, (SelectList)ViewData["MaxNumberUserAttempts"])
+                @Html.ValidationMessageFor(model => model.AuthorizedAttempts)
+            </div>
+        }
+        else
+        {
+            <div class="editor-field">
+                @Html.Hidden("AuthorizedAttempts", 1)
+            </div>
+        }
         <div class="editor-label">
             @Html.LabelFor(model => model.Comment)
         </div>
