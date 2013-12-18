@@ -41,6 +41,12 @@ namespace MakerFarm.Models
 
         public string Comment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
+        [Display(Name = "Flagged Print", Description = "Denotes if a Print has been flagged by a staff member for some reason")]
+        public bool FlaggedPrint { get; set; }
+
+        [Display(Name = "Flagged Comment", Description = "This comment is set to note why a print was Flagged for future reference")]
+        public string FlaggedComment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
+
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
     }

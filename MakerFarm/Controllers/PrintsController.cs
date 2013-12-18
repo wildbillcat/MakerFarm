@@ -206,6 +206,8 @@ namespace MakerFarm.Controllers
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
             print.FileName = PrintFile.FileName;
             print.UserName = values["UserName"];
+            print.FlaggedPrint = false;
+            print.FlaggedComment = "";
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
@@ -369,6 +371,24 @@ namespace MakerFarm.Controllers
             print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");
 
             print.Comment = values.Get("Comment");
+
+            print.FlaggedPrint = values.Get("FlaggedPrint").Contains("True");
+
+            if (print.FlaggedPrint)
+            {
+                print.FlaggedComment = values.Get("FlaggedComment");
+            }
+            string OriginalPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            string FlaggedPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\Flagged\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            if (System.IO.File.Exists(OriginalPath) && !System.IO.File.Exists(FlaggedPath) && print.FlaggedPrint)
+            {
+                string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\Flagged\\", print.SubmissionTime.ToString("yyyy-MMM-d"));
+                if (!System.IO.Directory.Exists(saveAsDirectory))
+                {
+                    System.IO.Directory.CreateDirectory(saveAsDirectory);
+                }
+                System.IO.File.Copy(OriginalPath, FlaggedPath);
+            }
 
             if (ModelState.IsValid)
             {

@@ -291,6 +291,10 @@
     <Compile Include="Migrations\201311290510575_Added PrintSubmissionWaiverTerms.Designer.cs">
       <DependentUpon>201311290510575_Added PrintSubmissionWaiverTerms.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..cs" />
+    <Compile Include="Migrations\201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..Designer.cs">
+      <DependentUpon>201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -550,6 +554,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311290510575_Added PrintSubmissionWaiverTerms.resx">
       <DependentUpon>201311290510575_Added PrintSubmissionWaiverTerms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..resx">
+      <DependentUpon>201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

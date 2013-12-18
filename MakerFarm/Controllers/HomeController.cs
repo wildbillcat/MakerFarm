@@ -10,8 +10,6 @@ namespace MakerFarm.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Farming 3D Prints and Wrangling Cephalopods.";
-
             return View();
         }
 
