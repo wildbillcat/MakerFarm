@@ -28,7 +28,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.PrintErrorTypeId, (SelectList)ViewBag.FileErrors)
+            @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
             @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
         </div>
     </div>
