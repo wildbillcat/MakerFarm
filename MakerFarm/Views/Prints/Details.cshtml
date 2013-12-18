@@ -68,7 +68,7 @@
         @Html.DisplayFor(model => model.StaffAssistedPrint)
     </div>
 
-    @if (Model.Comment != null)
+    @if (Model.Comment != null && !Model.Comment.Equals(""))
     {
     <div class="display-label">
         @Html.LabelFor(model => model.Comment)
@@ -80,12 +80,33 @@
     
     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))) 
     { 
+            
     <div class="display-label">
-        @Html.LabelFor(model => model.FileName, "File Download")
+         @Html.LabelFor(model => model.FlaggedPrint)
     </div>
     <div class="display-field">
-        @Html.ActionLink(string.Concat("Download: ", Model.FileName), "Download", new { id = Model.PrintId })
+         @Html.DisplayFor(model => model.FlaggedPrint)
     </div>
+        
+        if (Model.FlaggedComment != null && !Model.FlaggedComment.Equals(""))
+        {
+        <div class="display-label">
+            @Html.LabelFor(model => model.FlaggedComment)
+        </div>
+        <div class="display-field">
+             @Html.DisplayFor(model => model.FlaggedComment)
+        </div>
+        }
+        
+        if ((bool)ViewData["DownloadAvailable"])
+        {
+        <div class="display-label">
+            @Html.LabelFor(model => model.FileName, "File Download")
+        </div>
+        <div class="display-field">
+            @Html.ActionLink(string.Concat("Download: ", Model.FileName), "Download", new { id = Model.PrintId })
+        </div>   
+        }
     }
 </fieldset>
 <p>

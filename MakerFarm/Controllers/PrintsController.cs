@@ -144,6 +144,7 @@ namespace MakerFarm.Controllers
                 Material M = db.Materials.Find(long.Parse(S));
                 materials.Add(M.MaterialName);
             }
+            ViewData["DownloadAvailable"] = System.IO.File.Exists(string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName)) || System.IO.File.Exists(string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName));
             ViewData["MaterialsList"] = materials;
 
             return View(print);
@@ -372,7 +373,7 @@ namespace MakerFarm.Controllers
 
             print.Comment = values.Get("Comment");
 
-            print.FlaggedPrint = values.Get("FlaggedPrint").Contains("True");
+            print.FlaggedPrint = values.Get("FlaggedPrint").Contains("true");
 
             if (print.FlaggedPrint)
             {
@@ -388,6 +389,10 @@ namespace MakerFarm.Controllers
                     System.IO.Directory.CreateDirectory(saveAsDirectory);
                 }
                 System.IO.File.Copy(OriginalPath, FlaggedPath);
+            }
+            else if (System.IO.File.Exists(FlaggedPath) && !print.FlaggedPrint)
+            {
+                System.IO.File.Delete(FlaggedPath);
             }
 
             if (ModelState.IsValid)
@@ -451,12 +456,18 @@ namespace MakerFarm.Controllers
                 return HttpNotFound();
             }
             string path = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            string flaggedPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
+            var contentType = "text/plain";
             if (!System.IO.File.Exists(path))
             {
-                return HttpNotFound();
+                return File(path, contentType, string.Concat(print.PrintId, "_", print.FileName));
             }
-            var contentType = "text/plain";
-            return File(path, contentType, string.Concat(print.PrintId, "_", print.FileName));
+            else if (!System.IO.File.Exists(flaggedPath))
+            {
+                return File(flaggedPath, contentType, string.Concat(print.PrintId, "_", print.FileName));
+            }
+            return HttpNotFound();
+            
         }
     }
 }
