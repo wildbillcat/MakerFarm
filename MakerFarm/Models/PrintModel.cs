@@ -25,7 +25,6 @@ namespace MakerFarm.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yy H:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionTime { get; set; } /* This is the time the print is submitted to the application */
 
-
         [Range(1, int.MaxValue, ErrorMessage = "Value Should be between 1 and 2,147,483,647")]
         [Display(Name = "Estimated Print Time (Minutes)", Description = "Estimated amount of time print will take in minutes")]
         public int EstToolpathTime { get; set; } /* Estimated amount of time (in minutes) to complete the print job from the processing software */
