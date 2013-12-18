@@ -295,6 +295,10 @@
     <Compile Include="Migrations\201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..Designer.cs">
       <DependentUpon>201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..cs" />
+    <Compile Include="Migrations\201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..Designer.cs">
+      <DependentUpon>201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -557,6 +561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..resx">
       <DependentUpon>201312051938044_Added the Flagged fields for Prints, which will allow staff to monitor special case files..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..resx">
+      <DependentUpon>201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

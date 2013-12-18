@@ -28,6 +28,16 @@ namespace MakerFarm.Models
 
         [Display(Name = "Print Submission Comment Field", Description = "This text will be prepopulated into the Print Submission Form Comment Field, and should give printer specific instructions for the user")]
         public string CommentField { set; get; }
+
+        [Display(Name = "About the Printer", Description = "This text will be Displayed at the top of the queue page to inform users about the type of printer they are looking at.")]
+        public string AboutPrinter { set; get; }
+
+        [Display(Name = "Printer Information URL", Description = "This URL will be placed underneath the about the printer section of the Printer Page.")]
+        public string HyperLink { set; get; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Value Should be between 1 and 2,147,483,647")]
+        [Display(Name = "Maximum number of Copies", Description = "This determines the Maximum number of copies a user can request of a single submission")]
+        public int MaximumNumberOfCopies { set; get; }
     }
         
 }
