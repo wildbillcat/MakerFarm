@@ -1,0 +1,77 @@
+﻿@model MakerFarm.Models.Print
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>3D Print Waiver Terms and Conditions</h2>
+
+<h3>Are you sure you want Submit this file?</h3>
+<fieldset>
+    <legend>Print</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FileName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FileName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SubmissionTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubmissionTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AuthorizedAttempts)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AuthorizedAttempts)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PrinterTypeId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PrinterType.TypeName)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    List<string> AgreeDisagree = new List<string>();
+AgreeDisagree.Add("");
+AgreeDisagree.Add("I Agree");
+AgreeDisagree.Add("I Disagree");
+List<MakerFarm.Models.PrintSubmissionWaiverTerm> Terms = (List<MakerFarm.Models.PrintSubmissionWaiverTerm>)ViewData["PrintSubmissionWaiverTerms"];
+
+<div class="editor-label">
+    @Html.Label("PrintSubmissionWaiverTerm", "Print Waiver Terms and Conditions", null)
+</div>
+
+foreach (MakerFarm.Models.PrintSubmissionWaiverTerm p in Terms)
+{
+    <div class="editor-field">
+        @Html.ValidationMessage("PrintSubmissionWaiverTerm", "You must agree to all of the terms in order to submit a print", null)
+        <br />
+        @Html.DropDownList("PrintSubmissionWaiverTerm", new SelectList(AgreeDisagree))
+        @p.WaiverText
+    </div>
+}
+@Html.Hidden("PrintSubmissionWaiverTermQt", Terms.Count())
+@Html.Hidden("id", Model.PrintId)
+    <p>
+        <input type="submit" value="I Agree" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+

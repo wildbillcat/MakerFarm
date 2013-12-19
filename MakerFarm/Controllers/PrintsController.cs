@@ -38,7 +38,7 @@ namespace MakerFarm.Controllers
             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
             "where dbo.PrintEvents.EventType = @PrintingEventStart" +
             ") tde on dbo.Prints.PrintId = tde.PrintID " +
-            "where dbo.Prints.PrinterTypeID = @PrinterTypeID";
+            "where dbo.Prints.PrinterTypeID = @PrinterTypeID and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL";
                 string WaitingPrintFilesQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
                 "left outer join " +
@@ -52,7 +52,7 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType is null or pnt.EventType = @PrintingEventFile or pnt.EventType = @PrintingEventMachine) and dbo.Prints.PrinterTypeID = @PrinterTypeID";
+                "where (pnt.EventType is null or pnt.EventType = @PrintingEventFile or pnt.EventType = @PrintingEventMachine) and dbo.Prints.PrinterTypeID = @PrinterTypeID and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL";
                 string PrintAssignmentsQuery = "Select * " +
              "from dbo.PrintEvents " +
              "inner join ( " +
@@ -191,7 +191,6 @@ namespace MakerFarm.Controllers
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
             ViewData["CurrentUser"] = User.Identity.Name;
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
-            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             return View();
         }
         
@@ -251,16 +250,6 @@ namespace MakerFarm.Controllers
 
             print.Comment = values.Get("Comment");
 
-            try { 
-                int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
-                int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
-                if (TotalWaiverConditions != AcceptedWaiverConditions)
-                {
-                    ModelState.AddModelError("PrintSubmissionWaiverTerm", new Exception("You must agree to all of the terms in order to submit a print"));
-                    ViewData["Waiver"] = true;
-                }
-            }
-            catch (Exception e) { }
             if (ModelState.IsValid)
             {
                 if (!System.IO.Directory.Exists(saveAsDirectory))
@@ -272,7 +261,7 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
                 string printFileName = string.Concat(saveAsDirectory, "\\", print.PrintId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
-                return RedirectToAction("Details", new { id = print.PrintId });
+                return RedirectToAction("PrintWaiver", new { id = print.PrintId });
             }
             long id = print.PrinterTypeId;
             PrinterType printerType = db.PrinterTypes.Find(id);
@@ -439,6 +428,53 @@ namespace MakerFarm.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index", new { id = pid });
+        }
+
+        //
+        // GET: /Prints/
+        
+        public ActionResult PrintWaiver(long id = 0)
+        {
+            Print print = db.Prints.Find(id);
+            if (print == null)
+            {
+                return HttpNotFound();
+            }
+            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
+            return View(print);
+        }
+
+        //
+        // POST: 
+
+        [HttpPost, ActionName("PrintWaiver")]
+        [ValidateAntiForgeryToken]
+        public ActionResult PrintWaiverConfirmed(FormCollection values)
+        {
+            long id = long.Parse(values["id"]);
+            Print print = db.Prints.Find(id);
+            try
+            {
+                int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
+                int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
+                if (TotalWaiverConditions != AcceptedWaiverConditions)
+                {
+                    ViewData["Waiver"] = true;
+                    return View(print);
+                }
+            }
+            catch (Exception e) {
+                ViewData["Waiver"] = true;
+                return View(print);
+            }
+
+            ///Agreement Valid if made this far:
+            ///
+            print.TermsAndConditionsAgreement = DateTime.Now;
+            db.Entry(print).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Details", new { id = id });
         }
 
         protected override void Dispose(bool disposing)

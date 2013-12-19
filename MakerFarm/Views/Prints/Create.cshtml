@@ -81,26 +81,7 @@
             @Html.TextBoxFor(model => model.PrinterTypeId, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
             @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
-        @{List<string> AgreeDisagree = new List<string>();
-          AgreeDisagree.Add("");
-          AgreeDisagree.Add("I Agree");
-          AgreeDisagree.Add("I Disagree");
-          List<MakerFarm.Models.PrintSubmissionWaiverTerm> Terms = (List<MakerFarm.Models.PrintSubmissionWaiverTerm>)ViewData["PrintSubmissionWaiverTerms"];
-          }
-        <div class="editor-label">
-            @Html.Label("PrintSubmissionWaiverTerm","Print Waiver Terms and Conditions", null)
-        </div>
-        
-        @foreach (MakerFarm.Models.PrintSubmissionWaiverTerm p in Terms)
-        {
-            <div class="editor-field">
-            @Html.ValidationMessage("PrintSubmissionWaiverTerm", "You must agree to all of the terms in order to submit a print", null)
-            <br />     
-            @Html.DropDownList("PrintSubmissionWaiverTerm", new SelectList(AgreeDisagree))
-            @p.WaiverText
-            </div>
-        }
-        @Html.Hidden("PrintSubmissionWaiverTermQt", Terms.Count())
+
         <p>
             <input type="submit" value="Create" />
         </p>

@@ -519,6 +519,7 @@
     <Content Include="Views\Materials\UpdateQuantity.cshtml" />
     <Content Include="Views\Prints\Completed.cshtml" />
     <Content Include="Views\PrinterTypes\SubmissionSelection.cshtml" />
+    <Content Include="Views\Prints\PrintWaiver.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
