@@ -46,6 +46,11 @@ namespace MakerFarm.Models
         [Display(Name = "Flagged Comment", Description = "This comment is set to note why a print was Flagged for future reference")]
         public string FlaggedComment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
+        [DataType(DataType.Date)]
+        [Display(Name = "Terms and Conditions", Description = "Time the Submission Terms and Conditions were agreed to")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yy H:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime? TermsAndConditionsAgreement { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
+
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
     }

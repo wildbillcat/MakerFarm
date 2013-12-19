@@ -299,6 +299,10 @@
     <Compile Include="Migrations\201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..Designer.cs">
       <DependentUpon>201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201312192050244_added a terms and conditions agreement date.cs" />
+    <Compile Include="Migrations\201312192050244_added a terms and conditions agreement date.Designer.cs">
+      <DependentUpon>201312192050244_added a terms and conditions agreement date.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -514,6 +518,7 @@
     <Content Include="Views\Home\Denied.cshtml" />
     <Content Include="Views\Materials\UpdateQuantity.cshtml" />
     <Content Include="Views\Prints\Completed.cshtml" />
+    <Content Include="Views\PrinterTypes\SubmissionSelection.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -564,6 +569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..resx">
       <DependentUpon>201312181732341_Updated Printer Model to support about the printer, an information url, and multiple copies..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201312192050244_added a terms and conditions agreement date.resx">
+      <DependentUpon>201312192050244_added a terms and conditions agreement date.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

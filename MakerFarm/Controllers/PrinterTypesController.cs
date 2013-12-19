@@ -21,6 +21,12 @@ namespace MakerFarm.Controllers
             return View(db.PrinterTypes.ToList());
         }
 
+        // GET: /PrinterTypes/
+        public ActionResult SubmissionSelection()
+        {
+            return View(db.PrinterTypes.ToList());
+        }
+
         // GET: /PrinterTypes/Administration
         [Authorize(Roles = "Administrator")]
         public ActionResult Administration()
@@ -58,7 +64,7 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
 
-        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype, HttpPostedFileBase IconFile)
+        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
@@ -107,7 +113,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField")] PrinterType printertype)
+        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies")] PrinterType printertype)
         {
             if (ModelState.IsValid)
             {

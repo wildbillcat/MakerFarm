@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MakerFarm.Models.PrinterType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Select Printer Type to Submit Print</h2>
+
+<table class="table">
+@foreach (var item in Model)
+{
+    <tr>
+        <th>
+            
+        </th>
+        <th>
+            <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null)>@item.TypeName</a>
+</th>
+    </tr>
+    <tr>
+        <td>
+            <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null)>
+                <img src="@Url.Content(item.PrinterIcon)" alt="Image" />
+            </a>
+        </td>
+        <td>
+            <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null) style="color: black; text-decoration: none;">
+                @item.AboutPrinter
+            </a>
+            <br />
+            @if (item.HyperLink != null && !item.HyperLink.Equals(""))
+            {
+              <a href="@item.HyperLink">Read More...</a>  
+            }         
+</td>
+    </tr>
+}
+    
+</table>

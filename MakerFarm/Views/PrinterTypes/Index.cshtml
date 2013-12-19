@@ -16,9 +16,9 @@
     <td>
         <a href=@Url.Action("Index", "Prints", new { id = item.PrinterTypeId }, null)>
             <img src="@Url.Content(item.PrinterIcon)" alt="Image" />
+            <br />
+            @item.TypeName
         </a>
-        <br />
-        @item.TypeName
     </td>
      
      }
