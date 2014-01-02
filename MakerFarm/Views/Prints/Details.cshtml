@@ -126,10 +126,13 @@
 </p>
 @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
 {
+    if (false)
+    {
     <h5>Administrative Actions:</h5>
     <p>
     @Html.ActionLink("Delete", "Delete", new { id = Model.PrintId })
     </p>
+    }
 }
 <h3>Print Log:</h3>
 <table class="table">
