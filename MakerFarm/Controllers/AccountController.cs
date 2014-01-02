@@ -11,6 +11,7 @@ using WebMatrix.WebData;
 using MakerFarm.Filters;
 using MakerFarm.Models;
 using DotNetCasClient;
+using System.Data.SqlClient;
 
 namespace MakerFarm.Controllers
 {
@@ -18,6 +19,9 @@ namespace MakerFarm.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+
+        private MakerfarmDBContext db = new MakerfarmDBContext();
+
         //
         // GET: /Account/Login
 
@@ -149,15 +153,27 @@ namespace MakerFarm.Controllers
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
                 "where dbo.Prints.UserName = @UserName";
-            string PrintFileHistoryEvents = "Select * " +
-         "from dbo.PrintEvents " +
-         "inner join ( " +
-         "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
-         "from dbo.PrintEvents " +
-         "group by dbo.PrintEvents.PrintID " +
-         ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
-         "where dbo.PrintEvents.EventType = @PrintingEventStart ";
-            return View();
+            string PrintFileHistoryEvents = "select * " +
+                "from dbo.Prints " +
+                "inner join (" + 
+
+                "select dbo.PrintEvents.* " +
+                "from dbo.PrintEvents " +
+                "inner join ( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+
+                ") val on dbo.Prints.PrintId = val.PrintID " +
+                "where dbo.Prints.UserName = @UserName1";
+
+            SqlParameter UserName = new SqlParameter("@UserName", User.Identity.Name);
+            SqlParameter UserName1 = new SqlParameter("@UserName1", User.Identity.Name);
+            List<Print> FileHistory = db.Prints.SqlQuery(PrintFileHistory, UserName).ToList();
+            Dictionary<long, PrintEvent> FileStatus = db.PrintEvents.SqlQuery(PrintFileHistoryEvents, UserName1).ToDictionary(p => p.PrintId);
+            ViewData["FileStatus"] = FileStatus;
+            return View(FileHistory);
         }
 
         //

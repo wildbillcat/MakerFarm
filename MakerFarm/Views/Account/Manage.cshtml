@@ -1,6 +1,15 @@
-﻿@model MakerFarm.Models.LocalPasswordModel
+﻿@model IEnumerable<MakerFarm.Models.Print>
 @{
     ViewBag.Title = "Manage Account";
+    Dictionary<long, MakerFarm.Models.PrintEvent> FileStatus = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["FileStatus"];
+    List<MakerFarm.Models.PrintEventType> evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+    Dictionary<MakerFarm.Models.PrintEventType, string> StatusTypes = new Dictionary<MakerFarm.Models.PrintEventType,string>();
+    StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_CANCELED, "Print Canceled");
+    StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_COMPLETED, "Print Completed");
+    StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_FAILURE_FILE, "File Failed");
+    StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_FAILURE_MACHINE, "Machine Failed");
+    StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_START, "Print Started");
+    
 }
 
 <hgroup class="title">
@@ -11,6 +20,79 @@
 
 <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
+<h3>Your Prints:</h3>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Status")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayName("Printer Type")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmissionTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstToolpathTime)
+        </th>
+        <th></th>
+    </tr>
+
+        @foreach (var item in Model)
+    {
+<tr>
+
+
+    <td @if(item.TermsAndConditionsAgreement == null){ <text> style="background-color:red" </text>   }>
+    @if (item.TermsAndConditionsAgreement == null)
+    {
+    @Html.ActionLink("Waiver Not Signed", "PrintWaiver", "Prints", new { id = item.PrintId }, null)
+    }else if (FileStatus.ContainsKey(item.PrintId))
+        {
+            @StatusTypes[FileStatus[item.PrintId].EventType]
+        }
+        else
+        {
+            <text>Pending</text>
+        }
+    </td>
+
+    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+    @if (item.TermsAndConditionsAgreement == null)
+    {
+        @Html.ActionLink(item.FileName, "PrintWaiver", "Prints", new { id = item.PrintId }, null)
+    }
+    else
+    {
+        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+    }      
+    </td>
+    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+        @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
+    </td>
+    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+        @Html.DisplayFor(modelItem => item.SubmissionTime)
+    </td>
+    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+        @Html.DisplayFor(modelItem => item.EstToolpathTime)
+    </td>
+    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+        @if (item.TermsAndConditionsAgreement == null)
+        {
+            @Html.ActionLink("Sign Waiver", "PrintWaiver", "Prints", new { id = item.PrintId }, null)
+        }
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+        {
+            @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId }, null)
+        }
+    </td>
+
+</tr>
+    }
+</table>
 
 
 @section Scripts {
