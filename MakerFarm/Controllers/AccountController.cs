@@ -152,8 +152,9 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where dbo.Prints.UserName = @UserName";
-            string PrintFileHistoryEvents = "select * " +
+                "where dbo.Prints.UserName = @UserName " +
+                "order by dbo.Prints.PrintID desc";
+            string PrintFileHistoryEvents = "select val.* " +
                 "from dbo.Prints " +
                 "inner join (" + 
 
@@ -173,7 +174,8 @@ namespace MakerFarm.Controllers
             List<Print> FileHistory = db.Prints.SqlQuery(PrintFileHistory, UserName).ToList();
             Dictionary<long, PrintEvent> FileStatus = db.PrintEvents.SqlQuery(PrintFileHistoryEvents, UserName1).ToDictionary(p => p.PrintId);
             ViewData["FileStatus"] = FileStatus;
-            return View(FileHistory);
+            ViewData["FileHistory"] = FileHistory;
+            return View();
         }
 
         //

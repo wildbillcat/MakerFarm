@@ -9,7 +9,7 @@
     StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_FAILURE_FILE, "File Failed");
     StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_FAILURE_MACHINE, "Machine Failed");
     StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_START, "Print Started");
-    
+    List<MakerFarm.Models.Print> FileHistory = (List<MakerFarm.Models.Print>)ViewData["FileHistory"];
 }
 
 <hgroup class="title">
@@ -41,7 +41,7 @@
         <th></th>
     </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in FileHistory)
     {
 <tr>
 
@@ -67,7 +67,7 @@
     }
     else
     {
-        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+        @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
     }      
     </td>
     <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
