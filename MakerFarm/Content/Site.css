@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #fff;
+    background-color: #cc3300;
     border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
@@ -129,7 +129,7 @@ footer {
 /* site title
 ----------------------------------------------------------*/
 .site-title {
-    color: #c8c8c8;
+    color: #fff;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
@@ -137,7 +137,7 @@ footer {
 
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
-    color: #c8c8c8;
+    color: #fff;
     outline: none;
     text-decoration: none;
 }
@@ -195,7 +195,7 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #fff;
             text-decoration: none;
         }
 
