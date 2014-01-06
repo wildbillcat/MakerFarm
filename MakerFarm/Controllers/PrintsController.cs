@@ -504,7 +504,7 @@ namespace MakerFarm.Controllers
                     emailAgreement.Append(string.Concat("Authorized Number of Attempts: ", userPrint.AuthorizedAttempts, "\n"));
                     emailAgreement.Append(string.Concat("Printer Type: ", userPrint.PrinterType.TypeName, "\n"));
                     emailAgreement.Append("\n");
-                    emailAgreement.Append(string.Concat("I, ", user.GivenName, " ", user.Surname, " have concented to the following terms and conditions with regard to the above print.", "\n\n"));
+                    emailAgreement.Append(string.Concat("I, ", user.GivenName, " ", user.Surname, " have consented to the following terms and conditions with regard to the above print.", "\n\n"));
                     foreach (PrintSubmissionWaiverTerm term in db.PrintSubmissionWaiverTerms.Where(P => P.Enabled == true).ToList())
                     {
                         emailAgreement.Append(string.Concat("I Agree: ", term.WaiverText, "\n\n"));
