@@ -236,6 +236,7 @@
     <Compile Include="Controllers\PrintSubmissionWaiverTermsController.cs" />
     <Compile Include="Controllers\UserAdministrationController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Filters\PullUserSubmissionStatus.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
