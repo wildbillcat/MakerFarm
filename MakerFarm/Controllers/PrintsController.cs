@@ -507,7 +507,7 @@ namespace MakerFarm.Controllers
                     emailAgreement.Append(string.Concat("I, ", user.GivenName, " ", user.Surname, " have consented to the following terms and conditions with regard to the above print.", "\n\n"));
                     foreach (PrintSubmissionWaiverTerm term in db.PrintSubmissionWaiverTerms.Where(P => P.Enabled == true).ToList())
                     {
-                        emailAgreement.Append(string.Concat("I Agree: ", term.WaiverText, "\n\n"));
+                        emailAgreement.Append(string.Concat("I agree: ", term.WaiverText, "\n\n"));
                     }
                     MailMessage msg = new MailMessage();
                     msg.To.Add(user.EmailAddress);
