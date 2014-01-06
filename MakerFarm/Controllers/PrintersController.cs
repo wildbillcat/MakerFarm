@@ -51,10 +51,10 @@ namespace MakerFarm.Controllers
             string PrintAssignmentsQuery = "Select * " +
              "from dbo.PrintEvents " +
              "inner join ( " +
-             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+             "select dbo.PrintEvents.PrinterID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
              "from dbo.PrintEvents " +
-             "group by dbo.PrintEvents.PrintID " +
-             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+             "group by dbo.PrintEvents.PrinterID " +
+             ") mxe on dbo.PrintEvents.PrinterID = mxe.PrinterID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
              "where dbo.PrintEvents.EventType = @PrintingEventStart ";
 
             string PrintStartQuery = "Select dbo.Prints.* " +
