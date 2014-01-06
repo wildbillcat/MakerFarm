@@ -7,6 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
+using System.DirectoryServices.AccountManagement;
+using System.Text;
+using System.Configuration;
 
 namespace MakerFarm.Controllers
 {
@@ -468,13 +473,60 @@ namespace MakerFarm.Controllers
                 return View(print);
             }
 
+
             ///Agreement Valid if made this far:
             ///
             print.TermsAndConditionsAgreement = DateTime.Now;
             db.Entry(print).State = EntityState.Modified;
             db.SaveChanges();
-
+            if (!DispatchAgreementEmail(print))
+            {
+                return HttpNotFound();
+            }
             return RedirectToAction("Details", new { id = id });
+        }
+
+        //Returns true if e-mail is successfully sent
+        private bool DispatchAgreementEmail(Print userPrint)
+        {
+            // set up domain context
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            // find the user in question
+            try{
+                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
+                if (user != null)
+                {
+                    StringBuilder emailAgreement = new StringBuilder();
+                    emailAgreement.Append("You have submitted the following file to the DM Office to be printed: \n");
+                    emailAgreement.Append(string.Concat("File Name: ", userPrint.FileName, "\n"));
+                    emailAgreement.Append(string.Concat("NetID: ", userPrint.UserName, "\n"));
+                    emailAgreement.Append(string.Concat("Submission Time: ", userPrint.SubmissionTime.ToString(), "\n"));
+                    emailAgreement.Append(string.Concat("Authorized Number of Attempts: ", userPrint.AuthorizedAttempts, "\n"));
+                    emailAgreement.Append(string.Concat("Printer Type: ", userPrint.PrinterType.TypeName, "\n"));
+                    emailAgreement.Append("\n");
+                    emailAgreement.Append(string.Concat("I, ", user.GivenName, " ", user.Surname, " have concented to the following terms and conditions with regard to the above print.", "\n\n"));
+                    foreach (PrintSubmissionWaiverTerm term in db.PrintSubmissionWaiverTerms.Where(P => P.Enabled == true).ToList())
+                    {
+                        emailAgreement.Append(string.Concat("I Agree: ", term.WaiverText, "\n\n"));
+                    }
+                    MailMessage msg = new MailMessage();
+                    msg.To.Add(user.EmailAddress);
+                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    msg.Subject = string.Concat("Your Print Submission of ", userPrint.FileName, " at ", userPrint.SubmissionTime.ToString());
+                    msg.Body = emailAgreement.ToString();
+                    NetworkCredential cred = new NetworkCredential(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPUser"), System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPassword"));
+
+                    SmtpClient client = new SmtpClient(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPServer"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPort")));
+                    client.Credentials = cred;
+                    client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
+                    client.Send(msg);
+                    ctx.Dispose();
+                    return true;
+                }
+            }finally{}
+            ctx.Dispose();
+            return false;
         }
 
         protected override void Dispose(bool disposing)
