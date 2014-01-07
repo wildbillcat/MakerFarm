@@ -45,7 +45,7 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="DotNetCasClient">
-      <HintPath>D:\Development\C#\dotnet-client-1.0-Bin\Release\DotNetCasClient.dll</HintPath>
+      <HintPath>E:\Development\csharp\dotnet-cas-client-1.0-Bin\Release\DotNetCasClient.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -595,7 +595,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50614</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50614/</IISUrl>
+          <IISUrl>http://lothar.architecture.yale.edu:50614/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
