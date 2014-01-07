@@ -236,7 +236,6 @@
     <Compile Include="Controllers\PrintSubmissionWaiverTermsController.cs" />
     <Compile Include="Controllers\UserAdministrationController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
-    <Compile Include="Filters\PullUserSubmissionStatus.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -522,6 +521,7 @@
     <Content Include="Views\Prints\Completed.cshtml" />
     <Content Include="Views\PrinterTypes\SubmissionSelection.cshtml" />
     <Content Include="Views\Prints\PrintWaiver.cshtml" />
+    <Content Include="Views\Account\_UnwaiveredPrintsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

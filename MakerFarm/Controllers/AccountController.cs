@@ -369,6 +369,22 @@ namespace MakerFarm.Controllers
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 
+        [Authorize]
+        [ChildActionOnly]
+        public ActionResult UnwaiveredPrints()
+        {
+            List<Print> unwaiveredPrints = db.Prints.Where(P => P.UserName.Equals(User.Identity.Name) && P.TermsAndConditionsAgreement == null).ToList();
+            if (unwaiveredPrints.Count() > 0)
+            {
+                ViewData["UnwaiveredPrints"] = true;
+            }
+            else
+            {
+                ViewData["UnwaiveredPrints"] = false;
+            }
+            return PartialView("_UnwaiveredPrintsPartial");
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {

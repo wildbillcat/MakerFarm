@@ -51,12 +51,7 @@
         </header>
         <div id="body">
             @RenderSection("featured", required: false)
-            @if (true)
-            {
-                <nav style="background-color: red; margin-left: auto; margin-right: auto; width: 100%; text-align: center;">
-                    @Html.ActionLink("Warning! You have prints for which you have not signed a waiver. They presently will not be printed!", "Manage", "Account")
-                </nav>
-            }
+            @Html.Action("UnwaiveredPrints", "Account")
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
             </section>
