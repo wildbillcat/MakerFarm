@@ -1,5 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@{
+    string applicationTitle = System.Configuration.ConfigurationManager.AppSettings.Get("PageTitle");
+    if (applicationTitle == null || applicationTitle.Equals(""))
+    {
+        applicationTitle = "MakerFarm";
+    }
+}
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - MakerFarm</title>
@@ -12,7 +19,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("YSOA 3D Print Submission", "SubmissionSelection", "PrinterTypes")</p>
+                    <p class="site-title">@Html.ActionLink(applicationTitle, "SubmissionSelection", "PrinterTypes")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -59,7 +66,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - <a href="https://github.com/wildbillcat/">Wildbillcat</a></p>
+                    <p>Makerfarm &copy; @DateTime.Now.Year - <a href="https://github.com/wildbillcat/">Wildbillcat</a></p>
                 </div>
             </div>
         </footer>
