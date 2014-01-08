@@ -58,7 +58,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include="MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
+        public ActionResult Create([Bind(Include = "MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity,SuppportMaterial")] Material material)
         {
             if (ModelState.IsValid)
             {
@@ -134,7 +134,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity")] Material material)
+        public ActionResult Edit([Bind(Include = "MaterialId,MaterialName,PrinterTypeId,MaterialSpoolQuantity,SuppportMaterial")] Material material)
         {
             if (ModelState.IsValid)
             {

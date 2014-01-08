@@ -304,6 +304,10 @@
     <Compile Include="Migrations\201312192050244_added a terms and conditions agreement date.Designer.cs">
       <DependentUpon>201312192050244_added a terms and conditions agreement date.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401082048422_updated materials, prints and printer types for the future print wizard helper.cs" />
+    <Compile Include="Migrations\201401082048422_updated materials, prints and printer types for the future print wizard helper.Designer.cs">
+      <DependentUpon>201401082048422_updated materials, prints and printer types for the future print wizard helper.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -575,6 +579,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201312192050244_added a terms and conditions agreement date.resx">
       <DependentUpon>201312192050244_added a terms and conditions agreement date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401082048422_updated materials, prints and printer types for the future print wizard helper.resx">
+      <DependentUpon>201401082048422_updated materials, prints and printer types for the future print wizard helper.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

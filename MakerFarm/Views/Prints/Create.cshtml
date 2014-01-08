@@ -81,6 +81,23 @@
             @Html.TextBoxFor(model => model.PrinterTypeId, null, new { @type = "hidden", @Value = Url.RequestContext.RouteData.Values["id"] })
             @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
+        
+        @if ((bool)ViewData["FullColorPrint"])
+        {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FullColorPrint)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FullColorPrint)
+            @Html.ValidationMessageFor(model => model.FullColorPrint)
+        </div>
+        }
+        else
+        {
+            <div class="editor-field">
+                @Html.Hidden("FullColorPrint", false)
+            </div>
+        }
 
         <p>
             <input type="submit" value="Create" />

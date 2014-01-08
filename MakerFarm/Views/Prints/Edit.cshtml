@@ -104,6 +104,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.FullColorPrint)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.FullColorPrint)
+            @Html.ValidationMessageFor(model => model.FullColorPrint)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.FlaggedPrint)
         </div>
         <div class="editor-field">

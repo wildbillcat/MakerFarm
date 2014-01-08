@@ -75,6 +75,13 @@
         @Html.DisplayFor(model => model.StaffAssistedPrint)
     </div>
 
+    <div class="display-label">
+        @Html.LabelFor(model => model.FullColorPrint)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullColorPrint)
+    </div>
+
     @if (Model.Comment != null && !Model.Comment.Equals(""))
     {
     <div class="display-label">

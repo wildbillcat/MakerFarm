@@ -98,6 +98,70 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.BuildLength, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BuildLength)
+                @Html.ValidationMessageFor(model => model.BuildLength)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BuildWidth, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BuildWidth)
+                @Html.ValidationMessageFor(model => model.BuildWidth)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BuildHeight, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BuildHeight)
+                @Html.ValidationMessageFor(model => model.BuildHeight)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OffersBreakawaySupport, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OffersBreakawaySupport)
+                @Html.ValidationMessageFor(model => model.OffersBreakawaySupport)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OffersNonBreakAwaySupport, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OffersNonBreakAwaySupport)
+                @Html.ValidationMessageFor(model => model.OffersNonBreakAwaySupport)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BuildSupportUsesMaterialSlot, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BuildSupportUsesMaterialSlot)
+                @Html.ValidationMessageFor(model => model.BuildSupportUsesMaterialSlot)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OffersFullColorPrinting, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OffersFullColorPrinting)
+                @Html.ValidationMessageFor(model => model.OffersFullColorPrinting)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FunctionalModelSupport, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FunctionalModelSupport)
+                @Html.ValidationMessageFor(model => model.FunctionalModelSupport)
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

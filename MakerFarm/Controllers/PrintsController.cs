@@ -196,6 +196,7 @@ namespace MakerFarm.Controllers
             ViewBag.SupportedFileTypes = printerType.SupportedFileTypes;
             ViewData["CurrentUser"] = User.Identity.Name;
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
+            ViewData["FullColorPrint"] = printerType.OffersFullColorPrinting;
             return View();
         }
         
@@ -458,10 +459,11 @@ namespace MakerFarm.Controllers
         {
             long id = long.Parse(values["id"]);
             Print print = db.Prints.Find(id);
+            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             try
             {
                 int TotalWaiverConditions = int.Parse(values["PrintSubmissionWaiverTermQt"]);
-                int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I Agree")).Count();
+                int AcceptedWaiverConditions = values.GetValues("PrintSubmissionWaiverTerm").Where(p => p.Equals("I agree")).Count();
                 if (TotalWaiverConditions != AcceptedWaiverConditions)
                 {
                     ViewData["Waiver"] = true;

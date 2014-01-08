@@ -10,6 +10,9 @@ namespace MakerFarm.Models
         [Display(Name = "Material Name", Description = "The name of the print material. (IE: Navy Blue ABS)")]
         public string MaterialName { get; set; } /* The Material Name (IE, Navy Blue ABS) */
 
+        [Display(Name = "Support Material?", Description = "Denotes if the material is just used to create a separate support structure")]
+        public bool SuppportMaterial { get; set; } /* The Material Name (IE, Navy Blue ABS) */
+
         [Display(Name = "Printer Type", Description = "The printer type associated with the Material")]
         public int PrinterTypeId { get; set; } /* The ID of the Printer Type this Material is compatible with  */
 

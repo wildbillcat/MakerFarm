@@ -51,6 +51,9 @@ namespace MakerFarm.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yy H:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime? TermsAndConditionsAgreement { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
+        [Display(Name = "Full Color Print", Description = "This denotes if you would like the print in full color, instead of the default monochrome material color.")]
+        public string FullColorPrint { get; set; } /*Denotes if user wants a full color print*/
+
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
     }
