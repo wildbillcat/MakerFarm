@@ -66,6 +66,11 @@ namespace MakerFarm.Models
         [Display(Name = "Functional model support?", Description = "This denotes if the printer uses a material solid enough to make functional parts, such as plastic printers.")]
         public bool FunctionalModelSupport { set; get; }
 
+        [Display(Name = "Allow users to see queue?", Description = "This denotes if the printer queue should be avaiable to see for users.")]
+        public bool QueueVisible { set; get; }
+
+        [Display(Name = "Allow users to submit to queue?", Description = "This denotes if the printer queue should be avaiable for submission for users.")]
+        public bool SubmissionEnabled { set; get; }
     }
         
 }

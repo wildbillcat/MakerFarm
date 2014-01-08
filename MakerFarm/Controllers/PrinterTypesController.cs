@@ -18,13 +18,13 @@ namespace MakerFarm.Controllers
         // GET: /PrinterTypes/
         public ActionResult Index()
         {
-            return View(db.PrinterTypes.ToList());
+            return View(db.PrinterTypes.Where(p => p.SubmissionEnabled).ToList());
         }
 
         // GET: /PrinterTypes/
         public ActionResult SubmissionSelection()
         {
-            return View(db.PrinterTypes.ToList());
+            return View(db.PrinterTypes.Where(p => p.QueueVisible).ToList());
         }
 
         // GET: /PrinterTypes/Administration
@@ -64,7 +64,7 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
 
-        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport")] PrinterType printertype, HttpPostedFileBase IconFile)
+        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
@@ -113,7 +113,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport")] PrinterType printertype)
+        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled")] PrinterType printertype)
         {
             if (ModelState.IsValid)
             {
