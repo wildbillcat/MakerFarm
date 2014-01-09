@@ -114,7 +114,15 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Cancel" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @if (Model.TermsAndConditionsAgreement == null)
+            {
+                @Html.ActionLink("Back to List", "UnapprovedAdmin")
+            }
+            else
+            {
+                @Html.ActionLink("Back to List", "Index", new { id = Model.PrinterTypeId })
+            }
+            
         </div>
     }
 </div>

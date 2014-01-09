@@ -168,13 +168,19 @@ namespace MakerFarm.Controllers
 
                 ") val on dbo.Prints.PrintId = val.PrintID " +
                 "where dbo.Prints.UserName = @UserName1";
-
+            string UnstartedPrintsSQL = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join PrintEvents " +
+                "on dbo.Prints.PrintId = PrintEvents.PrintID " +
+                "where dbo.PrintEvents.PrinterID IS NULL";
+            Dictionary<long, Print> UnstartedCancelEligiblePrints = db.Prints.SqlQuery(UnstartedPrintsSQL).ToDictionary(p => p.PrintId);
             SqlParameter UserName = new SqlParameter("@UserName", User.Identity.Name);
             SqlParameter UserName1 = new SqlParameter("@UserName1", User.Identity.Name);
             List<Print> FileHistory = db.Prints.SqlQuery(PrintFileHistory, UserName).ToList();
             Dictionary<long, PrintEvent> FileStatus = db.PrintEvents.SqlQuery(PrintFileHistoryEvents, UserName1).ToDictionary(p => p.PrintId);
             ViewData["FileStatus"] = FileStatus;
             ViewData["FileHistory"] = FileHistory;
+            ViewData["UnstartedCancelEligiblePrints"] = UnstartedCancelEligiblePrints;
             return View();
         }
 

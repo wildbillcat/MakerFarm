@@ -10,6 +10,7 @@
     StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_FAILURE_MACHINE, "Machine Failed");
     StatusTypes.Add(MakerFarm.Models.PrintEventType.PRINT_START, "Print Started");
     List<MakerFarm.Models.Print> FileHistory = (List<MakerFarm.Models.Print>)ViewData["FileHistory"];
+    Dictionary<long, MakerFarm.Models.Print> UnstartedCancelEligiblePrints = (Dictionary<long, MakerFarm.Models.Print>)ViewData["UnstartedCancelEligiblePrints"];
 }
 
 <hgroup class="title">
@@ -84,9 +85,9 @@
         {
             @Html.ActionLink("Sign Waiver", "PrintWaiver", "Prints", new { id = item.PrintId }, null)
         }
-        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+        @if (UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
         {
-            @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId }, null)
+            @Html.ActionLink("Cancel", "Cancel", "Prints", new { id = item.PrintId }, null)
         }
     </td>
 

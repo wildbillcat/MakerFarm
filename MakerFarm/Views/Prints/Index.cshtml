@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<MakerFarm.Models.Print>
-
+@{
+    Dictionary<long, MakerFarm.Models.Print> UnstartedCancelEligiblePrints = (Dictionary<long, MakerFarm.Models.Print>)ViewBag.CancelEligible;
+}
 <h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Past Prints", "Completed", new { id = ViewBag.id })
-    <br /><br />
-    @Html.ActionLink("Submit Print", "Create", new { id = ViewBag.id })
 </p>
 
 @if (((List<MakerFarm.Models.Print>)ViewBag.Assigned).Count() > 0)
@@ -124,6 +124,10 @@
                     {
                         <text> | </text>
                         @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                    }
+                    else if (User.Identity.IsAuthenticated && !(Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                    {
+                        @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
                     }
                 </td>
             </tr>

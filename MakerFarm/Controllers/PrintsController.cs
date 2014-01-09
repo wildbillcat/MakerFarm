@@ -30,6 +30,13 @@ namespace MakerFarm.Controllers
             }
             else
             {
+                string UnstartedPrintsSQL = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join PrintEvents " +
+                "on dbo.Prints.PrintId = PrintEvents.PrintID " +
+                "where dbo.PrintEvents.PrinterID IS NULL and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL ";
+                Dictionary<long, Print> UnstartedCancelEligiblePrints = db.Prints.SqlQuery(UnstartedPrintsSQL).ToDictionary(p => p.PrintId);
+                ViewBag.CancelEligible = UnstartedCancelEligiblePrints;
                 //Need to edit it to pull prints 
                 string PrintStartQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
@@ -455,8 +462,15 @@ namespace MakerFarm.Controllers
                 //Could not cancel the print! See a DM Staff member!
                 DispatchCancelationEmail(print, false);
             }
-
-            return RedirectToAction("Index", "Home");
+            if (User.Identity.Name.Equals(print.FileName))
+            {
+                return RedirectToAction("Manage", "Account");
+            }
+            else if (print.TermsAndConditionsAgreement == null)
+            {
+                return RedirectToAction("UnapprovedAdmin");
+            }
+            return RedirectToAction("Index", "Prints", new { id = print.PrinterTypeId });
         }
 
         //Returns true if e-mail is successfully sent
