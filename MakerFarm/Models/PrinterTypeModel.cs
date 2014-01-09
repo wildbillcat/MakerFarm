@@ -17,11 +17,11 @@ namespace MakerFarm.Models
 
         [Display(Name = "Printer Unit of Measure", Description = "This defines what unit of measure it used for the printer. (Gram, Ounce, Cubic Inch)")]
         public string MaterialUseUnit { get; set; } /* Printers use a varying units of measure, this allows the operator to make sure the appropriate chage is made */
-
-        [Range(1, int.MaxValue, ErrorMessage = "Value Should be between 1 and 2,147,483,647")]
+                
         [Display(Name = "Printer Icon", Description = "This should be a image to double at the printer Icon when users select what printer they would like to submit to")]
         public string PrinterIcon { get; set; } /*This is the icon that was uploaded to represent the printer. */
 
+        [Range(1, int.MaxValue, ErrorMessage = "Value Should be between 1 and 2,147,483,647")]
         [Display(Name = "Maximum Authorized Attempts", Description = "This is the Maximum number of attempts a user can authorize on this printer")]
         public int MaxNumberUserAttempts { get; set; } /* This notes the maximum number of attempts allowed for this printer */
 
