@@ -20,7 +20,21 @@
             @item.TypeName
         </a>
     </td>
-     
+    if ((User.IsInRole("Administrator") || User.IsInRole("Moderator")) && (i == Model.Count() - 1))
+    {
+        i++;
+        if (i % 3 == 0 && i != 0) { 
+            @Html.Raw("</tr><tr>")
+        }
+        <td>
+            <a href=@Url.Action("UnapprovedAdmin", "Prints", new { id = item.PrinterTypeId }, null)>
+                <img src="@Url.Content("/Content/StaticIcons/Question.png")" alt="Unwaived Prints Icon" />
+                <br />
+                Prints Missing Waivers
+            </a>
+        </td>
+    } 
+    
      }
     </tr>
 </table>

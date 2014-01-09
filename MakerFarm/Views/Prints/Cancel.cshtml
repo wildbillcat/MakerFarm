@@ -1,0 +1,120 @@
+﻿@model MakerFarm.Models.Print
+
+@{
+    ViewBag.Title = "Cancel";
+}
+
+<h2>Cancel</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Print</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PrinterType.TypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrinterType.TypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialIds)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialIds)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstMaterialUse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstMaterialUse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmissionTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubmissionTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstToolpathTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstToolpathTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorizedAttempts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorizedAttempts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StaffAssistedPrint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StaffAssistedPrint)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TermsAndConditionsAgreement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TermsAndConditionsAgreement)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullColorPrint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullColorPrint)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Cancel" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

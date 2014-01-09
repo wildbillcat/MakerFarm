@@ -133,6 +133,19 @@ namespace MakerFarm.Controllers
             }
         }
 
+         //
+        // GET: /Prints/UnapprovedAdmin
+        [Authorize(Roles = "Administrator, Moderator")]
+        public ActionResult UnapprovedAdmin(int id = 0)
+        {
+            string UnapprovedUnstartedPrintsSQL = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join PrintEvents " +
+                "on dbo.Prints.PrintId = PrintEvents.PrintID " +
+                "where dbo.PrintEvents.PrinterID IS NULL and dbo.Prints.TermsAndConditionsAgreement IS NULL ";
+            return View(db.Prints.SqlQuery(UnapprovedUnstartedPrintsSQL).ToList());
+        }
+
 
         //
         // GET: /Prints/Details/5
@@ -397,6 +410,110 @@ namespace MakerFarm.Controllers
                 return RedirectToAction("Details", new { id = print.PrintId });
             }
             return View(print);
+        }
+
+        //
+        // GET: /Prints/Delete/5
+        public ActionResult Cancel(long id = 0)
+        {
+            Print print = db.Prints.Find(id);
+            if (print == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || User.Identity.Name.Equals(print.UserName))
+            {
+                return View(print); 
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost, ActionName("Cancel")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelConfirmed(long id)
+        {
+            Print print = db.Prints.Find(id);
+            
+            //if print has not been started or acted upon by the staff:
+            if (db.PrintEvents.Where(p => p.PrintId == id).ToList().Count() == 0)
+            {
+                //Cancel the Print!
+                PrintEvent Cancelation = new PrintEvent();
+                Cancelation.PrintId = id;
+                Cancelation.MaterialUsed = 0;
+                Cancelation.Comment = "Canceled by: " + User.Identity.Name;
+                Cancelation.EventTimeStamp = DateTime.Now;
+                Cancelation.EventType = PrintEventType.PRINT_CANCELED;
+                Cancelation.PrinterId = db.Printers.Where(P => P.PrinterTypeId == print.PrinterTypeId).First().PrinterId;
+                Cancelation.UserName = User.Identity.Name;
+                db.PrintEvents.Add(Cancelation);
+                db.SaveChanges();
+                DispatchCancelationEmail(print, true);
+            }
+            else
+            {
+                //Could not cancel the print! See a DM Staff member!
+                DispatchCancelationEmail(print, false);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        //Returns true if e-mail is successfully sent
+        private bool DispatchCancelationEmail(Print userPrint, bool Success)
+        {
+            // set up domain context
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            // find the user in question
+            try
+            {
+                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
+                if (user != null)
+                {
+                    StringBuilder emailAgreement = new StringBuilder();
+                    if (Success)
+                    {
+                        emailAgreement.Append("This is a confirmation that the following file previously you submitted to the DM Office has been canceled: \n");
+                    }
+                    else
+                    {
+                        emailAgreement.Append("This file previously you submitted to the DM Office could not be canceled!\n");
+                        emailAgreement.Append("This is likely due to having been started by the DM Office. Please see a staff member to have your job canceled: \n");
+                    }
+                    emailAgreement.Append(string.Concat("File Name: ", userPrint.FileName, "\n"));
+                    emailAgreement.Append(string.Concat("NetID: ", userPrint.UserName, "\n"));
+                    emailAgreement.Append(string.Concat("Submission Time: ", userPrint.SubmissionTime.ToString(), "\n"));
+                    emailAgreement.Append(string.Concat("Authorized Number of Attempts: ", userPrint.AuthorizedAttempts, "\n"));
+                    emailAgreement.Append(string.Concat("Printer Type: ", userPrint.PrinterType.TypeName, "\n"));
+                    emailAgreement.Append("\n");
+                    
+
+                    MailMessage msg = new MailMessage();
+                    msg.To.Add(user.EmailAddress);
+                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    if (Success)
+                    {
+                        msg.Subject = string.Concat("Your print of ", userPrint.FileName, " was Canceled.");
+                    }
+                    else
+                    {
+                        msg.Subject = string.Concat("Your Cancelation of ", userPrint.FileName, " Failed!");
+                    }
+                    msg.Body = emailAgreement.ToString();
+                    NetworkCredential cred = new NetworkCredential(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPUser"), System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPassword"));
+
+                    SmtpClient client = new SmtpClient(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPServer"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPort")));
+                    client.Credentials = cred;
+                    client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
+                    client.Send(msg);
+                    ctx.Dispose();
+                    return true;
+                }
+            }
+            finally { }
+            ctx.Dispose();
+            return false;
         }
 
         //

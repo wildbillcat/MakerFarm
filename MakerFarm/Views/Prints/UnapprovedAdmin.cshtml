@@ -1,0 +1,78 @@
+﻿@model IEnumerable<MakerFarm.Models.Print>
+
+@{
+    ViewBag.Title = "Prints without Waiver Agreements";
+}
+
+<h2>Prints without Waiver Agreements</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PrinterType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstMaterialUse)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmissionTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstToolpathTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorizedAttempts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StaffAssistedPrint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullColorPrint)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstMaterialUse)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubmissionTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstToolpathTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AuthorizedAttempts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StaffAssistedPrint)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullColorPrint)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrintId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PrintId }) |
+            @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
+        </td>
+    </tr>
+}
+
+</table>
