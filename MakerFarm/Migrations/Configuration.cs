@@ -26,6 +26,31 @@ namespace MakerFarm.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            context.PrinterTypes.AddOrUpdate(p => p.PrinterTypeId, new MakerFarm.Models.PrinterType
+            {
+                PrinterTypeId = -1,
+                TypeName = "Null Printer",
+                SupportedNumberMaterials = 1,
+                MaterialUseUnit = "Photons",
+                PrinterIcon = "/Content/StaticIcons/Question.png",
+                MaxNumberUserAttempts = 1,
+                SupportedFileTypes = "RadMat",
+                CommentField = "This is a Null Type printer, who exists as as an internal data structure for the application. Pay no Heed.",
+                AboutPrinter = "This is a Null Type printer, who exists as as an internal data structure for the application. Pay no Heed.",
+                HyperLink = "",
+                MaximumNumberOfCopies = 1,
+                BuildLength = 0,
+                BuildWidth = 0,
+                BuildHeight = 0,
+                OffersBreakawaySupport = false,
+                OffersNonBreakAwaySupport = false,
+                BuildSupportUsesMaterialSlot = false,
+                OffersFullColorPrinting = false,
+                FunctionalModelSupport = false,
+                QueueVisible = false,
+                SubmissionEnabled = false
+            });
+
             string CreateAdministratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Administrator')";
             string CreateModeratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Moderator')";
             try
