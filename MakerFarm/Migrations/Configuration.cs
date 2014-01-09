@@ -51,6 +51,13 @@ namespace MakerFarm.Migrations
                 SubmissionEnabled = false
             });
 
+            context.Printers.AddOrUpdate(p => p.PrinterId, new MakerFarm.Models.Printer
+            {
+                PrinterId = -1,
+                PrinterName = "Null Printer",
+                PrinterTypeId = -1
+            });
+
             string CreateAdministratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Administrator')";
             string CreateModeratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Moderator')";
             try
