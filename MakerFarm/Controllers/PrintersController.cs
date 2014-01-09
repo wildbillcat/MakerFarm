@@ -181,6 +181,10 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="PrinterId,PrinterName,PrinterTypeId")] Printer printer)
         {
+            if (printer.PrinterName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.Printers.Add(printer);
@@ -221,6 +225,10 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="PrinterId,PrinterName,PrinterTypeId")] Printer printer)
         {
+            if (printer.PrinterName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(printer).State = EntityState.Modified;
@@ -241,6 +249,10 @@ namespace MakerFarm.Controllers
             if (printer == null)
             {
                 return HttpNotFound();
+            }
+            if (printer.PrinterName.Equals("Null Printer"))
+            {
+                return RedirectToAction("Index");
             }
             return View(printer);
         }

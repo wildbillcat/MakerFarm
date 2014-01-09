@@ -10,6 +10,7 @@ namespace MakerFarm.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+
         }
 
         protected override void Seed(MakerFarm.Models.MakerfarmDBContext context)
@@ -49,15 +50,13 @@ namespace MakerFarm.Migrations
                 QueueVisible = false,
                 SubmissionEnabled = false
             };
-            context.PrinterTypes.AddOrUpdate(p => p.PrinterTypeId, NullType);
-            System.Configuration.ConfigurationManager.AppSettings.Set("NullTypeId", NullType.PrinterTypeId.ToString());
+            context.PrinterTypes.AddOrUpdate(p => p.TypeName, NullType);
             MakerFarm.Models.Printer NullPrinter = new MakerFarm.Models.Printer
             {
                 PrinterName = "Null Printer",
                 PrinterTypeId = NullType.PrinterTypeId
             };
-            context.Printers.AddOrUpdate(p => p.PrinterId, NullPrinter);
-            System.Configuration.ConfigurationManager.AppSettings.Set("NullPrinter", NullPrinter.PrinterId.ToString());
+            context.Printers.AddOrUpdate(p => p.PrinterName, NullPrinter);
             string CreateAdministratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Administrator')";
             string CreateModeratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Moderator')";
             try

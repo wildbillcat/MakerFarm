@@ -312,10 +312,6 @@
     <Compile Include="Migrations\201401082143241_Added controls to moderate printer visibility and submissions.Designer.cs">
       <DependentUpon>201401082143241_Added controls to moderate printer visibility and submissions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201401091603555_added build in data %28null printer and null printer type%29.cs" />
-    <Compile Include="Migrations\201401091603555_added build in data %28null printer and null printer type%29.Designer.cs">
-      <DependentUpon>201401091603555_added build in data %28null printer and null printer type%29.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -596,9 +592,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401082143241_Added controls to moderate printer visibility and submissions.resx">
       <DependentUpon>201401082143241_Added controls to moderate printer visibility and submissions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401091603555_added build in data %28null printer and null printer type%29.resx">
-      <DependentUpon>201401091603555_added build in data %28null printer and null printer type%29.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -66,6 +66,10 @@ namespace MakerFarm.Controllers
 
         public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
+            if (printertype.TypeName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
             {
@@ -115,6 +119,10 @@ namespace MakerFarm.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled")] PrinterType printertype)
         {
+            if (printertype.TypeName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(printertype).State = EntityState.Modified;
@@ -136,6 +144,10 @@ namespace MakerFarm.Controllers
             if (printertype == null)
             {
                 return HttpNotFound();
+            }
+            if (printertype.TypeName.Equals("Null Printer"))
+            {
+                return RedirectToAction("Index");
             }
             return View(printertype);
         }
