@@ -98,11 +98,14 @@ namespace MakerFarm.Controllers
             ViewBag.Title = String.Concat("Details: ", printer.PrinterName);
             SqlParameter[] Params = { new SqlParameter("@PrinterTypeID", printer.PrinterTypeId) };
             List<Material> Materials = db.Materials.SqlQuery(
+                "Select dbo.Materials.* " + 
+                "from dbo.Materials inner join ( " +
                 "Select dbo.Materials.MaterialId, dbo.Materials.MaterialName, dbo.Materials.MaterialSpoolQuantity, dbo.Materials.PrinterTypeId " +
                 "FROM dbo.Materials LEFT JOIN dbo.MaterialCheckouts " +
                 "ON dbo.Materials.MaterialId = dbo.MaterialCheckouts.MaterialId " +
                 "GROUP BY dbo.Materials.MaterialId, dbo.Materials.MaterialName, dbo.Materials.MaterialSpoolQuantity, dbo.Materials.PrinterTypeId " +
-                "HAVING ((Count(dbo.MaterialCheckouts.MaterialId) < dbo.Materials.MaterialSpoolQuantity) or dbo.Materials.MaterialSpoolQuantity < 0) and (dbo.Materials.PrinterTypeId = @PrinterTypeID)", Params).ToList();
+                "HAVING ((Count(dbo.MaterialCheckouts.MaterialId) < dbo.Materials.MaterialSpoolQuantity) or dbo.Materials.MaterialSpoolQuantity < 0) and (dbo.Materials.PrinterTypeId = @PrinterTypeID) " +
+                ") mxe on dbo.Materials.MaterialId = mxe.MaterialId", Params).ToList();
             ViewData["Materials"] = new SelectList(Materials, "MaterialId", "MaterialName");
             
             string status = "Unknown";
