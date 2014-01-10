@@ -230,10 +230,31 @@ namespace MakerFarm.Controllers
         {
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
-            print.FileName = PrintFile.FileName;
+            
             print.UserName = values["UserName"];
             print.FlaggedPrint = false;
             print.FlaggedComment = "";
+
+            print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
+
+            /*Printer Type ID*/
+            print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
+
+            /* File Type Check */
+            bool validFile = false;
+            string extension = PrintFile.FileName.Split('.').Last();
+            foreach (string type in db.PrinterTypes.Find(print.PrinterTypeId).SupportedFileTypes.Split(','))
+            {
+                if (extension.Equals(type))
+                {
+                    validFile = true;
+                }
+            }
+            if (!validFile)
+            {
+                ModelState.AddModelError("PrintFile", "Incorrect File Type!");
+            }
+            print.FileName = PrintFile.FileName;
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
@@ -267,9 +288,6 @@ namespace MakerFarm.Controllers
 
             /*Authorized number of attempts*/
             print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
-
-            /*Printer Type ID*/
-            print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
 
             /*Staff Assistance*/
             print.StaffAssistedPrint = false;
@@ -323,7 +341,7 @@ namespace MakerFarm.Controllers
             ViewData["CurrentUser"] = User.Identity.Name;
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
             ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
-            
+            ViewData["FullColorPrint"] = printerType.OffersFullColorPrinting;
             return View(print);
         }
 
@@ -350,7 +368,7 @@ namespace MakerFarm.Controllers
                 MNUA.Add(i.ToString());
             }
             ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA, print.AuthorizedAttempts.ToString());
-            
+            ViewData["FullColorPrintCapable"] = print.PrinterType.OffersFullColorPrinting;
             return View(print);
         }
 
@@ -364,6 +382,8 @@ namespace MakerFarm.Controllers
         {
             Print print = db.Prints.Find(long.Parse(values["PrintId"]));
             print.UserName = values["UserName"];
+
+            print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
@@ -416,6 +436,22 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = print.PrintId });
             }
+            //Invalid!
+            List<Material> materials = db.Materials.Where(s => s.PrinterTypeId.Equals(print.PrinterTypeId) && !s.MaterialSpoolQuantity.Equals(0)).ToList<Material>();
+            List<SelectList> MaterialsList = new List<SelectList>();
+            foreach (string matID in print.MaterialIds.Split(','))
+            {
+                MaterialsList.Add(new SelectList(materials, "MaterialId", "MaterialName", materials.Find(p => p.MaterialId.Equals(long.Parse(matID)))));
+            }
+            ViewData["MaterialsList"] = MaterialsList;
+
+            List<string> MNUA = new List<string>();
+            for (int i = 1; i <= print.PrinterType.MaxNumberUserAttempts; i++)
+            {
+                MNUA.Add(i.ToString());
+            }
+            ViewData["MaxNumberUserAttempts"] = new SelectList(MNUA, print.AuthorizedAttempts.ToString());
+            ViewData["FullColorPrintCapable"] = print.PrinterType.OffersFullColorPrinting;
             return View(print);
         }
 

@@ -102,14 +102,19 @@
             @Html.TextAreaFor(model => model.Comment)
             @Html.ValidationMessageFor(model => model.Comment)
         </div>
-
+        @if ((bool)ViewData["FullColorPrintCapable"]) { 
         <div class="editor-label">
             @Html.LabelFor(model => model.FullColorPrint)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.FullColorPrint)
+            @Html.CheckBoxFor(model => model.FullColorPrint)
             @Html.ValidationMessageFor(model => model.FullColorPrint)
         </div>
+        }
+        else
+        {
+           @Html.Hidden("FullColorPrint", false) 
+        }
 
         <div class="editor-label">
             @Html.LabelFor(model => model.FlaggedPrint)

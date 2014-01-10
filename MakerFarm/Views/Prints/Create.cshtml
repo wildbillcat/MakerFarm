@@ -18,7 +18,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.Label("Print File: (200 MB Limit)")
+            @Html.Label(string.Concat("Print File: (200 MB Limit, Must be of the following type(s): ", (string)ViewBag.SupportedFileTypes, ")"))
         </div>
         <div class="editor-field">
             @Html.TextBox("PrintFile", null, new { @id="PrintFile", @name="PrintFile", @type="file", @required="required" })

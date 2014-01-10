@@ -312,6 +312,10 @@
     <Compile Include="Migrations\201401082143241_Added controls to moderate printer visibility and submissions.Designer.cs">
       <DependentUpon>201401082143241_Added controls to moderate printer visibility and submissions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401101933511_Converted the FullColorPrint option to a bool, as it should have been.cs" />
+    <Compile Include="Migrations\201401101933511_Converted the FullColorPrint option to a bool, as it should have been.Designer.cs">
+      <DependentUpon>201401101933511_Converted the FullColorPrint option to a bool, as it should have been.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -592,6 +596,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401082143241_Added controls to moderate printer visibility and submissions.resx">
       <DependentUpon>201401082143241_Added controls to moderate printer visibility and submissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401101933511_Converted the FullColorPrint option to a bool, as it should have been.resx">
+      <DependentUpon>201401101933511_Converted the FullColorPrint option to a bool, as it should have been.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
