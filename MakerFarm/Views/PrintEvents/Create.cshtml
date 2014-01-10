@@ -58,8 +58,8 @@
                 @if (ViewBag.Send && !Error.Equals(""))
                 {
                     <font color="red">@Error</font>
+                    <br />
                 }
-                <br />
                 @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
                 @Html.ValidationMessageFor(model => model.PrinterId)                
             </div>
