@@ -116,7 +116,8 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.PrinterTypeID = @PrinterTypeID";
+                "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.PrinterTypeID = @PrinterTypeID " +
+                "order by dbo.prints.PrintID DESC";
                 string PrintAssignmentsQuery = "Select * " +
              "from dbo.PrintEvents " +
              "inner join ( " +
@@ -135,7 +136,6 @@ namespace MakerFarm.Controllers
                 Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventCompleted2, PrintingEventCanceled2).ToDictionary(p => p.PrintId);
                 ViewBag.PrintingAssignments = PrintingAssignments;
                 List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery, PrintingEventCompleted, PrintingEventCanceled, PrinterTypeId).ToList();
-                Waiting.OrderBy(p => p.SubmissionTime);
                 return View(Waiting);
             }
         }
