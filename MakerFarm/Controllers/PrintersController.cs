@@ -79,7 +79,7 @@ namespace MakerFarm.Controllers
             ViewData["Assigned"] = Assigned;
 
 
-            return View(db.Printers.ToList());
+            return View(db.Printers.Where(p => !p.PrinterName.Equals("Null Printer")).ToList());
         }
 
         // GET: /Printers/Details/5
@@ -186,7 +186,7 @@ namespace MakerFarm.Controllers
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {
-                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+                ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
             }
             if (ModelState.IsValid)
             {
@@ -230,7 +230,7 @@ namespace MakerFarm.Controllers
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {
-                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+                ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
             }
             if (ModelState.IsValid)
             {

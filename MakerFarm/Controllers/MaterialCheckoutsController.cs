@@ -47,6 +47,11 @@ namespace MakerFarm.Controllers
             MaterialCheckout materialcheckout = new MaterialCheckout();
             materialcheckout.MaterialId = long.Parse(formVals["MaterialId"]);
             materialcheckout.PrinterId = long.Parse(formVals["PrinterId"]);
+            Printer InQuestion = db.Printers.Find(materialcheckout.PrinterId);
+            if (InQuestion.PrinterName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.MaterialCheckouts.Add(materialcheckout);

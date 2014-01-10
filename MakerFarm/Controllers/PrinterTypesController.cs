@@ -31,7 +31,7 @@ namespace MakerFarm.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Administration()
         {
-            return View(db.PrinterTypes.ToList());
+            return View(db.PrinterTypes.Where(p => !p.TypeName.Equals("Null Printer")).ToList());
         }
 
         // GET: /PrinterTypes/Details/5
@@ -68,7 +68,7 @@ namespace MakerFarm.Controllers
         {
             if (printertype.TypeName.Equals("Null Printer"))
             {
-                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+                ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
             }
             string saveAsDirectory = "~/Content/3DPrinterIcons/";
             if (0 == IconFile.ContentLength)
@@ -121,7 +121,7 @@ namespace MakerFarm.Controllers
         {
             if (printertype.TypeName.Equals("Null Printer"))
             {
-                ModelState.AddModelError("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else.", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+                ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
             }
             if (ModelState.IsValid)
             {

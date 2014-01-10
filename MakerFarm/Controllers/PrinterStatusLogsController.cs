@@ -63,6 +63,11 @@ namespace MakerFarm.Controllers
         public ActionResult Create([Bind(Include="PrinterStatusLogId,LoggedPrinterStatus,Comment,PrinterId")] PrinterStatusLog printerstatuslog)
         {
             printerstatuslog.LogEntryDate = DateTime.Now;
+            Printer PrinterInQuestion = db.Printers.Find(printerstatuslog.PrinterId);
+            if (PrinterInQuestion.PrinterName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("PrinterId", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.PrinterStatusLogs.Add(printerstatuslog);
@@ -95,6 +100,11 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="PrinterStatusLogId,LogEntryDate,LoggedPrinterStatus,Comment,PrinterId")] PrinterStatusLog printerstatuslog)
         {
+            Printer PrinterInQuestion = db.Printers.Find(printerstatuslog.PrinterId);
+            if (PrinterInQuestion.PrinterName.Equals("Null Printer"))
+            {
+                ModelState.AddModelError("PrinterId", new Exception("Sorry, this is a Special Internal Printer for Makerfarm. Please choose something else."));
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(printerstatuslog).State = EntityState.Modified;

@@ -27,15 +27,19 @@
         </dt>
 
         <dd>
-            @ViewData["Status"] | 
+            @ViewData["Status"] 
+            @if(!Model.PrinterName.Equals("Null Printer")){
+               <text> | </text> 
             @Html.ActionLink("Update", "Create", "PrinterStatusLogs", new { id = Model.PrinterId }, null)
+            }
         </dd>
 
     </dl>
 
 </div>
 
-        @if (Model.MaterialsInUse.Count() < Model.PrinterType.SupportedNumberMaterials)
+
+        @if (Model.MaterialsInUse.Count() < Model.PrinterType.SupportedNumberMaterials && !Model.PrinterName.Equals("Null Printer"))
         {
             <h3><font color="red">Warning! Machine Needs Material:</font></h3>
             //Add Material Dropdown and Button
@@ -53,10 +57,8 @@
 
         }
         
-        @if (Model.MaterialsInUse.Count() > 0)
+        @if (Model.MaterialsInUse.Count() > 0 && !Model.PrinterName.Equals("Null Printer"))
         {
-            
-        
         <table class="table">
             <tr>
                 <th>
@@ -136,6 +138,6 @@
 <h5>Administrative Actions:</h5>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.PrinterId }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.PrinterId }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.PrinterId }) 
 </p>   
 }
