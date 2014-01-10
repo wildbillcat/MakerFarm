@@ -47,8 +47,9 @@
 <tr>
 
 
-    <td @if(item.TermsAndConditionsAgreement == null){ <text> style="background-color:red" </text>   }>
-    @if (item.TermsAndConditionsAgreement == null)
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>   }>
+    @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
     {
     @Html.ActionLink("Waiver Not Signed", "PrintWaiver", "Prints", new { id = item.PrintId }, null)
     }else if (FileStatus.ContainsKey(item.PrintId))
@@ -61,7 +62,8 @@
         }
     </td>
 
-    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>    }>
     @if (item.TermsAndConditionsAgreement == null)
     {
         @Html.ActionLink(item.FileName, "PrintWaiver", "Prints", new { id = item.PrintId }, null)
@@ -71,17 +73,21 @@
         @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
     }      
     </td>
-    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>    }>
         @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
     </td>
-    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>    }>
         @Html.DisplayFor(modelItem => item.SubmissionTime)
     </td>
-    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>    }>
         @Html.DisplayFor(modelItem => item.EstToolpathTime)
     </td>
-    <td @if (item.TermsAndConditionsAgreement == null) { <text> style="background-color:red" </text>    }>
-        @if (item.TermsAndConditionsAgreement == null)
+    <td @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
+        { <text> style="background-color:red" </text>    }>
+        @if (item.TermsAndConditionsAgreement == null && !FileStatus.ContainsKey(item.PrintId))
         {
             @Html.ActionLink("Sign Waiver", "PrintWaiver", "Prints", new { id = item.PrintId }, null)
         }

@@ -379,7 +379,7 @@ namespace MakerFarm.Controllers
         [ChildActionOnly]
         public ActionResult UnwaiveredPrints()
         {
-            List<Print> unwaiveredPrints = db.Prints.Where(P => P.UserName.Equals(User.Identity.Name) && P.TermsAndConditionsAgreement == null).ToList();
+            List<Print> unwaiveredPrints = db.Prints.Where(P => P.UserName.Equals(User.Identity.Name) && P.TermsAndConditionsAgreement == null && P.PrintEvents.Count() == 0).ToList();
             if (unwaiveredPrints.Count() > 0)
             {
                 ViewData["UnwaiveredPrints"] = true;
