@@ -451,7 +451,7 @@ namespace MakerFarm.Controllers
                 Cancelation.Comment = "Canceled by: " + User.Identity.Name;
                 Cancelation.EventTimeStamp = DateTime.Now;
                 Cancelation.EventType = PrintEventType.PRINT_CANCELED;
-                Cancelation.PrinterId = db.Printers.Where(P => P.PrinterTypeId == print.PrinterTypeId).First().PrinterId;
+                Cancelation.PrinterId = db.Printers.Where(P => P.PrinterName.Equals("Null Printer")).First().PrinterId;
                 Cancelation.UserName = User.Identity.Name;
                 db.PrintEvents.Add(Cancelation);
                 db.SaveChanges();

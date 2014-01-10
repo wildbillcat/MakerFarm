@@ -123,7 +123,7 @@
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
                         <text> | </text>
-                        @Html.ActionLink("Start Print", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                        @Html.ActionLink("Action", "Create", "PrintEvents", new { id = item.PrintId}, null)
                     }
                     else if (User.Identity.IsAuthenticated && !(Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {

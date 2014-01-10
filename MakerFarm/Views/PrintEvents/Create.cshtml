@@ -59,10 +59,9 @@
                 {
                     <font color="red">@Error</font>
                 }
-                else {
-                    @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
-                    @Html.ValidationMessageFor(model => model.PrinterId)
-                }
+                <br />
+                @Html.DropDownListFor(model => model.PrinterId, (SelectList)ViewBag.PrinterId)
+                @Html.ValidationMessageFor(model => model.PrinterId)                
             </div>
         </div>
 
@@ -90,14 +89,8 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @if (ViewBag.Send && !Error.Equals(""))
-                {
-
-                }
-                else {
-                <input type="submit" value="Create" class="btn btn-default" />
-                }
+            <div class="col-md-offset-2 col-md-10">                
+                <input type="submit" value="Create" class="btn btn-default" />                
             </div>
         </div>
     </div>
