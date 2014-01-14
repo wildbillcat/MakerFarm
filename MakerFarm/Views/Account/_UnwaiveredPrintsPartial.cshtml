@@ -1,6 +1,6 @@
 ﻿@if ((bool)ViewData["UnwaiveredPrints"])
 {
     <nav style="background-color: red; margin-left: auto; margin-right: auto; width: 100%; text-align: center;">
-        @Html.ActionLink("Warning! You have prints for which you have not signed a waiver. They presently will not be printed!", "Manage", "Account")
+        <h2> @Html.ActionLink("Warning! You have prints for which you have not signed a waiver. They presently will not be printed!", "Manage", "Account") </h2>
     </nav>
 }

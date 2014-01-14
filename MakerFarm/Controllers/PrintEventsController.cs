@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
-using System.Net;
 using System.Net.Mail;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
