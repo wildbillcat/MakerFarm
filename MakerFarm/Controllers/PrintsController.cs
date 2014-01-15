@@ -715,11 +715,11 @@ namespace MakerFarm.Controllers
             string path = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
             string flaggedPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName);
             var contentType = "text/plain";
-            if (!System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))
             {
                 return File(path, contentType, string.Concat(print.PrintId, "_", print.FileName));
             }
-            else if (!System.IO.File.Exists(flaggedPath))
+            else if (System.IO.File.Exists(flaggedPath))
             {
                 return File(flaggedPath, contentType, string.Concat(print.PrintId, "_", print.FileName));
             }
