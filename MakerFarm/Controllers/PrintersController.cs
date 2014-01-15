@@ -125,7 +125,7 @@ namespace MakerFarm.Controllers
                 "where (dbo.PrinterStatusLogs.PrinterID = @PrinterID)", Params1).First();
                 status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
             }
-            catch (Exception e)
+            catch 
             {
                 //oh myyyyy
             }
@@ -153,7 +153,7 @@ namespace MakerFarm.Controllers
             {
                 AssignedPrint = db.Prints.SqlQuery(AssignedPrintQuery, PrintingEventStart, PrinterId).Single();
             }
-            catch (Exception e)
+            catch 
             {
 
             }
