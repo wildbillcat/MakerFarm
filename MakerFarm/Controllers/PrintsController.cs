@@ -517,7 +517,7 @@ namespace MakerFarm.Controllers
             // find the user in question
             try
             {
-                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
+                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, userPrint.UserName);
                 if (user != null)
                 {
                     StringBuilder emailAgreement = new StringBuilder();
