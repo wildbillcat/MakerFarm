@@ -266,6 +266,22 @@ namespace MakerFarm.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Printer printer = db.Printers.Find(id);
+
+            //Delete all print events
+            List<PrintEvent> Events = db.PrintEvents.Where(P => P.PrinterId == printer.PrinterId).ToList();
+            foreach (PrintEvent e in Events)
+            {
+                db.PrintEvents.Remove(e);
+            }
+
+            //Delete all print statuses
+            List<PrinterStatusLog> Status = db.PrinterStatusLogs.Where(p => p.PrinterId == printer.PrinterId).ToList();
+            foreach (PrinterStatusLog p in Status)
+            {
+                db.PrinterStatusLogs.Remove(p);
+            }
+
+            //Now remove the printer
             db.Printers.Remove(printer);
             db.SaveChanges();
             return RedirectToAction("Index");

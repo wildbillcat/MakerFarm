@@ -190,6 +190,8 @@ namespace MakerFarm.Controllers
             {
                 ModelState.AddModelError("Printer ID Invalid", new Exception("Invalid Printer ID!!!!"));
             }
+            //Find what type of printer was being used
+            int printerID = db.Prints.Find(printevent.PrintId).PrinterTypeId;
             if (ModelState.IsValid)
             {
                 List<PrintEvent> LastEvents = db.PrintEvents.Where(p => p.PrintId.Equals(printevent.PrintId)).ToList();
@@ -206,8 +208,6 @@ namespace MakerFarm.Controllers
                 }
                 db.PrintEvents.Add(printevent);
                 db.SaveChanges();
-                //Find what type of printer was being used
-                int printerID = db.Printers.Find(printevent.PrinterId).PrinterTypeId;
 
                 //Mark printer as needing Maitenance when not the Null Printer and the previous status was an active mode
                 if(!printevent.EventType.Equals(PrintEventType.PRINT_START) && (LastEvent != null && LastEvent.EventType == PrintEventType.PRINT_START) && !db.Printers.Find(printevent.PrinterId).PrinterName.Equals("Null Printer"))
