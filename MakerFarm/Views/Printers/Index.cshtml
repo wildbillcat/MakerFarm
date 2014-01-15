@@ -20,6 +20,9 @@
             @Html.DisplayNameFor(model => model.PrinterName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.InternalName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PrinterTypeId)
         </th>
         <th>
@@ -35,6 +38,9 @@
     <tr>
         <td>
             @Html.ActionLink(item.PrinterName, "Details", new { id = item.PrinterId })
+        </td>
+        <td>
+            @item.InternalName
         </td>
         <td>
             @ViewBag.PrinterNames[item.PrinterTypeId].TypeName

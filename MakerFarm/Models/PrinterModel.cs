@@ -12,6 +12,9 @@ namespace MakerFarm.Models
         [Display(Name = "Printer Name", Description = "This should be a friendly name for the Printer/Queue")]
         public string PrinterName { set; get; }
 
+        [Display(Name = "Secondary Name", Description = "This is an optional name used internally to refer to the printer")]
+        public string InternalName { set; get; }
+
         [Display(Name = "Printer Type", Description = "The printer type associated with the printer")]
         public int PrinterTypeId { set; get; }
 

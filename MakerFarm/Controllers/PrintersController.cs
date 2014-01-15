@@ -182,7 +182,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="PrinterId,PrinterName,PrinterTypeId")] Printer printer)
+        public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {
@@ -226,7 +226,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PrinterId,PrinterName,PrinterTypeId")] Printer printer)
+        public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {

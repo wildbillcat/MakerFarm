@@ -316,6 +316,10 @@
     <Compile Include="Migrations\201401101933511_Converted the FullColorPrint option to a bool, as it should have been.Designer.cs">
       <DependentUpon>201401101933511_Converted the FullColorPrint option to a bool, as it should have been.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401151643543_Added the secondary name function to the appication for printers.cs" />
+    <Compile Include="Migrations\201401151643543_Added the secondary name function to the appication for printers.Designer.cs">
+      <DependentUpon>201401151643543_Added the secondary name function to the appication for printers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -599,6 +603,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401101933511_Converted the FullColorPrint option to a bool, as it should have been.resx">
       <DependentUpon>201401101933511_Converted the FullColorPrint option to a bool, as it should have been.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401151643543_Added the secondary name function to the appication for printers.resx">
+      <DependentUpon>201401151643543_Added the secondary name function to the appication for printers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
