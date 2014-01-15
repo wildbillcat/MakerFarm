@@ -25,7 +25,12 @@
         </td>
         <td>
             <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null) style="color: black; text-decoration: none;">
-                @item.AboutPrinter
+                @if (item.AboutPrinter != null && !item.AboutPrinter.Equals("")){
+                    foreach (string s in item.AboutPrinter.Split('\n'))
+                    {
+                        <p>@s</p>
+                    }
+                }
             </a>
             <br />
             @if (item.HyperLink != null && !item.HyperLink.Equals(""))

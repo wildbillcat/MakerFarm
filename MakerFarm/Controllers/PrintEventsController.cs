@@ -70,7 +70,7 @@ namespace MakerFarm.Controllers
                 //This is in need of some query optimization!
                 SqlParameter[] Params = {new SqlParameter("@PrinterTypeId", Print.PrinterTypeId), new SqlParameter("@PrinterStatus", PrinterStatus.Online)};
                 //Optimised the Query! Not sure why EF isn't following my models naming syntax for Id vs ID sporatically, will have to review at a later date.
-                List<Printer> PrinterList = db.Printers.SqlQuery(
+                List<Printer> PrinterList2 = db.Printers.SqlQuery(
                     "Select * FROM dbo.Printers " +
 				"INNER JOIN "+     
 			   "( " +
@@ -84,7 +84,27 @@ namespace MakerFarm.Controllers
                 ") " +  
             "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime " +
 			") pstat on dbo.Printers.PrinterID = pstat.PrinterID " +
-			"where pstat.LoggedPrinterStatus = @PrinterStatus and dbo.Printers.PrinterTypeId = @PrinterTypeId", Params).ToList(); 
+			"where pstat.LoggedPrinterStatus = @PrinterStatus and dbo.Printers.PrinterTypeId = @PrinterTypeId", Params).ToList();
+
+                string PrintAssignmentsQuery = "Select * " +
+            "from dbo.PrintEvents " +
+            "inner join ( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+            "where dbo.PrintEvents.EventType = @PrintingEventStart ";
+                SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
+                List<Printer> PrinterList = new List<Printer>();
+                foreach (Printer P in PrinterList2)
+                {
+                    if (!PrintingAssignments.ContainsKey(P.PrinterId))
+                    {
+                        PrinterList.Add(P);
+                    }
+                }
+
                 List<Printer> MaterialCompatible = new List<Printer>();
                 foreach (Printer P in PrinterList)
                 {
