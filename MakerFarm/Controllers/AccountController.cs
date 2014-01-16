@@ -161,10 +161,10 @@ namespace MakerFarm.Controllers
                 "select dbo.PrintEvents.* " +
                 "from dbo.PrintEvents " +
                 "inner join ( " +
-                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
                 "from dbo.PrintEvents " +
                 "group by dbo.PrintEvents.PrintID " +
-                ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
 
                 ") val on dbo.Prints.PrintId = val.PrintID " +
                 "where dbo.Prints.UserName = @UserName1";
