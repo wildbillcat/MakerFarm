@@ -2,6 +2,9 @@
 
 @{
     ViewBag.Title = "Details";
+    MakerFarm.Models.PrintEvent CurrentEvent = (MakerFarm.Models.PrintEvent)ViewData["CurrentEvent"];
+    MakerFarm.Models.Printer CurrentPrinter = (MakerFarm.Models.Printer)ViewData["CurrentPrinter"];
+    bool InactiveJob = (bool)ViewData["InactiveJob"];
 }
 
 <h2>Details</h2>
@@ -15,6 +18,25 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.FileName)
     </div>
+
+    @if (!InactiveJob)
+    {
+        <div class="display-label">
+            Current Status:
+        </div>
+        <div class="display-field">
+            @CurrentEvent.EventType.ToString()
+            <br />
+            <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
+        </div>
+        
+        <div class="display-label">
+            Current Printer:
+        </div>
+        <div class="display-field">
+            @CurrentPrinter.PrinterName
+        </div>
+    }  
 
     @foreach (string S in (List<string>)ViewData["MaterialsList"])
     {
@@ -118,28 +140,20 @@
             @Html.LabelFor(model => model.FileName, "File Download")
         </div>
         <div class="display-field">
-            @Html.ActionLink(string.Concat("Download: ", Model.FileName), "Download", new { id = Model.PrintId })
-        </div>   
+            <input type="button" value="Download" onclick="location.href='@Url.Action("Download", "Prints", new { id = Model.PrintId})'" />
+        </div>
         }
     }
 </fieldset>
 <p>
-@if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
-    { 
-    @Html.ActionLink("Edit", "Edit", new { id=Model.PrintId })
-    <text> | </text>
-    }
     @Html.ActionLink("Back to List", "Index", new { id = Model.PrinterTypeId })
 </p>
 @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
 {
-    if (false)
-    {
     <h5>Administrative Actions:</h5>
     <p>
-    @Html.ActionLink("Delete", "Delete", new { id = Model.PrintId })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.PrintId })
     </p>
-    }
 }
 <h3>Print Log:</h3>
 <table class="table">

@@ -171,7 +171,17 @@ namespace MakerFarm.Controllers
             }
             ViewData["DownloadAvailable"] = System.IO.File.Exists(string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName)) || System.IO.File.Exists(string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", print.SubmissionTime.ToString("yyyy-MMM-d"), "\\", print.PrintId, "_", print.FileName));
             ViewData["MaterialsList"] = materials;
-
+            ViewData["InactiveJob"] = false;
+            PrintEvent CurrentEvent = null;
+            Printer CurrentPrinter = null;
+            if (db.PrintEvents.Where(P => P.PrintId == id).Count() > 0)
+            {
+                CurrentEvent = db.PrintEvents.Last(p => p.PrintId == id);
+                CurrentPrinter = CurrentEvent.Printer;
+                ViewData["InactiveJob"] = CurrentEvent.EventType == PrintEventType.PRINT_CANCELED && CurrentEvent.EventType != PrintEventType.PRINT_COMPLETED;
+            }
+            ViewData["CurrentEvent"] = CurrentEvent;
+            ViewData["CurrentPrinter"] = CurrentPrinter;
             return View(print);
         }
 
