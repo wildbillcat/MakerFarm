@@ -17,6 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.UserError)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </th>
         <th></th>
     </tr>
 
@@ -27,6 +30,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserError)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Enabled)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PrintErrorTypeId }) |

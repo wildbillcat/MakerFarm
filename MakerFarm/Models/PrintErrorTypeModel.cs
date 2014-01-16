@@ -14,5 +14,8 @@ namespace MakerFarm.Models
 
         [Display(Name = "User Error?", Description = "This Denotes if it is an error deemed to be fault of the user")]
         public bool UserError { get; set; } /* There are two types of errors in this world, User Errors and Non-User Errors */
+
+        [Display(Name = "Enable Error?", Description = "This Denotes if the error is selector")]
+        public bool Enabled { get; set; } /* There are two types of errors in this world, User Errors and Non-User Errors */
     }
 }

@@ -47,7 +47,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="PrintErrorTypeId,PrintErrorName,UserError")] PrintErrorType printerrortype)
+        public ActionResult Create([Bind(Include = "PrintErrorTypeId,PrintErrorName,UserError,Enabled")] PrintErrorType printerrortype)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PrintErrorTypeId,PrintErrorName,UserError")] PrintErrorType printerrortype)
+        public ActionResult Edit([Bind(Include = "PrintErrorTypeId,PrintErrorName,UserError,Enabled")] PrintErrorType printerrortype)
         {
             if (ModelState.IsValid)
             {

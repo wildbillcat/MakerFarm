@@ -320,6 +320,10 @@
     <Compile Include="Migrations\201401151643543_Added the secondary name function to the appication for printers.Designer.cs">
       <DependentUpon>201401151643543_Added the secondary name function to the appication for printers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401162007301_Added an enable flag to PrinterErrorTypes.cs" />
+    <Compile Include="Migrations\201401162007301_Added an enable flag to PrinterErrorTypes.Designer.cs">
+      <DependentUpon>201401162007301_Added an enable flag to PrinterErrorTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -606,6 +610,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401151643543_Added the secondary name function to the appication for printers.resx">
       <DependentUpon>201401151643543_Added the secondary name function to the appication for printers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401162007301_Added an enable flag to PrinterErrorTypes.resx">
+      <DependentUpon>201401162007301_Added an enable flag to PrinterErrorTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
