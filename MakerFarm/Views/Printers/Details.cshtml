@@ -1,6 +1,7 @@
 ﻿@model MakerFarm.Models.Printer
 @{
     List<MakerFarm.Models.PrinterStatusLog> PrinterHistory = (List<MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterHistory"];
+    MakerFarm.Models.Print Print = (MakerFarm.Models.Print)ViewBag.AssignedPrint;
 }
 <h2>Details</h2>
 
@@ -33,12 +34,13 @@
         </dd>
 
         <dt>
-            @Html.Label("Printer Status")
+            @Html.Label("", "Printer Status", new { })
         </dt>
 
         <dd>
             @ViewData["Status"] 
-            @if(!Model.PrinterName.Equals("Null Printer")){
+            @if (!Model.PrinterName.Equals("Null Printer") && Print == null)
+            {
                <text> | </text> 
             @Html.ActionLink("Update", "Create", "PrinterStatusLogs", new { id = Model.PrinterId }, null)
             }
@@ -84,23 +86,27 @@
                         @Html.DisplayFor(modelItem => M.Material.MaterialName)
                     </td>
                     <td>
-                        @using (Html.BeginForm("Delete","MaterialCheckouts"))
+                        @if (Print == null)
+                        {
+                            using (Html.BeginForm("Delete","MaterialCheckouts"))
                         {
                         @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                @Html.Hidden("MaterialCheckoutId", M.MaterialCheckoutId.ToString())
-                                <input type="submit" value="Remove Material" class="btn btn-default" />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @Html.Hidden("MaterialCheckoutId", M.MaterialCheckoutId.ToString())
+                                    <input type="submit" value="Remove Material" class="btn btn-default" />
+                                </div>
                             </div>
-                        </div>
+                            }
                         }
+                        
                     </td>
                 </tr>
             }
 
         </table>
         }
-@{MakerFarm.Models.Print Print = (MakerFarm.Models.Print)ViewBag.AssignedPrint;}      
+      
 @if (Print != null)
 {
     <h4>Assigned Print:</h4>
