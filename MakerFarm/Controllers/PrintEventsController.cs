@@ -230,13 +230,17 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
 
                 //Mark printer as the new status recieved by the Event
-                PrinterStatusLog StatusUpdate = new PrinterStatusLog();
-                StatusUpdate.Comment = string.Concat(values["PrinterStatusComments"], " Event Id:", printevent.PrintEventId);
-                StatusUpdate.LogEntryDate = DateTime.Now;
-                StatusUpdate.LoggedPrinterStatus = (PrinterStatus)Enum.Parse(typeof(PrinterStatus), values["LoggedPrinterStatus"]);
-                StatusUpdate.PrinterId = printevent.PrinterId;
-                db.PrinterStatusLogs.Add(StatusUpdate);
-                db.SaveChanges();
+                if (!db.Printers.Find(printevent.PrinterId).PrinterName.Equals("Null Printer"))
+                {
+                    PrinterStatusLog StatusUpdate = new PrinterStatusLog();
+                    StatusUpdate.Comment = string.Concat(values["PrinterStatusComments"], " Event Id:", printevent.PrintEventId);
+                    StatusUpdate.LogEntryDate = DateTime.Now;
+                    StatusUpdate.LoggedPrinterStatus = (PrinterStatus)Enum.Parse(typeof(PrinterStatus), values["LoggedPrinterStatus"]);
+                    StatusUpdate.PrinterId = printevent.PrinterId;
+                    db.PrinterStatusLogs.Add(StatusUpdate);
+                    db.SaveChanges();
+                }
+                
 
                 if (printevent.EventType.Equals(PrintEventType.PRINT_FAILURE_FILE))
                 {
