@@ -36,7 +36,7 @@ namespace MakerFarm.Controllers
                 "on dbo.Prints.PrintId = PrintEvents.PrintID " +
                 "where dbo.PrintEvents.PrinterID IS NULL and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL ";
                 Dictionary<long, Print> UnstartedCancelEligiblePrints = db.Prints.SqlQuery(UnstartedPrintsSQL).ToDictionary(p => p.PrintId);
-                ViewBag.CancelEligible = UnstartedCancelEligiblePrints;
+                ViewData["UnstartedCancelEligiblePrints"] = UnstartedCancelEligiblePrints;
                 //Need to edit it to pull prints 
                 string PrintStartQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
@@ -82,11 +82,24 @@ namespace MakerFarm.Controllers
                 SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
                 SqlParameter PrinterTypeId2 = new SqlParameter("@PrinterTypeID", id);
                 ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
-                ViewBag.id = id;
-                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrintId);
-                ViewBag.PrintingAssignments = PrintingAssignments;
-                List<Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2, PrinterTypeId).ToList();
-                ViewBag.Assigned = Assigned;//Print Start Query
+                ViewData["id"] = id;
+                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
+                ViewData["PrintingAssignments"] = PrintingAssignments;
+                Dictionary<long, Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2, PrinterTypeId).ToDictionary(p => p.PrintId);
+                ViewData["Assigned"] = Assigned;//Print Start Query
+                List<Printer> Printers = db.Printers.Where(p => p.PrinterTypeId == id).OrderBy(p => p.PrinterName).ToList();
+                ViewData["Printers"] = Printers;
+                Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
+            "Select dbo.PrinterStatusLogs.* " +
+            "From dbo.PrinterStatusLogs " +
+            "inner join " +
+                "(" +
+                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.PrinterStatusLogID) as MaxEntryTime " +
+                "from dbo.PrinterStatusLogs " +
+                "group by dbo.PrinterStatusLogs.PrinterID" +
+                ") " +
+            "mxe ON dbo.PrinterStatusLogs.PrinterStatusLogID = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
+                ViewData["PrinterStatus"] = PrinterStatus;
                 List<Print> Waiting = db.Prints.SqlQuery(WaitingPrintFilesQuery, PrintingEventFile, PrintingEventMachine, PrinterTypeId2).ToList();
                 return View(Waiting);
             }
@@ -176,9 +189,9 @@ namespace MakerFarm.Controllers
             Printer CurrentPrinter = null;
             if (db.PrintEvents.Where(P => P.PrintId == id).Count() > 0)
             {
-                CurrentEvent = db.PrintEvents.Last(p => p.PrintId == id);
+                CurrentEvent = db.PrintEvents.Where(P => P.PrintId == id).ToList().Last();
                 CurrentPrinter = CurrentEvent.Printer;
-                ViewData["InactiveJob"] = CurrentEvent.EventType == PrintEventType.PRINT_CANCELED && CurrentEvent.EventType != PrintEventType.PRINT_COMPLETED;
+                ViewData["InactiveJob"] = CurrentEvent.EventType == PrintEventType.PRINT_CANCELED || CurrentEvent.EventType == PrintEventType.PRINT_COMPLETED;
             }
             ViewData["CurrentEvent"] = CurrentEvent;
             ViewData["CurrentPrinter"] = CurrentPrinter;

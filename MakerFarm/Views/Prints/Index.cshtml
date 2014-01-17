@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<MakerFarm.Models.Print>
 @{
-    Dictionary<long, MakerFarm.Models.Print> UnstartedCancelEligiblePrints = (Dictionary<long, MakerFarm.Models.Print>)ViewBag.CancelEligible;
+    Dictionary<long, MakerFarm.Models.Print> UnstartedCancelEligiblePrints = (Dictionary<long, MakerFarm.Models.Print>)ViewData["UnstartedCancelEligiblePrints"];
+    List<MakerFarm.Models.Printer> Printers = (List<MakerFarm.Models.Printer>)ViewData["Printers"];
+    Dictionary<long, MakerFarm.Models.Print> Assigned = (Dictionary<long, MakerFarm.Models.Print>)ViewData["Assigned"];
+    Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
+    Dictionary<long, MakerFarm.Models.PrinterStatusLog> PrinterStatus = (Dictionary<long, MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterStatus"];
+    int id = (int)ViewData["id"];
 }
 <h2>@ViewBag.Title</h2>
 
@@ -8,66 +13,102 @@
     @Html.ActionLink("Past Prints", "Completed", new { id = ViewBag.id })
 </p>
 
-@if (((List<MakerFarm.Models.Print>)ViewBag.Assigned).Count() > 0)
-{
 <h3>Currently Printing:</h3>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName("Assigned Printer")
+            @Html.DisplayName("Printer")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FileName)
+            Printer Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubmissionTime)
+            Status Update
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in (List<MakerFarm.Models.Print>)ViewBag.Assigned)
+@foreach (MakerFarm.Models.Printer item in Printers)
         {
     <tr>
-        <td>
+        <td><!--Printer Name-->
         @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))) 
         {
-            @Html.ActionLink((string)ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterName, "details", "Printers", new { id = ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterId}, null)
+            @Html.ActionLink(item.PrinterName, "Details", "Printers", new { id = item.PrinterId }, null)
         }
         else
         {
-            @ViewBag.PrintingAssignments[item.PrintId].Printer.PrinterName
+            @item.PrinterName
         }    
-        </td>
-        <td>
-        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+        </td><!--End Printer Name-->
+        <td><!--Printer Status/Username + Print File-->
+        <!--Test if Printer is Active-->
+        @if (PrintingAssignments.ContainsKey(item.PrinterId))
         {
-            @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })    
+            if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName)))
+            {<!--Allow Submitter, Moderator and Administrator to look at print details-->
+                @Html.ActionLink(string.Concat("User: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName, " | Printing: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName), "Details", new { id = PrintingAssignments[item.PrinterId].PrintId }) 
+            }
+            else
+            {<!--Not the Submitter or elevated user, just display User and File Name-->
+                string.Concat("User: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName, " | Printing: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName);
+            }
         }
         else
         {
-            @item.FileName
+            if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+            {<!--Allow Submitter, Moderator and Administrator to look at print details-->
+                if (PrinterStatus.ContainsKey(item.PrinterId))
+                {
+                    @Html.ActionLink(PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString(), "Create", "PrinterStatusLogs", new { id = item.PrinterId })
+                }
+                else
+                {
+                    @Html.ActionLink("Offline", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)
+                }
+            }
+            else
+            {<!--Not the Submitter or elevated user, just display User and File Name-->
+                if (PrinterStatus.ContainsKey(item.PrinterId))
+                {<!--If Printer has a status-->
+                    @PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString()
+                }
+                else
+                {<!--If Printer Status is unkown, mark it as down-->
+                    <text>Offline</text>
+                }
+            }
         }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement
-)
-        </td>
+        </td><!--End Printer Status/Username + Print File-->
+        <td><!--Status Update-->
+            @if (PrinterStatus.ContainsKey(item.PrinterId))
+            {
+                @PrinterStatus[item.PrinterId].LogEntryDate.ToString()
+            }
+            else
+            {
+                DateTime.Now.ToString();
+            }
+            
+        </td><!--End Status Update-->
         <td>
         @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
         {
-            @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = item.PrintId}, null)
+            if (PrintingAssignments.ContainsKey(item.PrinterId))
+            {<!--Printer is Active-->
+                @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)
+            }
+            else
+            {<!--Printer is Not Active-->
+                @Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)
+            }
+            
         }
         </td>
     </tr>
         }
 </table>
-}
+
 
     <h3>Queue to be Printed in Order:</h3>
 
@@ -91,11 +132,11 @@
                 <td>
                 @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                 {
-                @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })   
+                    @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })   
                 }
                 else
                 {
-                @item.FileName
+                    @item.FileName
                 }
                 </td>
                 <td>
@@ -105,16 +146,11 @@
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
                 </td>
                 <td>
-                @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
-                    {
-                        @Html.ActionLink("Details", "Details", new { id = item.PrintId })
-                    }
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
-                        <text> | </text>
-                        @Html.ActionLink("Action", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId}, null)
                     }
-                    else if (User.Identity.IsAuthenticated && !(Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                    else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {
                         @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
                     }

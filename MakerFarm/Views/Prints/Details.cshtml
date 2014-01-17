@@ -22,16 +22,17 @@
     @if (!InactiveJob)
     {
         <div class="display-label">
-            Current Status:
+            @Html.Label("", "Current Status:", new { })
         </div>
         <div class="display-field">
             @CurrentEvent.EventType.ToString()
-            <br />
-            <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))){
+                <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
+            }
         </div>
         
         <div class="display-label">
-            Current Printer:
+            @Html.Label("", "Current Printer:", new { })
         </div>
         <div class="display-field">
             @CurrentPrinter.PrinterName

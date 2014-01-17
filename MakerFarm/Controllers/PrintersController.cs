@@ -27,11 +27,11 @@ namespace MakerFarm.Controllers
             "From dbo.PrinterStatusLogs " +
             "inner join " +
                 "(" +
-                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.LogEntryDate) as MaxEntryTime " +
+                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.PrinterStatusLogID) as MaxEntryTime " +
                 "from dbo.PrinterStatusLogs " +
                 "group by dbo.PrinterStatusLogs.PrinterID" +
                 ") " +
-            "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
+            "mxe ON dbo.PrinterStatusLogs.PrinterStatusLogID = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
             ViewBag.PrinterStatus = PrinterStatus;
             
             List<Printer> ValidMaterialStatus = db.Printers.SqlQuery(
