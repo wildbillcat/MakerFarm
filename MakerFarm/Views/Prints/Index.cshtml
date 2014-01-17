@@ -30,98 +30,109 @@
             <th>Status Comment</th>
             <th></th>
         }
-        
+
     </tr>
 
 @foreach (MakerFarm.Models.Printer item in Printers)
         {
     <tr>
         <td><!--Printer Name-->
-        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))) 
-        {
-            @Html.ActionLink(item.PrinterName, "Details", "Printers", new { id = item.PrinterId }, null)
-        }
-        else
-        {
-            @item.PrinterName
-        }    
-        </td><!--End Printer Name-->
-        <td><!--Printer Status/Username + Print File-->
-        <!--Test if Printer is Active-->
-        @if (PrintingAssignments.ContainsKey(item.PrinterId))
-        {
-            if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName)))
-            {<!--Allow Submitter, Moderator and Administrator to look at print details-->
-                @Html.ActionLink(string.Concat("User: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName, " | Printing: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName), "Details", new { id = PrintingAssignments[item.PrinterId].PrintId }) 
-            }
-            else
-            {<!--Not the Submitter or elevated user, just display User and File Name-->
-                <text>User: </text> @Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName <text> | Printing: </text> @Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName
-    }
-    }
-    else
-    {
-        if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
-        {<!--Allow Submitter, Moderator and Administrator to look at print details-->
-            if (PrinterStatus.ContainsKey(item.PrinterId))
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
             {
-                @Html.ActionLink(PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString(), "Details", "Printers", new { id = item.PrinterId }, null)
+                @Html.ActionLink(item.PrinterName, "Details", "Printers", new { id = item.PrinterId }, null)
             }
             else
             {
-                @Html.ActionLink("Offline", "Details", "Printers", new { id = item.PrinterId }, null)
+                @item.PrinterName
             }
-        }
-        else
-        {<!--Not the Submitter or elevated user, just display User and File Name-->
-            if (PrinterStatus.ContainsKey(item.PrinterId))
-            {<!--If Printer has a status-->
-                if (PrinterStatus[item.PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance)
+            </td><!--End Printer Name-->
+        <td @if ((Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))){
+                if ((!PrinterStatus.ContainsKey(item.PrinterId) || PrinterStatus[item.PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.Offline))
                 {
-                    <text>Online</text>
+                    <text> style="background-color:red" </text>
+                }
+                else if ((PrinterStatus.ContainsKey(item.PrinterId) && PrinterStatus[item.PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance))
+                {
+                    <text> style="background-color: orange" </text>
+                }                
+            }>
+            <!--Printer Status/Username + Print File-->
+            <!--Test if Printer is Active-->
+            @if (PrintingAssignments.ContainsKey(item.PrinterId))
+            {
+                if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName)))
+                {<!--Allow Submitter, Moderator and Administrator to look at print details-->
+                @Html.ActionLink(string.Concat("User: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName, " | Printing: ", Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName), "Details", new { id = PrintingAssignments[item.PrinterId].PrintId })
+                }
+                else
+                {<!--Not the Submitter or elevated user, just display User and File Name-->
+                <text>User: </text> @Assigned[PrintingAssignments[item.PrinterId].PrintId].UserName <text> | Printing: </text> @Assigned[PrintingAssignments[item.PrinterId].PrintId].FileName
+                }
+            }
+            else
+            {
+                if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+                {<!--Allow Submitter, Moderator and Administrator to look at print details-->
+                    if (PrinterStatus.ContainsKey(item.PrinterId))
+                    {
+                        @Html.ActionLink(PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString(), "Details", "Printers", new { id = item.PrinterId }, null)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Offline", "Details", "Printers", new { id = item.PrinterId }, null)
+                    }
+                }
+                else
+                {<!--Not the Submitter or elevated user, just display User and File Name-->
+                    if (PrinterStatus.ContainsKey(item.PrinterId))
+                    {<!--If Printer has a status-->
+                        if (PrinterStatus[item.PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance)
+                        {
+                            <text>Online</text>
+                        }
+                        else
+                        {
+                            @PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString()
+                        }
+                    }
+                    else
+                    {<!--If Printer Status is unkown, mark it as down-->
+                    <text>Offline</text>
+                    }
+                }
+            }
+            </td><!--End Printer Status/Username + Print File-->
+            <td>
+                <!--Status Update-->
+                @if (PrinterStatus.ContainsKey(item.PrinterId))
+                {
+                    @PrinterStatus[item.PrinterId].LogEntryDate.ToString()
                 }
                 else
                 {
-                    @PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString()
+                    DateTime.Now.ToString();
                 }
-            }
-            else
-            {<!--If Printer Status is unkown, mark it as down-->
-                <text>Offline</text>
-            }
-        }
-    }
-</td><!--End Printer Status/Username + Print File-->
-        <td><!--Status Update-->
-            @if (PrinterStatus.ContainsKey(item.PrinterId))
+
+            </td><!--End Status Update-->
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
             {
-                @PrinterStatus[item.PrinterId].LogEntryDate.ToString()
-            }
-            else
-            {
-                DateTime.Now.ToString();
-            }
-            
-        </td><!--End Status Update--> 
-        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
-        {
-            if (PrintingAssignments.ContainsKey(item.PrinterId))
-            {<!--Printer is Active-->
+                if (PrintingAssignments.ContainsKey(item.PrinterId))
+                {<!--Printer is Active-->
                 <td>@PrintingAssignments[item.PrinterId].Comment</td>
                 <td>@Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)</td>
-            }
-            else if(PrinterStatus.ContainsKey(item.PrinterId))
-            {<!--Printer is Not Active-->
+                }
+                else if (PrinterStatus.ContainsKey(item.PrinterId))
+                {<!--Printer is Not Active-->
                 <td>@PrinterStatus[item.PrinterId].Comment</td>
                 <td>@Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)</td>
+                }
+                else
+                {
+                    <td></td>
+                    <td>@Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)</td>
+                }
             }
-            else
-            {
-                <td></td>
-                <td>@Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)</td>
-            }
-        }
-    </tr>
+</tr>
         }
 </table>
 
