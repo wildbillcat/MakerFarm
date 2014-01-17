@@ -25,7 +25,12 @@
         <th>
             Status Update
         </th>
-        <th></th>
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+        {
+            <th>Status Comment</th>
+            <th></th>
+        }
+        
     </tr>
 
 @foreach (MakerFarm.Models.Printer item in Printers)
@@ -90,21 +95,25 @@
                 DateTime.Now.ToString();
             }
             
-        </td><!--End Status Update-->
-        <td>
+        </td><!--End Status Update--> 
         @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
         {
             if (PrintingAssignments.ContainsKey(item.PrinterId))
             {<!--Printer is Active-->
-                @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)
+                <td>@PrintingAssignments[item.PrinterId].Comment</td>
+                <td>@Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)</td>
+            }
+            else if(PrinterStatus.ContainsKey(item.PrinterId))
+            {<!--Printer is Not Active-->
+                <td>@PrinterStatus[item.PrinterId].Comment</td>
+                <td>@Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)</td>
             }
             else
-            {<!--Printer is Not Active-->
-                @Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)
+            {
+                <td></td>
+                <td>@Html.ActionLink("Update Status", "Create", "PrinterStatusLogs", new { id = item.PrinterId }, null)</td>
             }
-            
         }
-        </td>
     </tr>
         }
 </table>

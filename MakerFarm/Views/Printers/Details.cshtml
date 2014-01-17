@@ -141,7 +141,7 @@
         </tr>
     </table>
 }
-<p>@Html.ActionLink("Back to List", "Index")</p>
+<p>@Html.ActionLink("Back to Queue", "Index", "Prints", new { id = Model.PrinterTypeId }, null)</p>
 
 @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
 {
