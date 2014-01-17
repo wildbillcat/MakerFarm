@@ -1,5 +1,7 @@
 ﻿@model MakerFarm.Models.Printer
-
+@{
+    List<MakerFarm.Models.PrinterStatusLog> PrinterHistory = (List<MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterHistory"];
+}
 <h2>Details</h2>
 
 <div>
@@ -149,3 +151,35 @@
     @Html.ActionLink("Delete", "Delete", new { id = Model.PrinterId }) 
 </p>   
 }
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Log Entry Date
+        </th>
+        <th>
+            Printer Status
+        </th>
+        <th>
+            Comment
+        </th>
+    </tr>
+
+    @foreach (var item in PrinterHistory)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogEntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoggedPrinterStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+        </tr>
+    }
+
+</table>

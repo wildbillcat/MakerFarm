@@ -109,6 +109,14 @@ namespace MakerFarm.Controllers
             ViewData["Materials"] = new SelectList(Materials, "MaterialId", "MaterialName");
             
             string status = "Unknown";
+            List<PrinterStatusLog> PrinterHistory = db.PrinterStatusLogs.Where(P => P.PrinterId == id).OrderByDescending(E => E.PrinterStatusLogId).ToList();
+            if (PrinterHistory.Count > 0)
+            {
+                PrinterStatusLog P = PrinterHistory.First();
+                status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
+            }
+            ViewData["PrinterHistory"] = PrinterHistory;
+            /* Pretty sure this is garbage, not sure what I was on when I wrote that.
             try
             {
                 SqlParameter[] Params1 = { new SqlParameter("@PrinterID", printer.PrinterId) };
@@ -123,12 +131,12 @@ namespace MakerFarm.Controllers
                     ") " +
                 "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime " +
                 "where (dbo.PrinterStatusLogs.PrinterID = @PrinterID)", Params1).First();
-                status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
+                
             }
             catch 
             {
                 //oh myyyyy
-            }
+            }*/
             
             ViewData["Status"] = status;
             
