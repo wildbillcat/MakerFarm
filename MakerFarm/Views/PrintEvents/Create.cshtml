@@ -87,7 +87,30 @@
                 @Html.ValidationMessageFor(model => model.Comment)
             </div>
         </div>
+        <!--Printer Status Section: Used to determine what needs to be done to the printer-->
+        @if (!ViewBag.Send)
+        {
+        <div class="form-group">
+            @Html.Label("", "Printer Status: (ie. does it require maintenance, has it completely broken, or is it ready for a new job?", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("LoggedPrinterStatus", new SelectList(Enum.GetValues(typeof(MakerFarm.Models.PrinterStatus)).Cast<MakerFarm.Models.PrinterStatus>().ToList()))
+                @Html.ValidationMessage("LoggedPrinterStatus")
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.Label("PrinterStatusComments", "Printer Status Comments (Please Note any problems or maintenance needed on the printer)",new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("PrinterStatusComments")
+                @Html.ValidationMessage("PrinterStatusComments")
+            </div>
+        </div>  
+        }
+        else
+        {
+            @Html.Hidden("LoggedPrinterStatus", MakerFarm.Models.PrinterStatus.Online.ToString())
+            @Html.Hidden("PrinterStatusComments", "")
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">                
                 <input type="submit" value="Create" class="btn btn-default" />                

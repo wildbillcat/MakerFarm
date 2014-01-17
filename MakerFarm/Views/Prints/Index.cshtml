@@ -13,7 +13,7 @@
     @Html.ActionLink("Past Prints", "Completed", new { id = ViewBag.id })
 </p>
 
-<h3>Currently Printing:</h3>
+<h3>Printers:</h3>
 <table class="table">
     <tr>
         <th>
@@ -65,7 +65,7 @@
             {<!--Allow Submitter, Moderator and Administrator to look at print details-->
                 if (PrinterStatus.ContainsKey(item.PrinterId))
                 {
-                    @Html.ActionLink(PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString(), "Details", "Printers", new { id = item.PrinterId })
+                    @Html.ActionLink(PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString(), "Details", "Printers", new { id = item.PrinterId }, null)
                 }
                 else
                 {
