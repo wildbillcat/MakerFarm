@@ -53,7 +53,7 @@
             @Html.ValidationMessageFor(model => model.EstToolpathTime)
         </div>
             
-        @if ((int)ViewData["MNUA"] > 3)
+        @if ((int)ViewData["MNUA"] > 1)
         {
             <div class="editor-label">
                 @Html.LabelFor(model => model.AuthorizedAttempts)
