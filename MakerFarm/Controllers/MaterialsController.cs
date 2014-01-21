@@ -38,6 +38,21 @@ namespace MakerFarm.Controllers
             return View(material);
         }
 
+        [Authorize(Roles = "Administrator, Moderator")]
+        [ChildActionOnly] //Partial
+        public ActionResult AvailableSpools(long id)
+        {
+            if (id == 0)
+            {
+                ViewData["SpoolsAvailable"] = 0;
+            }
+            else
+            {
+                ViewData["SpoolsAvailable"] = db.Materials.Find(id).MaterialSpoolQuantity - db.MaterialCheckouts.Where(M => M.MaterialId == id).Count();
+            }
+            return PartialView("_AvailableSpoolsPartial");
+        }
+
         // GET: /Materials/Create
         [Authorize(Roles = "Administrator")]
         public ActionResult Create()
@@ -97,9 +112,9 @@ namespace MakerFarm.Controllers
             {
                 material.MaterialSpoolQuantity = int.Parse(values["MaterialSpoolQuantity"]);
             }
-            catch (Exception e)
+            catch
             {
-                ModelState.AddModelError("You didn't enter a bloody INTEGER!", new Exception("You didn't enter a bloody INTEGER!"));
+                ModelState.AddModelError("MaterialSpoolQuantity", "You didn't enter a bloody INTEGER!");
             }
             if (ModelState.IsValid)
             {

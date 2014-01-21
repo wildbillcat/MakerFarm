@@ -545,6 +545,7 @@
     <Content Include="Views\Account\_UnwaiveredPrintsPartial.cshtml" />
     <Content Include="Views\Prints\UnapprovedAdmin.cshtml" />
     <Content Include="Views\Prints\Cancel.cshtml" />
+    <Content Include="Views\Materials\_AvailableSpoolsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
