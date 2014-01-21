@@ -326,6 +326,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\HardwareDeviceModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
     <Compile Include="Models\MaterialCheckoutModel.cs" />
     <Compile Include="Models\MaterialModel.cs" />

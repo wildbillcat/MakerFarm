@@ -19,6 +19,8 @@ namespace MakerFarm.Models
         public DbSet<PrinterStatusLog> PrinterStatusLogs { set; get; }
         public DbSet<MaterialCheckout> MaterialCheckouts { get; set; }
         public DbSet<PrintSubmissionWaiverTerm> PrintSubmissionWaiverTerms { get; set; }
+        public DbSet<HardwareDevice> HardwareDevices { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         public MakerfarmDBContext() : base("DefaultConnection")
         {
