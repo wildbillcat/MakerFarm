@@ -21,6 +21,8 @@ namespace MakerFarm.Models
         public DbSet<PrintSubmissionWaiverTerm> PrintSubmissionWaiverTerms { get; set; }
         public DbSet<HardwareDevice> HardwareDevices { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientPermission> ClientPermissions { get; set; }
 
         public MakerfarmDBContext() : base("DefaultConnection")
         {
