@@ -158,13 +158,13 @@
             if (item.InternalUser) { 
             <tr>
                 <td>
-                @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                 {
-                    @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })   
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
                 }
                 else
                 {
-                    @item.FileName
+                        @item.FileName
                 }
                 </td>
                 <td>
@@ -176,7 +176,7 @@
                 <td>
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
-                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }
                     else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {
@@ -191,7 +191,7 @@
         {
             if (!item.InternalUser) { 
             <tr>
-                <td>
+                <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                     {
                         @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
@@ -201,13 +201,13 @@
                         @item.FileName
                     }
                 </td>
-                <td>
+                <td style="background-color: greenyellow">
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
-                <td>
+                <td style="background-color: greenyellow">
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
                 </td>
-                <td>
+                <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
                     {
                         @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
