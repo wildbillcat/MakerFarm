@@ -12,7 +12,7 @@ namespace MakerFarm.Models
         public long PrintId { get; set; } /* Generic Id for the Print Job */
 
         [Display(Name = "Assigned Unique Hardware Device ID", Description = "This is the unique hardware ID as reported by the client.")]
-        string HardwareDeviceId;
+        public string HardwareDeviceId;
 
         [Display(Name = "Reported Status", Description = "This string is filled with reported information on what the job is up to.")]
         public string Status { set; get; }

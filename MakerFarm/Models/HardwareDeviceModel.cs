@@ -8,7 +8,7 @@ namespace MakerFarm.Models
     {
         [Key]
         [Display(Name = "Unique Hardware Device ID", Description = "This is the unique hardware ID as reported by the client.")]
-        string HardwareDeviceId;
+        public string HardwareDeviceId { set; get; }
 
         [Display(Name = "PrinterId", Description = "This is the affiliated ID of the Printer affiliated with this hardware.")]
         public long? PrinterId { set; get; }
