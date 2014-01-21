@@ -54,6 +54,12 @@ namespace MakerFarm.Models
         [Display(Name = "Full Color Print", Description = "This denotes if you would like the print in full color, instead of the default monochrome material color.")]
         public bool FullColorPrint { get; set; } /*Denotes if user wants a full color print*/
 
+        [Display(Name = "Print submitted by internal user?")]
+        public bool InternalUser { get; set; }
+
+        [Display(Name = "Print has been billed to user?")]
+        public bool BilledUser { get; set; }
+
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
     }

@@ -120,7 +120,7 @@ namespace MakerFarm.Controllers
                 "from dbo.Prints " +
                 "left outer join " +
                 "( " +
-                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, mxe.MostReventEvent " +
                 "from dbo.PrintEvents " +
                 "inner join " +
                 "( " +
@@ -130,7 +130,7 @@ namespace MakerFarm.Controllers
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
                 "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.PrinterTypeID = @PrinterTypeID " +
-                "order by dbo.prints.PrintID DESC";
+                "order by pnt.MostReventEvent DESC";
                 string PrintAssignmentsQuery = "Select * " +
              "from dbo.PrintEvents " +
              "inner join ( " +
@@ -253,12 +253,26 @@ namespace MakerFarm.Controllers
         {
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
-            
+
+            print.BilledUser = false;
+
             print.UserName = values["UserName"];
             print.FlaggedPrint = false;
             print.FlaggedComment = "";
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
+
+            //Check AD Membership
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, values["UserName"]);
+            print.InternalUser = false; //find out
+            foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
+            {
+                if (ADUser.IsMemberOf(GroupPrincipal.FindByIdentity(ctx, group)))
+                {
+                    print.InternalUser = true;
+                }
+            }
 
             /*Printer Type ID*/
             print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
@@ -408,6 +422,9 @@ namespace MakerFarm.Controllers
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
 
+            print.InternalUser = values.Get("InternalUser").Contains("true");
+
+            print.BilledUser = values.Get("BilledUser").Contains("true");
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
             string matIds = tempMaterial[0];
@@ -636,7 +653,14 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
+            if (print.InternalUser)
+            {
+                ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true) && p.ShowInternalUsers).ToList();
+            }
+            else
+            {
+                ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true) && p.ShowExternalUsers).ToList();
+            }
             return View(print);
         }
 
@@ -660,7 +684,7 @@ namespace MakerFarm.Controllers
                     return View(print);
                 }
             }
-            catch (Exception e) {
+            catch {
                 ViewData["Waiver"] = true;
                 return View(print);
             }

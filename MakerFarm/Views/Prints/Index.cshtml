@@ -155,6 +155,7 @@
 
         @foreach (var item in Model)
         {
+            if (item.InternalUser) { 
             <tr>
                 <td>
                 @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
@@ -183,6 +184,41 @@
                     }
                 </td>
             </tr>
+        }
+        }
+
+        @foreach (var item in Model)
+        {
+            if (!item.InternalUser) { 
+            <tr>
+                <td>
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                    {
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+                    }
+                    else
+                    {
+                        @item.FileName
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+                    {
+                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
+                    }
+                    else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                    {
+                        @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
+                    }
+                </td>
+            </tr>
+        }
         }
 
     </table>

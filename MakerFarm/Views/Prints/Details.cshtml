@@ -155,6 +155,22 @@
              @Html.DisplayFor(model => model.FlaggedComment)
         </div>
         }
+    
+    <div class="display-label">
+         @Html.LabelFor(model => model.InternalUser)
+    </div>
+    <div class="display-field">
+         @Html.DisplayFor(model => model.InternalUser)
+    </div>
+    
+    <div class="display-label">
+         @Html.LabelFor(model => model.BilledUser)
+    </div>
+    <div class="display-field">
+         @Html.DisplayFor(model => model.BilledUser)
+    </div>
+        
+
         
         if ((bool)ViewData["DownloadAvailable"])
         {

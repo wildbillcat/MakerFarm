@@ -324,6 +324,14 @@
     <Compile Include="Migrations\201401162007301_Added an enable flag to PrinterErrorTypes.Designer.cs">
       <DependentUpon>201401162007301_Added an enable flag to PrinterErrorTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401212011303_Updated with first revision of billing and user distinction.cs" />
+    <Compile Include="Migrations\201401212011303_Updated with first revision of billing and user distinction.Designer.cs">
+      <DependentUpon>201401212011303_Updated with first revision of billing and user distinction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401212104523_Formatted external to humanfriendly column name.cs" />
+    <Compile Include="Migrations\201401212104523_Formatted external to humanfriendly column name.Designer.cs">
+      <DependentUpon>201401212104523_Formatted external to humanfriendly column name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -614,6 +622,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401162007301_Added an enable flag to PrinterErrorTypes.resx">
       <DependentUpon>201401162007301_Added an enable flag to PrinterErrorTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401212011303_Updated with first revision of billing and user distinction.resx">
+      <DependentUpon>201401212011303_Updated with first revision of billing and user distinction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401212104523_Formatted external to humanfriendly column name.resx">
+      <DependentUpon>201401212104523_Formatted external to humanfriendly column name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -132,6 +132,23 @@
             @Html.ValidationMessageFor(model => model.FlaggedComment)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.InternalUser)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.InternalUser)
+            @Html.ValidationMessageFor(model => model.InternalUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BilledUser)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.BilledUser)
+            @Html.ValidationMessageFor(model => model.BilledUser)
+        </div>
+
+
         <p>
             <input type="submit" value="Save" />
         </p>
