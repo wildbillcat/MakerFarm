@@ -310,6 +310,11 @@ namespace MakerFarm.Controllers
             }
             print.FileName = PrintFile.FileName;
 
+            if (PrintFile.ContentLength < 2048)
+            {
+                ModelState.AddModelError("PrintFile", "File appears to be Empty");
+            }
+
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
             string matIds = tempMaterial[0];
