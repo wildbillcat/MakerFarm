@@ -19,6 +19,7 @@ namespace MakerFarm.Controllers
     public class PrintsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
+        PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
         
         //
         // GET: /Prints/
@@ -253,7 +254,7 @@ namespace MakerFarm.Controllers
         {
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
-
+            print.Comment = values.Get("Comment");
             print.BilledUser = false;
 
             print.UserName = values["UserName"];
@@ -261,18 +262,34 @@ namespace MakerFarm.Controllers
             print.FlaggedComment = "";
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
-
-            //Check AD Membership
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-            UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, values["UserName"]);
-            print.InternalUser = false; //find out
-            foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
+            print.InternalUser = false; //By Default Assumed External, perform AD lookup below to verify
+            //Check AD Membership            
+            try
             {
-                if (ADUser.IsMemberOf(GroupPrincipal.FindByIdentity(ctx, group)))
+                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, User.Identity.Name); //Use ID to prevent Parsing issues
+                foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
                 {
-                    print.InternalUser = true;
+                    try
+                    {
+                        GroupPrincipal G = GroupPrincipal.FindByIdentity(ctx, group);
+                        if (G != null && ADUser.IsMemberOf(G))
+                        {
+                            print.InternalUser = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        print.Comment = string.Concat(print.Comment, "\n", e.Message); //Write Message in comment if exception is being thrown
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                print.Comment = string.Concat(print.Comment, "\n", e.Message); 
+            }
+            
+            
+            
 
             /*Printer Type ID*/
             print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
@@ -329,7 +346,7 @@ namespace MakerFarm.Controllers
             /*Staff Assistance*/
             print.StaffAssistedPrint = false;
 
-            print.Comment = values.Get("Comment");
+            
 
             if (ModelState.IsValid)
             {
@@ -705,8 +722,6 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchAgreementEmail(Print userPrint)
         {
-            // set up domain context
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             // find the user in question
             try{
                 UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
