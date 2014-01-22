@@ -28,12 +28,18 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
-            @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
+            @if (ViewBag.Send)
+            {
+                @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
+                @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
+            }else{
+                @Html.DropDownListFor(model => model.PrintErrorTypeId, (SelectList)ViewBag.FileErrors)
+                @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
+            }
+            
         </div>
     </div>
 }
-        
 
         <div class="form-group">
             @Html.LabelFor(model => model.MaterialUsed, string.Concat("Material Used: (", (string)ViewBag.Print.PrinterType.MaterialUseUnit, ")"), new { @class = "control-label col-md-2" })
