@@ -42,7 +42,7 @@
             @if (!Model.PrinterName.Equals("Null Printer") && Print == null)
             {
                <text> | </text> 
-            @Html.ActionLink("Update", "Create", "PrinterStatusLogs", new { id = Model.PrinterId }, null)
+               <input type="button" value="Update" onclick="location.href='@Url.Action("Create", "PrinterStatusLogs", new { id = Model.PrinterId })'" />
             }
         </dd>
 
