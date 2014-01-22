@@ -33,22 +33,22 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @Html.DisplayFor(modelItem => item.FileName)
         </td>
-        <td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
+            </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @PrintingAssignments[item.PrintId].MaterialUsed
         </td>
-        <td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @Html.DisplayFor(modelItem => item.SubmissionTime)
         </td>
-        <td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @PrintingAssignments[item.PrintId].EventTimeStamp
         </td>
-        <td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
             {
                 @Html.ActionLink("Details", "Details", new { id = item.PrintId })
@@ -59,7 +59,8 @@
                 @Html.ActionLink("Restart Print", "Create", "PrintEvents", new { id = item.PrintId }, null)
             }
         </td>
-    </tr>
+
+</tr>
 }
 
 </table>

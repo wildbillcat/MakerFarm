@@ -19,7 +19,7 @@ namespace MakerFarm.Controllers
     public class PrintsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
-        PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+        PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "yu.yale.edu");
         
         //
         // GET: /Prints/
