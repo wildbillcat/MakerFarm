@@ -437,7 +437,6 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\jquery-1.8.2.js" />
-    <Content Include="Class Diagram.cd" />
     <None Include="Properties\PublishProfiles\Arch-Web2.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
