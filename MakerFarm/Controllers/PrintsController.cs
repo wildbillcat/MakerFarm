@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
 using System.Configuration;
+using PaperCutMF;
 
 namespace MakerFarm.Controllers
 {
@@ -19,6 +20,7 @@ namespace MakerFarm.Controllers
     public class PrintsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
+        ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
         
         //
         // GET: /Prints/
@@ -262,35 +264,21 @@ namespace MakerFarm.Controllers
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
             print.InternalUser = false; //By Default Assumed External, perform AD lookup below to verify
-            //Check AD Membership    
-            ServerCommandProxy _serverProxy;
-            try
+            string[] InternalGroups = System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(',');
+            //Check PaperCut Membership 
+            if (PapercutServerProxy.UserExists(print.UserName))
             {
-                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, User.Identity.Name); //Use ID to prevent Parsing issues
-                foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
+                //Has a papercut membership. Now should Pull usermembership and check if they are in an internal group.
+                foreach (string PapercutGroup in PapercutServerProxy.GetUserGroups(print.UserName))
                 {
-                    try
-                    {
-                        GroupPrincipal G = GroupPrincipal.FindByIdentity(ctx, group);
-                        if (G != null && ADUser.IsMemberOf(G))
-                        {
+                    foreach(string InternalGroup in InternalGroups){
+                        if(PapercutGroup.Equals(InternalGroup)){
                             print.InternalUser = true;
                         }
                     }
-                    catch (Exception e)
-                    {
-                        print.Comment = string.Concat(print.Comment, "\n", e.Message); //Write Message in comment if exception is being thrown
-                    }
                 }
             }
-            catch (Exception e)
-            {
-                print.Comment = string.Concat(print.Comment, "\n", e.Message); 
-            }
             
-            
-            
-
             /*Printer Type ID*/
             print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
 
