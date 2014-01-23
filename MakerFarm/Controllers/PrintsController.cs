@@ -21,7 +21,9 @@ namespace MakerFarm.Controllers
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
         ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
-        
+        // set up domain context
+        PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+
         //
         // GET: /Prints/
         public ActionResult Index(int id = 0)
@@ -562,8 +564,6 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchCancelationEmail(Print userPrint, bool Success)
         {
-            // set up domain context
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             // find the user in question
             try
             {
@@ -749,7 +749,6 @@ namespace MakerFarm.Controllers
                     return true;
                 }
             }finally{}
-            ctx.Dispose();
             return false;
         }
 
