@@ -262,7 +262,8 @@ namespace MakerFarm.Controllers
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
             print.InternalUser = false; //By Default Assumed External, perform AD lookup below to verify
-            //Check AD Membership            
+            //Check AD Membership    
+            ServerCommandProxy _serverProxy;
             try
             {
                 UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, User.Identity.Name); //Use ID to prevent Parsing issues
