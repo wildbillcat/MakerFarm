@@ -553,6 +553,9 @@
     <Content Include="Views\Prints\UnapprovedAdmin.cshtml" />
     <Content Include="Views\Prints\Cancel.cshtml" />
     <Content Include="Views\Materials\_AvailableSpoolsPartial.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
