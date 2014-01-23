@@ -266,19 +266,29 @@ namespace MakerFarm.Controllers
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
             print.InternalUser = false; //By Default Assumed External, perform AD lookup below to verify
-            string[] InternalGroups = System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(',');
-            //Check PaperCut Membership 
-            if (PapercutServerProxy.UserExists(print.UserName))
+            //Check AD Membership            
+            try
             {
-                //Has a papercut membership. Now should Pull usermembership and check if they are in an internal group.
-                foreach (string PapercutGroup in PapercutServerProxy.GetUserGroups(print.UserName))
+                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, User.Identity.Name); //Use ID to prevent Parsing issues
+                foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
                 {
-                    foreach(string InternalGroup in InternalGroups){
-                        if(PapercutGroup.Equals(InternalGroup)){
+                    try
+                    {
+                        GroupPrincipal G = GroupPrincipal.FindByIdentity(ctx, group);
+                        if (G != null && ADUser.IsMemberOf(G))
+                        {
                             print.InternalUser = true;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        print.Comment = string.Concat(print.Comment, "\n", e.Message); //Write Message in comment if exception is being thrown
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                print.Comment = string.Concat(print.Comment, "\n", e.Message);
             }
             
             /*Printer Type ID*/
@@ -607,12 +617,10 @@ namespace MakerFarm.Controllers
                     client.Credentials = cred;
                     client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
                     client.Send(msg);
-                    ctx.Dispose();
                     return true;
                 }
             }
             finally { }
-            ctx.Dispose();
             return false;
         }
 
@@ -745,7 +753,6 @@ namespace MakerFarm.Controllers
                     client.Credentials = cred;
                     client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
                     client.Send(msg);
-                    ctx.Dispose();
                     return true;
                 }
             }finally{}
@@ -755,6 +762,7 @@ namespace MakerFarm.Controllers
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
+            ctx.Dispose();
             base.Dispose(disposing);
         }
 
