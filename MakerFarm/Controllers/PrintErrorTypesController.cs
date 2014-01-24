@@ -18,8 +18,7 @@ namespace MakerFarm.Controllers
         // GET: /PrintErrorTypes/
         public ActionResult Index()
         {
-            List<PrintErrorType> Printerrors = db.PrintErrorTypes.ToList();
-            Printerrors.OrderBy(p => p.PrintErrorName);
+            List<PrintErrorType> Printerrors = db.PrintErrorTypes.OrderBy(p => p.PrintErrorName).ToList();
             return View(Printerrors);
         }
 

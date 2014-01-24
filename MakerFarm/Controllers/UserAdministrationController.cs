@@ -18,7 +18,7 @@ namespace MakerFarm.Controllers
         // GET: /UserAdministration/
         public ActionResult Index()
         {
-            return View(db.UserProfiles.ToList());
+            return View(db.UserProfiles.OrderBy(P => P.UserName).ToList());
         }
 
         // GET: /UserAdministration/Details/5
