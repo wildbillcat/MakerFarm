@@ -34,7 +34,14 @@
 @foreach (var item in Model) {
     <tr>
         <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
-            @Html.DisplayFor(modelItem => item.FileName)
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+            {
+                @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.FileName)
+            }
         </td>
         <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
             @Html.DisplayFor(modelItem => item.UserName)
