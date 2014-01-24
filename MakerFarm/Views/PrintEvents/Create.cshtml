@@ -51,7 +51,7 @@
                 }
                 else
                 {
-                   @Html.EditorFor(model => model.MaterialUsed)
+                   @Html.TextBoxFor(model => model.MaterialUsed, new { autocomplete = "off" })
                    @Html.ValidationMessageFor(model => model.MaterialUsed) 
                 }                
             </div>
