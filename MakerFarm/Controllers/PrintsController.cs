@@ -22,7 +22,7 @@ namespace MakerFarm.Controllers
         private MakerfarmDBContext db = new MakerfarmDBContext();
         ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
         // set up domain context
-        PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+        
 
         //
         // GET: /Prints/
@@ -258,6 +258,7 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
             print.Comment = values.Get("Comment");
@@ -370,6 +371,7 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
                 string printFileName = string.Concat(saveAsDirectory, "\\", print.PrintId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
+                ctx.Dispose();
                 return RedirectToAction("PrintWaiver", new { id = print.PrintId });
             }
             long id = print.PrinterTypeId;
@@ -383,6 +385,7 @@ namespace MakerFarm.Controllers
             if (materials.Count() == 0)
             {
                 //The printer you attempted to use does not have any materials available
+                ctx.Dispose();
                 return RedirectToAction("Index", "Materials");
             }
             ViewData["MaterialsList"] = new SelectList(materials, "MaterialId", "MaterialName");
@@ -407,6 +410,7 @@ namespace MakerFarm.Controllers
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
             ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             ViewData["FullColorPrint"] = printerType.OffersFullColorPrinting;
+            ctx.Dispose();
             return View(print);
         }
 
@@ -582,6 +586,7 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchCancelationEmail(Print userPrint, bool Success)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             // find the user in question
             try
             {
@@ -625,10 +630,12 @@ namespace MakerFarm.Controllers
                     client.Credentials = cred;
                     client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
                     client.Send(msg);
+                    ctx.Dispose();
                     return true;
                 }
             }
             finally { }
+            ctx.Dispose();
             return false;
         }
 
@@ -731,6 +738,7 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchAgreementEmail(Print userPrint)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             // find the user in question
             try{
                 UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
@@ -761,16 +769,17 @@ namespace MakerFarm.Controllers
                     client.Credentials = cred;
                     client.EnableSsl = bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("SSLEnable"));
                     client.Send(msg);
+                    ctx.Dispose();
                     return true;
                 }
             }finally{}
+            ctx.Dispose();
             return false;
         }
 
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
-            ctx.Dispose();
             base.Dispose(disposing);
         }
 
