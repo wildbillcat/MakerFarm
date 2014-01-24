@@ -226,7 +226,7 @@
         }
     </tr>
 
-    @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.EventTimeStamp))
+    @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.PrintEventId))
     {
         <tr>
             <td>
