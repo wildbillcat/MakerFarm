@@ -335,6 +335,10 @@
     <Compile Include="Migrations\201401212104523_Formatted external to humanfriendly column name.Designer.cs">
       <DependentUpon>201401212104523_Formatted external to humanfriendly column name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401240529351_added print queue information to the printer object for papercut integration of billing.cs" />
+    <Compile Include="Migrations\201401240529351_added print queue information to the printer object for papercut integration of billing.Designer.cs">
+      <DependentUpon>201401240529351_added print queue information to the printer object for papercut integration of billing.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -630,6 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401212104523_Formatted external to humanfriendly column name.resx">
       <DependentUpon>201401212104523_Formatted external to humanfriendly column name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401240529351_added print queue information to the printer object for papercut integration of billing.resx">
+      <DependentUpon>201401240529351_added print queue information to the printer object for papercut integration of billing.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

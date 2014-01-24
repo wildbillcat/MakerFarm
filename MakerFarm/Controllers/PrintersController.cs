@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
+using PaperCutMF;
 
 namespace MakerFarm.Controllers
 {
@@ -15,6 +16,7 @@ namespace MakerFarm.Controllers
     public class PrintersController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
+        ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
 
         // GET: /Printers/
         public ActionResult Index()
@@ -190,8 +192,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
+        public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
+
             if (printer.PrinterName.Equals("Null Printer"))
             {
                 ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
@@ -234,7 +237,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
+        public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {
