@@ -118,27 +118,7 @@ namespace MakerFarm.Controllers
                 status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
             }
             ViewData["PrinterHistory"] = PrinterHistory;
-            /* Pretty sure this is garbage, not sure what I was on when I wrote that.
-            try
-            {
-                SqlParameter[] Params1 = { new SqlParameter("@PrinterID", printer.PrinterId) };
-                PrinterStatusLog P = db.PrinterStatusLogs.SqlQuery(
-                "Select dbo.PrinterStatusLogs.* " +
-                "From dbo.PrinterStatusLogs " +
-                "inner join " +
-                    "(" +
-                    "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.LogEntryDate) as MaxEntryTime " +
-                    "from dbo.PrinterStatusLogs " +
-                    "group by dbo.PrinterStatusLogs.PrinterID" +
-                    ") " +
-                "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime " +
-                "where (dbo.PrinterStatusLogs.PrinterID = @PrinterID)", Params1).First();
-                
-            }
-            catch 
-            {
-                //oh myyyyy
-            }*/
+            
             
             ViewData["Status"] = status;
             
@@ -150,10 +130,10 @@ namespace MakerFarm.Controllers
                 "from dbo.PrintEvents " +
                 "inner join " +
                 "( " +
-                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
                 "from dbo.PrintEvents " +
                 "group by dbo.PrintEvents.PrintID " +
-                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
                 "where EventType = @PrintingEventStart and pnt.PrinterID = @PrinterId";
             SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
