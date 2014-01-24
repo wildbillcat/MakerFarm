@@ -272,15 +272,18 @@ namespace MakerFarm.Controllers
             //Check AD Membership            
             try
             {
-                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, User.Identity.Name); //Use ID to prevent Parsing issues
+                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, print.UserName); //Use ID to prevent Parsing issues
+                PrincipalSearchResult<Principal> UserGroups = ADUser.GetAuthorizationGroups();
                 foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
                 {
                     try
                     {
-                        GroupPrincipal G = GroupPrincipal.FindByIdentity(ctx, group);
-                        if (G != null && ADUser.IsMemberOf(G))
+                        foreach (GroupPrincipal gTmp in UserGroups)
                         {
-                            print.InternalUser = true;
+                            if (gTmp.Name.Equals(group))
+                            {
+                                print.InternalUser = true;
+                            }
                         }
                     }
                     catch (Exception e)
