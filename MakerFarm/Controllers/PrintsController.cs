@@ -93,6 +93,9 @@ namespace MakerFarm.Controllers
                 ViewData["Assigned"] = Assigned;//Print Start Query
                 List<Printer> Printers = db.Printers.Where(p => p.PrinterTypeId == id).OrderBy(p => p.PrinterName).ToList();
                 ViewData["Printers"] = Printers;
+
+                Dictionary<long, Material> Materials = db.Materials.Where(P => P.PrinterTypeId == id).ToDictionary(p => p.MaterialId);
+                ViewData["Materials"] = Materials;
                 Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
             "Select dbo.PrinterStatusLogs.* " +
             "From dbo.PrinterStatusLogs " +

@@ -6,6 +6,7 @@
     Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
     Dictionary<long, MakerFarm.Models.PrinterStatusLog> PrinterStatus = (Dictionary<long, MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterStatus"];
     int id = (int)ViewData["id"];
+    Dictionary<long, MakerFarm.Models.Material> Materials = (Dictionary<long, MakerFarm.Models.Material>)ViewData["Materials"];
 }
 <h2>@ViewBag.Title</h2>
 
@@ -150,6 +151,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.SubmissionTime)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaterialIds)
+            </th>
             <th></th>
         </tr>
 
@@ -172,6 +176,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                </td>
+                <td>
+                    @foreach (string matid in item.MaterialIds.Split(','))
+                    {
+                        @Materials[long.Parse(matid)].MaterialName
+                    }
                 </td>
                 <td>
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
@@ -206,6 +216,12 @@
                 </td>
                 <td style="background-color: greenyellow">
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                </td>
+                <td>
+                    @foreach (string matid in item.MaterialIds.Split(','))
+                    {
+                        @Materials[long.Parse(matid)].MaterialName
+                    }
                 </td>
                 <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
