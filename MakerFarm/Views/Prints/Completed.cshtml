@@ -8,7 +8,7 @@
 <h2>Completed</h2>
 
 <p>
-    @Html.ActionLink("Current Queue", "Index", new { id = ViewBag.id })
+    <input type="button" value="Current Queue" onclick="location.href='@Url.Action("Index", new { id = ViewBag.id })'" />
 </p>
 
 <table class="table">

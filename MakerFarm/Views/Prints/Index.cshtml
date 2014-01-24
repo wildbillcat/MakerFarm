@@ -217,7 +217,7 @@
                 <td style="background-color: greenyellow">
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
                 </td>
-                <td>
+                <td style="background-color: greenyellow">
                     @foreach (string matid in item.MaterialIds.Split(','))
                     {
                         @Materials[long.Parse(matid)].MaterialName
