@@ -38,6 +38,9 @@ namespace MakerFarm.Models
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssistedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
 
+        [Display(Name = "DM Office Processing Charge", Description = "Labor charge by the DM Office for the Processing of the file")]
+        public double ProcessingCharge { get; set; } /* The amount charge by the DM Office for assitance with prints */
+
         public string Comment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
         [Display(Name = "Flagged Print", Description = "Denotes if a Print has been flagged by a staff member for some reason")]

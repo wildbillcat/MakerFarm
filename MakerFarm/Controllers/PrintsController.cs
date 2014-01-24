@@ -262,7 +262,7 @@ namespace MakerFarm.Controllers
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
             print.Comment = values.Get("Comment");
             print.BilledUser = false;
-
+            print.ProcessingCharge = 0;
             print.UserName = values["UserName"];
             print.FlaggedPrint = false;
             print.FlaggedComment = "";
@@ -470,6 +470,8 @@ namespace MakerFarm.Controllers
 
             /*Staff Assistance*/
             print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");
+
+            print.ProcessingCharge = double.Parse(values["ProcessingCharge"]);
 
             print.Comment = values.Get("Comment");
 

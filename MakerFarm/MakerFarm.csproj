@@ -339,6 +339,10 @@
     <Compile Include="Migrations\201401240529351_added print queue information to the printer object for papercut integration of billing.Designer.cs">
       <DependentUpon>201401240529351_added print queue information to the printer object for papercut integration of billing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401240547475_added processing charges to prints.cs" />
+    <Compile Include="Migrations\201401240547475_added processing charges to prints.Designer.cs">
+      <DependentUpon>201401240547475_added processing charges to prints.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
@@ -637,6 +641,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401240529351_added print queue information to the printer object for papercut integration of billing.resx">
       <DependentUpon>201401240529351_added print queue information to the printer object for papercut integration of billing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401240547475_added processing charges to prints.resx">
+      <DependentUpon>201401240547475_added processing charges to prints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

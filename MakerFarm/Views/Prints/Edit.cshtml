@@ -96,6 +96,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.ProcessingCharge)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ProcessingCharge)
+            @Html.ValidationMessageFor(model => model.ProcessingCharge)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Comment)
         </div>
         <div class="editor-field">
