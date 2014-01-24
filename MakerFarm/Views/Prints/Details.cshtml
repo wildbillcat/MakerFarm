@@ -223,6 +223,8 @@
         <th>
             Comment
         </th> 
+        <th>
+        </th> 
         }
     </tr>
 
@@ -248,6 +250,9 @@
            {
             <td>
                @p.Comment 
+            </td>
+            <td>
+               @Html.ActionLink("Edit", "Edit", "PrintEvents", new { id = p.PrintEventId }, null)
             </td>
            }
         </tr>

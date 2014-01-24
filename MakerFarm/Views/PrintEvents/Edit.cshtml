@@ -20,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventType, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EventType)
+                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes), new { onchange = "changeError()" })
                 @Html.ValidationMessageFor(model => model.EventType)
             </div>
         </div>
@@ -28,7 +28,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventTimeStamp, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EventTimeStamp)
+                @Model.EventTimeStamp
+                @Html.HiddenFor(model => model.EventTimeStamp)
                 @Html.ValidationMessageFor(model => model.EventTimeStamp)
             </div>
         </div>
@@ -44,7 +45,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrinterId, "PrinterId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PrinterId", String.Empty)
+                @Model.Printer.PrinterName
+                @Html.HiddenFor(model => model.PrinterId)
                 @Html.ValidationMessageFor(model => model.PrinterId)
             </div>
         </div>
@@ -52,7 +54,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName)
+                @Model.UserName
+                @Html.HiddenFor(model => model.UserName)
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
         </div>
@@ -60,7 +63,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrintId, "PrintId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PrintId", String.Empty)
+                @Model.Print.FileName
+                @Html.HiddenFor(p => p.PrintId)
                 @Html.ValidationMessageFor(model => model.PrintId)
             </div>
         </div>

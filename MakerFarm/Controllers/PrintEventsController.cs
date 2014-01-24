@@ -297,7 +297,6 @@ namespace MakerFarm.Controllers
 
         // GET: /PrintEvents/Edit/5
 
-        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -309,8 +308,8 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", printevent.PrinterId);
+            List<PrintEventType> evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+            ViewBag.EventTypes = evts;
             return View(printevent);
         }
 
@@ -319,17 +318,16 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include="PrintEventId,EventType,EventTimeStamp,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(printevent).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Prints", new { id = printevent.PrintId});
             }
-            ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", printevent.PrinterId);
+            List<PrintEventType> evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+            ViewBag.EventTypes = evts;
             return View(printevent);
         }
 
