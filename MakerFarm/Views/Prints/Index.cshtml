@@ -7,6 +7,8 @@
     Dictionary<long, MakerFarm.Models.PrinterStatusLog> PrinterStatus = (Dictionary<long, MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterStatus"];
     int id = (int)ViewData["id"];
     Dictionary<long, MakerFarm.Models.Material> Materials = (Dictionary<long, MakerFarm.Models.Material>)ViewData["Materials"];
+    Dictionary<string, int> ActiveCount = new Dictionary<string, int>();
+    int ActiveQueueLimit = int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ActiveQueueLimit"));
 }
 <h2>@ViewBag.Title</h2>
 
@@ -184,7 +186,7 @@
                     }
                 </td>
                 <td>
-                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] > ActiveQueueLimit))
                     {
                         @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }

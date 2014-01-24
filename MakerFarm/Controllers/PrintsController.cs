@@ -94,6 +94,17 @@ namespace MakerFarm.Controllers
                 List<Printer> Printers = db.Printers.Where(p => p.PrinterTypeId == id).OrderBy(p => p.PrinterName).ToList();
                 ViewData["Printers"] = Printers;
 
+                //count up active user jobs
+                Dictionary<string, int> ActiveCount = new Dictionary<string,int>();
+                foreach (long key in Assigned.Keys)
+                {
+                    if(ActiveCount.ContainsKey(Assigned[key].UserName)){
+                        ActiveCount[Assigned[key].UserName] = ActiveCount[Assigned[key].UserName]++; 
+                    }else{
+                        ActiveCount.Add(Assigned[key].UserName, 1);
+                    }
+                }
+                ViewData["ActiveCount"] = ActiveCount;
                 Dictionary<long, Material> Materials = db.Materials.Where(P => P.PrinterTypeId == id).ToDictionary(p => p.MaterialId);
                 ViewData["Materials"] = Materials;
                 Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
