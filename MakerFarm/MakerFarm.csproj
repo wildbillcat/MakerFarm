@@ -345,6 +345,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\MakerfarmDBContext.cs" />
     <Compile Include="Models\MaterialCheckoutModel.cs" />
     <Compile Include="Models\MaterialModel.cs" />
