@@ -390,8 +390,11 @@ namespace MakerFarm.Controllers
 
                     MailMessage msg = new MailMessage();
                     msg.To.Add(user.EmailAddress);
-                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
-                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    if (System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress") != null && !System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress").Equals(""))
+                    {
+                        msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    }
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailFromAddress"));
                     if (Success)
                     {
                         msg.Subject = string.Concat("Your print of ", userPrint.FileName, " has Completed.");

@@ -109,8 +109,11 @@ namespace MakerFarm.Controllers
                 if (bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("EnablePaperCutIntegration")))
                 {//Dispatch Print off to papercut
                     Printer P = print.GetLastPrinter();
-                    string printjob = "user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",cost=" + bill.TotalBillingAmount + ",comment=" + bill.Comment; // This assembles a string of information to submit the printjob 
-                    PapercutServerProxy.ProcessJob(printjob);
+                    if (P != null && !P.PapercutPrintQueue.Equals("") && !P.PapercutPrintServer.Equals(""))
+                    {
+                        string printjob = "user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",cost=" + bill.TotalBillingAmount + ",comment=BillID:" + bill.BillId + " EventID:" + bill.PrintEventId + " PrintID: " + bill.PrintId; // This assembles a string of information to submit the printjob 
+                        PapercutServerProxy.ProcessJob(printjob);
+                    }
                 }
                 return RedirectToAction("Index");
             }
