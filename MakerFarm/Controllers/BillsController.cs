@@ -111,16 +111,16 @@ namespace MakerFarm.Controllers
                     Printer P = print.GetLastPrinter();
                     if (P != null && !P.PapercutPrintQueue.Equals("") && !P.PapercutPrintServer.Equals(""))
                     {
-                        string printjob = "user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",time=" + BilledEvent.EventTimeStamp.ToString("yyyyMMddTHHmmss") + ",cost=" + bill.TotalBillingAmount + ",comment=BillID:" + bill.BillId + " EventID:" + bill.PrintEventId + " PrintID: " + bill.PrintId; // This assembles a string of information to submit the printjob 
+                        string printjob = "document-name=" + print.FileName +",user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",time=" + BilledEvent.EventTimeStamp.ToString("yyyyMMddTHHmmss") + ",cost=" + bill.TotalBillingAmount + ",comment=BillID:" + bill.BillId + " EventID:" + bill.PrintEventId + " PrintID: " + bill.PrintId; // This assembles a string of information to submit the printjob 
                         if (System.IO.File.Exists(print.GetPath()))
                         {
                             long size = new System.IO.FileInfo(print.GetPath()).Length/1024;
-                            printjob = ",cost=" + bill.TotalBillingAmount;
+                            printjob = printjob + ",document-size-kb=" + size;
                         }
                         else if (System.IO.File.Exists(print.GetFlaggedPath()))
                         {
                             long size = new System.IO.FileInfo(print.GetFlaggedPath()).Length / 1024;
-                            printjob = ",cost=" + bill.TotalBillingAmount;
+                            printjob = printjob + ",document-size-kb=" + size;
                         }
                         PapercutServerProxy.ProcessJob(printjob);
                     }
