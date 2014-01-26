@@ -78,6 +78,18 @@ namespace MakerFarm.Models
             }
             return P;
         }
+
+        public string GetPath()
+        {
+            string OriginalPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", SubmissionTime.ToString("yyyy-MMM-d"), "\\", PrintId, "_", FileName);
+            return OriginalPath;
+        }
+
+        public string GetFlaggedPath()
+        {
+            string FlaggedPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\Flagged\\", SubmissionTime.ToString("yyyy-MMM-d"), "\\", PrintId, "_", FileName);
+            return FlaggedPath;
+        }
     }
         
 }
