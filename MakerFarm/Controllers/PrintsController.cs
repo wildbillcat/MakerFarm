@@ -99,7 +99,7 @@ namespace MakerFarm.Controllers
                 foreach (long key in Assigned.Keys)
                 {
                     if(ActiveCount.ContainsKey(Assigned[key].UserName)){
-                        ActiveCount[Assigned[key].UserName] = ActiveCount[Assigned[key].UserName]++; 
+                        ActiveCount[Assigned[key].UserName] = ActiveCount[Assigned[key].UserName] + 1; 
                     }else{
                         ActiveCount.Add(Assigned[key].UserName, 1);
                     }
@@ -770,8 +770,12 @@ namespace MakerFarm.Controllers
                     }
                     MailMessage msg = new MailMessage();
                     msg.To.Add(user.EmailAddress);
-                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
-                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    string CC = System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress");
+                    if (CC != null && !CC.Equals(""))
+                    {
+                        msg.CC.Add(CC);
+                    }
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailFromAddress"));
                     msg.Subject = string.Concat("Your Print Submission of ", userPrint.FileName, " at ", userPrint.SubmissionTime.ToString());
                     msg.Body = emailAgreement.ToString();
                     NetworkCredential cred = new NetworkCredential(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPUser"), System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPassword"));
