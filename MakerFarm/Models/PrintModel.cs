@@ -38,7 +38,7 @@ namespace MakerFarm.Models
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssistedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
 
-        [Display(Name = "DM Office Processing Charge", Description = "Labor charge by the DM Office for the Processing of the file")]
+        [Display(Name = "Processing Charge", Description = "Labor charge by the DM Office for the Processing of the file")]
         public double ProcessingCharge { get; set; } /* The amount charge by the DM Office for assitance with prints */
 
         public string Comment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
@@ -65,6 +65,19 @@ namespace MakerFarm.Models
 
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
+
+        public Printer GetLastPrinter()
+        {
+            Printer P = null;
+            foreach (PrintEvent E in PrintEvents)
+            {
+                if (!E.Printer.PrinterName.Equals("Null Printer"))
+                {
+                    P = E.Printer;
+                }
+            }
+            return P;
+        }
     }
         
 }

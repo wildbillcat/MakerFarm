@@ -20,10 +20,9 @@ namespace MakerFarm.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Administration()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 

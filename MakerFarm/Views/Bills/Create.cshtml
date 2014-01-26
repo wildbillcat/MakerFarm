@@ -1,0 +1,124 @@
+﻿@model MakerFarm.Models.Bill
+
+@{
+    ViewBag.Title = "Charge Bill";
+    MakerFarm.Models.PrintEvent BilledEvent = (MakerFarm.Models.PrintEvent)ViewData["BilledEvent"];
+    List<MakerFarm.Models.PrintEvent> AssociatedEvents = (List<MakerFarm.Models.PrintEvent>)ViewData["AssociatedEvents"];
+    string billingSummary = "Event Type \t Material Usage \t Material Cost \t Event Cost \n";
+    double expectedBilling = 0;
+    if(BilledEvent.Print.InternalUser){
+        expectedBilling = BilledEvent.MaterialUsed * BilledEvent.Print.PrinterType.InternalCostPerUnit;
+        if(BilledEvent.EventType == MakerFarm.Models.PrintEventType.PRINT_COMPLETED){
+            billingSummary = string.Concat(billingSummary, "Print Success \t", BilledEvent.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", BilledEvent.Print.PrinterType.InternalCostPerUnit.ToString(), "\t\t\t $", (BilledEvent.Print.PrinterType.InternalCostPerUnit * BilledEvent.MaterialUsed).ToString(), "\n");
+        }else if(AssociatedEvents.Count > 2){
+            foreach (MakerFarm.Models.PrintEvent evt in AssociatedEvents)
+            {
+                if (evt.EventType == MakerFarm.Models.PrintEventType.PRINT_FAILURE_FILE)
+                {
+                    billingSummary = string.Concat(billingSummary, "Print File Error \t", evt.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", evt.Print.PrinterType.InternalCostPerUnit.ToString(), "\t\t\t $", (evt.Print.PrinterType.InternalCostPerUnit * evt.MaterialUsed).ToString(), "\n");
+                }else if(evt.EventType == MakerFarm.Models.PrintEventType.PRINT_CANCELED && evt.PrintEventId != BilledEvent.PrintEventId){
+                    billingSummary = string.Concat(billingSummary, "Print Cancelation \t", evt.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", evt.Print.PrinterType.InternalCostPerUnit.ToString(), "\t\t\t $", (evt.Print.PrinterType.InternalCostPerUnit * evt.MaterialUsed).ToString(), "\n");
+                }
+            }
+        }
+        else
+        {
+            billingSummary = string.Concat(billingSummary, "Print Cancelation \t", BilledEvent.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", BilledEvent.Print.PrinterType.InternalCostPerUnit.ToString(), "\t\t\t $", (BilledEvent.Print.PrinterType.InternalCostPerUnit * BilledEvent.MaterialUsed).ToString(), "\n");
+        }
+    }
+    else
+    {
+        expectedBilling = BilledEvent.MaterialUsed * BilledEvent.Printer.PrinterType.ExternalCostPerUnit;
+        if (BilledEvent.EventType == MakerFarm.Models.PrintEventType.PRINT_COMPLETED)
+        {
+            billingSummary = string.Concat(billingSummary, "Print Success \t", BilledEvent.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t ", BilledEvent.Print.PrinterType.ExternalCostPerUnit.ToString(), "\t\t\t ", (BilledEvent.Printer.PrinterType.ExternalCostPerUnit * BilledEvent.MaterialUsed).ToString(), "\n");
+        }
+        else if (AssociatedEvents.Count > 2)
+        {
+            foreach (MakerFarm.Models.PrintEvent evt in AssociatedEvents)
+            {
+                if (evt.EventType == MakerFarm.Models.PrintEventType.PRINT_FAILURE_FILE)
+                {
+                    billingSummary = string.Concat(billingSummary, "Print File Error \t", evt.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", evt.Print.PrinterType.ExternalCostPerUnit.ToString(), "\t\t\t $", (evt.Print.PrinterType.ExternalCostPerUnit * evt.MaterialUsed).ToString(), "\n");
+                }
+                else if (evt.EventType == MakerFarm.Models.PrintEventType.PRINT_CANCELED && evt.PrintEventId != BilledEvent.PrintEventId)
+                {
+                    billingSummary = string.Concat(billingSummary, "Print Cancelation \t", evt.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", evt.Print.PrinterType.ExternalCostPerUnit.ToString(), "\t\t\t $", (evt.Print.PrinterType.ExternalCostPerUnit * evt.MaterialUsed).ToString(), "\n");
+                }
+            }
+        }
+        else
+        {
+            billingSummary = string.Concat(billingSummary, "Print Cancelation \t", BilledEvent.MaterialUsed, " ", BilledEvent.Print.PrinterType.MaterialUseUnit, "\t\t $", BilledEvent.Print.PrinterType.ExternalCostPerUnit.ToString(), "\t\t\t $", (BilledEvent.Print.PrinterType.ExternalCostPerUnit * BilledEvent.MaterialUsed).ToString(), "\n");
+        }
+    }
+    expectedBilling = expectedBilling + BilledEvent.Print.ProcessingCharge;
+    billingSummary = string.Concat(billingSummary, "Processing Charge: $", BilledEvent.Print.ProcessingCharge);
+}
+
+<h2>Charge Bill</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Bill</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Hidden("UserName", User.Identity.Name)
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("Comment", billingSummary)
+                @Html.ValidationMessageFor(model => model.Comment)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalBillingAmount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TotalBillingAmount, new { Value = expectedBilling })
+                @Html.ValidationMessageFor(model => model.TotalBillingAmount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Hidden("PrintEventId", BilledEvent.PrintEventId)
+                @Html.ValidationMessageFor(model => model.PrintEventId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PrintId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @BilledEvent.Print.FileName
+                @Html.Hidden("PrintId", BilledEvent.PrintId)
+                @Html.ValidationMessageFor(model => model.PrintId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

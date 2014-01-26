@@ -201,7 +201,8 @@
 
         @foreach (var item in Model)
         {
-            if (!item.InternalUser) { 
+            if (!item.InternalUser && item.StaffAssistedPrint) //User is external and has made arrangments to pay, and is thus approved by Office
+            { 
             <tr>
                 <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
@@ -239,4 +240,40 @@
         }
         }
 
+        @foreach (var item in Model)
+        {
+            if (!item.InternalUser && !item.StaffAssistedPrint) //User is external and has not yet made arrangments to pay with the Office
+            {
+                <tr>
+                    <td style="background-color: greenyellow">
+                        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                        {
+                            @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+                        }
+                        else
+                        {
+                            @item.FileName
+                        }
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @foreach (string matid in item.MaterialIds.Split(','))
+                        {
+                            @Materials[long.Parse(matid)].MaterialName
+                        }
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                        {
+                            @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
+                        }
+                    </td>
+                </tr>
+            }
+        }
     </table>

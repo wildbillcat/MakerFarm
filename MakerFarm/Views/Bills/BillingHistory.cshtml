@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MakerFarm.Models.Bill>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BillingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalBillingAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrintEventId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrintId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillingTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalBillingAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrintEventId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrintId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.BillId })
+        </td>
+    </tr>
+}
+
+</table>

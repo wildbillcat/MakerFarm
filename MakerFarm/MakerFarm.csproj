@@ -227,6 +227,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BillsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaterialCheckoutsController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
@@ -343,6 +344,15 @@
     <Compile Include="Migrations\201401240547475_added processing charges to prints.Designer.cs">
       <DependentUpon>201401240547475_added processing charges to prints.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401260613344_Added Bills to the DB.cs" />
+    <Compile Include="Migrations\201401260613344_Added Bills to the DB.Designer.cs">
+      <DependentUpon>201401260613344_Added Bills to the DB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401260721390_added printing costs to printer type\queues.cs" />
+    <Compile Include="Migrations\201401260721590_added costs to printing types.cs" />
+    <Compile Include="Migrations\201401260721590_added costs to printing types.Designer.cs">
+      <DependentUpon>201401260721590_added costs to printing types.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Bill.cs" />
@@ -368,7 +378,13 @@
       <DependentUpon>MakerFarm.mdf</DependentUpon>
     </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\StaticIcons\dialog-error-5.png" />
+    <Content Include="Content\StaticIcons\document-multiple.png" />
+    <Content Include="Content\StaticIcons\okteta.png" />
+    <Content Include="Content\StaticIcons\printer-2.png" />
     <Content Include="Content\StaticIcons\Question.png" />
+    <Content Include="Content\StaticIcons\system-settings-2.png" />
+    <Content Include="Content\StaticIcons\view-calendar-upcoming-events.png" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -499,7 +515,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -562,11 +578,19 @@
     <Content Include="Views\Prints\UnapprovedAdmin.cshtml" />
     <Content Include="Views\Prints\Cancel.cshtml" />
     <Content Include="Views\Materials\_AvailableSpoolsPartial.cshtml" />
+    <Content Include="Views\Bills\Create.cshtml" />
+    <Content Include="Views\Bills\Delete.cshtml" />
+    <Content Include="Views\Bills\Details.cshtml" />
+    <Content Include="Views\Bills\Edit.cshtml" />
+    <Content Include="Views\Bills\BillingHistory.cshtml" />
+    <Content Include="Views\Bills\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\SmallStaticIcons\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -645,6 +669,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401240547475_added processing charges to prints.resx">
       <DependentUpon>201401240547475_added processing charges to prints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401260613344_Added Bills to the DB.resx">
+      <DependentUpon>201401260613344_Added Bills to the DB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401260721590_added costs to printing types.resx">
+      <DependentUpon>201401260721590_added costs to printing types.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
