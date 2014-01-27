@@ -124,54 +124,6 @@ namespace MakerFarm.Controllers
             }
         }
 
-        //
-        // GET: /Prints/Completed
-        public ActionResult Completed(int id = 0)
-        {
-            if (id == 0)
-            {
-                return RedirectToAction("Index", "PrinterTypes");
-            }
-            else
-            {
-                //Need to edit it to pull prints 
-                string CompleteFilesQuery = "Select dbo.Prints.* " +
-                "from dbo.Prints " +
-                "left outer join " +
-                "( " +
-                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, mxe.MostReventEvent " +
-                "from dbo.PrintEvents " +
-                "inner join " +
-                "( " +
-                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
-                "from dbo.PrintEvents " +
-                "group by dbo.PrintEvents.PrintID " +
-                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
-                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.PrinterTypeID = @PrinterTypeID " +
-                "order by pnt.MostReventEvent DESC";
-                string PrintAssignmentsQuery = "Select * " +
-             "from dbo.PrintEvents " +
-             "inner join ( " +
-             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
-             "from dbo.PrintEvents " +
-             "group by dbo.PrintEvents.PrintID " +
-             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
-             "where dbo.PrintEvents.EventType = @PrintingEventCompleted or dbo.PrintEvents.EventType = @PrintingEventCanceled";
-                SqlParameter PrintingEventCompleted = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-                SqlParameter PrintingEventCanceled = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-                SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
-                SqlParameter PrintingEventCompleted2 = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-                SqlParameter PrintingEventCanceled2 = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-                ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
-                ViewBag.id = id;
-                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventCompleted2, PrintingEventCanceled2).ToDictionary(p => p.PrintId);
-                ViewBag.PrintingAssignments = PrintingAssignments;
-                List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery, PrintingEventCompleted, PrintingEventCanceled, PrinterTypeId).ToList();
-                return View(Waiting);
-            }
-        }
-
         public ActionResult PastPrints(int? id, int? page, string sortOrder, string currentFilter, string searchString)
         {
             if (id == null || id == 0)
