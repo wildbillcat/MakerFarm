@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MakerFarm.Models
 {
@@ -26,6 +27,10 @@ namespace MakerFarm.Models
         public int PrintId { get; set; } 
 
         [Display(Name = "Comment", Description = "This holds a comment about the billing (Such as an explanation of the Billing)")]
-        public string Comment { get; set; } 
+        public string Comment { get; set; }
+
+        public virtual Print Print { get; set; }
+
+        public virtual PrintEvent PrintEvent { get; set; }
     }
 }

@@ -1,30 +1,44 @@
-﻿@model IEnumerable<MakerFarm.Models.Bill>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<MakerFarm.Models.Bill>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Previous Billings";
 }
 
-<h2>Index</h2>
+<h2>Previous Billings</h2>
+
+@using (Html.BeginForm("BillingHistory", "Bills", FormMethod.Get))
+{
+    <p>
+        Find by UserName: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.ActionLink("Username", "BillingHistory", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BillingTime)
+            File Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TotalBillingAmount)
+            @Html.ActionLink("Billing Time", "BillingHistory", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PrintEventId)
+            Total Billing Amount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PrintId)
+            Print Event Id
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Comment)
+            Print Id
+        </th>
+        <th>
+            Comment
         </th>
         <th></th>
     </tr>
@@ -32,7 +46,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.UserName)
+            @item.Print.UserName
+        </td>
+        <td>
+            @item.Print.FileName
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BillingTime)
@@ -56,3 +73,9 @@
 }
 
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("BillingHistory",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

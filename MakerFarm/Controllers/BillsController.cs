@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
 using PaperCutMF;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -55,9 +56,49 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Bills/
-        public ActionResult BillingHistory()
+        public ActionResult BillingHistory(int? page, string sortOrder, string currentFilter, string searchString)
         {
-            return View(db.Bills.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var bills = from b in db.Bills
+                           select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                bills = bills.Where(s => s.Print.UserName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    bills = bills.OrderByDescending(s => s.Print.UserName);
+                    break;
+                case "Date":
+                    bills = bills.OrderBy(s => s.PrintEventId);
+                    break;
+                case "Name":
+                    bills = bills.OrderByDescending(s => s.Print.UserName);
+                    break;
+                default:
+                    bills = bills.OrderByDescending(s => s.BillId);
+                    break;
+            }
+
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+            return View(bills.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /Bills/Details/5
