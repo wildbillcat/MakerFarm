@@ -13,6 +13,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Text;
 using System.Configuration;
 using PaperCutMF;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -169,6 +170,77 @@ namespace MakerFarm.Controllers
                 List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery, PrintingEventCompleted, PrintingEventCanceled, PrinterTypeId).ToList();
                 return View(Waiting);
             }
+        }
+
+        public ActionResult PastPrints(int? id, int? page, string sortOrder, string currentFilter, string searchString)
+        {
+            if (id == null || id == 0)
+            {
+                return RedirectToAction("Index", "PrinterTypes");
+            }
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            string CompleteFilesQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join " +
+                "( " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, mxe.MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "inner join " +
+                "( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+                "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") and dbo.Prints.PrinterTypeID = " + id + " " +
+                "order by pnt.MostReventEvent DESC";
+
+            SqlParameter PrintingEventCompleted = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
+            SqlParameter PrintingEventCanceled = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
+            SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
+            ViewBag.Title = db.PrinterTypes.Find(id).TypeName;
+            ViewBag.id = id;
+
+            var prints = (IEnumerable<Print>)db.Prints.SqlQuery(CompleteFilesQuery);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                prints = prints.Where(s => s.UserName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    prints = prints.OrderByDescending(s => s.UserName);
+                    break;
+                case "Date":
+                    prints = prints.Reverse();
+                    break;
+                case "Name":
+                    prints = prints.OrderByDescending(s => s.UserName);
+                    break;
+                default:
+                    //Query Sorts by this by default
+                    break;
+            }
+
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+            return View(prints.ToPagedList(pageNumber, pageSize));
+            
         }
 
          //

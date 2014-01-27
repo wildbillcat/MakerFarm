@@ -624,6 +624,7 @@
     <Content Include="Views\Bills\Edit.cshtml" />
     <Content Include="Views\Bills\BillingHistory.cshtml" />
     <Content Include="Views\Bills\Index.cshtml" />
+    <Content Include="Views\Prints\PastPrints.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

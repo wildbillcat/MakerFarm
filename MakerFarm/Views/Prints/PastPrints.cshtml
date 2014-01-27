@@ -1,0 +1,86 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<MakerFarm.Models.Print>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+<h2>Completed Prints</h2>
+
+<p>
+    <input type="button" value="Current Queue" onclick="location.href='@Url.Action("Index", new { id = ViewBag.id })'" />
+</p>
+
+@using (Html.BeginForm("BillingHistory", "Bills", FormMethod.Get, new { id = ViewBag.id }))
+{
+    <p>
+        Find by UserName: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            FileName
+        </th>
+        <th>
+            @Html.ActionLink("Username", "PastPrints", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, id = ViewBag.id })
+        </th>
+        <th>
+            Material Used
+        </th>
+        <th>
+            Submission Time
+        </th>
+        <th>
+            @Html.ActionLink("Completion Time", "PastPrints", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, id = ViewBag.id })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+            {
+                @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.FileName)
+            }
+        </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @item.PrintEvents.Last().MaterialUsed
+        </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @Html.DisplayFor(modelItem => item.SubmissionTime)
+        </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @item.PrintEvents.Last().EventTimeStamp
+        </td>
+        <td @if (!item.InternalUser) { <text> style="background-color: greenyellow" </text>   }>
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+            {
+                @Html.ActionLink("Details", "Details", new { id = item.PrintId })
+            }
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+            {
+                <text> | </text>
+                @Html.ActionLink("Restart Print", "Create", "PrintEvents", new { id = item.PrintId }, null)
+            }
+        </td>
+
+</tr>
+}
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("PastPrints",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, id = ViewBag.id }))
