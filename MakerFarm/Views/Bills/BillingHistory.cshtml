@@ -7,6 +7,10 @@
     ViewBag.Title = "Previous Billings";
 }
 
+<p>
+    <input type="button" value="Billing Queue" onclick="location.href='@Url.Action("Index")'" />
+</p>
+
 <h2>Previous Billings</h2>
 
 @using (Html.BeginForm("BillingHistory", "Bills", FormMethod.Get))
