@@ -1,0 +1,125 @@
+﻿@model IEnumerable<MakerFarm.Models.Print>
+
+@{
+    ViewBag.Title = "Billing Administration";
+    Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
+            
+}
+
+<p>
+    <input type="button" value="Previously Billed" onclick="location.href='@Url.Action("BillingHistory")'" />
+</p>
+
+<h2>Internal User Files to Bill</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PrinterType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmissionTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProcessingCharge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    if (item.InternalUser)
+    {
+     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubmissionTime)
+        </td>
+        <td>
+            $
+            @Html.DisplayFor(modelItem => item.ProcessingCharge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = PrintingAssignments[item.PrintId].PrintEventId })'" />
+        </td>
+    </tr>   
+    }
+}
+</table>
+
+<h2>External User Files to Bill</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PrinterType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubmissionTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProcessingCharge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (!item.InternalUser)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmissionTime)
+                </td>
+                <td>
+                    $
+                    @Html.DisplayFor(modelItem => item.ProcessingCharge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = PrintingAssignments[item.PrintId].PrintEventId })'" />
+                </td>
+            </tr>
+        }
+    }
+</table>
