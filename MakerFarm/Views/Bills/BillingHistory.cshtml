@@ -64,7 +64,10 @@
             @Html.DisplayFor(modelItem => item.PrintId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Comment)
+            @foreach(string s in item.Comment.Split('\n')){
+                @s
+                <br />
+            }
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.BillId })

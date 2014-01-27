@@ -161,9 +161,6 @@ namespace MakerFarm.Controllers
                 "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") and dbo.Prints.PrinterTypeID = " + id + " " +
                 "order by pnt.MostReventEvent DESC";
 
-            SqlParameter PrintingEventCompleted = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-            SqlParameter PrintingEventCanceled = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-            SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
             ViewBag.Title = db.PrinterTypes.Find(id).TypeName;
             ViewBag.id = id;
 

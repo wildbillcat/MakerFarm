@@ -35,23 +35,10 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.BilledUser = 0 " +
+                "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") " +
                 "order by pnt.MostReventEvent DESC";
-            string PrintAssignmentsQuery = "Select * " +
-         "from dbo.PrintEvents " +
-         "inner join ( " +
-         "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
-         "from dbo.PrintEvents " +
-         "group by dbo.PrintEvents.PrintID " +
-         ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
-         "where dbo.PrintEvents.EventType = @PrintingEventCompleted or dbo.PrintEvents.EventType = @PrintingEventCanceled";
-            SqlParameter PrintingEventCompleted = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-            SqlParameter PrintingEventCanceled = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-            SqlParameter PrintingEventCompleted2 = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-            SqlParameter PrintingEventCanceled2 = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-            Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventCompleted2, PrintingEventCanceled2).ToDictionary(p => p.PrintId);
-            ViewData["PrintingAssignments"] = PrintingAssignments;
-            List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery, PrintingEventCompleted, PrintingEventCanceled).ToList();
+            
+            List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery).ToList();
             return View(Waiting);
         }
 

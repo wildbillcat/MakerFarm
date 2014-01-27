@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "Billing Administration";
-    Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
-            
 }
 
 <p>
@@ -60,7 +58,7 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = PrintingAssignments[item.PrintId].PrintEventId })'" />
+            <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = item.PrintEvents.Last().PrintEventId })'" />
         </td>
     </tr>   
     }
@@ -117,7 +115,7 @@
                     @Html.DisplayFor(modelItem => item.Comment)
                 </td>
                 <td>
-                    <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = PrintingAssignments[item.PrintId].PrintEventId })'" />
+                    <input type="button" value="Charge" onclick="location.href='@Url.Action("Create", new { id = item.PrintEvents.Last().PrintEventId })'" />
                 </td>
             </tr>
         }
