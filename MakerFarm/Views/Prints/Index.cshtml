@@ -6,11 +6,14 @@
     Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
     Dictionary<long, MakerFarm.Models.PrinterStatusLog> PrinterStatus = (Dictionary<long, MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterStatus"];
     int id = (int)ViewData["id"];
+    Dictionary<long, MakerFarm.Models.Material> Materials = (Dictionary<long, MakerFarm.Models.Material>)ViewData["Materials"];
+    Dictionary<string, int> ActiveCount = (Dictionary<string, int>)ViewData["ActiveCount"];
+    int ActiveQueueLimit = int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ActiveQueueLimit"));
 }
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Past Prints", "Completed", new { id = ViewBag.id })
+    <input type="button" value="Past Prints" onclick="location.href='@Url.Action("PastPrints", new { id = ViewBag.id })'" />
 </p>
 
 <h3>Printers:</h3>
@@ -150,20 +153,24 @@
             <th>
                 @Html.DisplayNameFor(model => model.SubmissionTime)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaterialIds)
+            </th>
             <th></th>
         </tr>
 
         @foreach (var item in Model)
         {
+            if (item.InternalUser) { 
             <tr>
                 <td>
-                @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                 {
-                    @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })   
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
                 }
                 else
                 {
-                    @item.FileName
+                        @item.FileName
                 }
                 </td>
                 <td>
@@ -173,9 +180,15 @@
                     @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
                 </td>
                 <td>
-                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+                    @foreach (string matid in item.MaterialIds.Split(','))
                     {
-                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId}, null)
+                        @Materials[long.Parse(matid)].MaterialName
+                    }
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit))
+                    {
+                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }
                     else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {
@@ -184,5 +197,83 @@
                 </td>
             </tr>
         }
+        }
 
+        @foreach (var item in Model)
+        {
+            if (!item.InternalUser && item.StaffAssistedPrint) //User is external and has made arrangments to pay, and is thus approved by Office
+            { 
+            <tr>
+                <td style="background-color: greenyellow">
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                    {
+                        @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+                    }
+                    else
+                    {
+                        @item.FileName
+                    }
+                </td>
+                <td style="background-color: greenyellow">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td style="background-color: greenyellow">
+                    @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                </td>
+                <td style="background-color: greenyellow">
+                    @foreach (string matid in item.MaterialIds.Split(','))
+                    {
+                        @Materials[long.Parse(matid)].MaterialName
+                    }
+                </td>
+                <td style="background-color: greenyellow">
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit))
+                    {
+                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
+                    }
+                    else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                    {
+                        @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
+                    }
+                </td>
+            </tr>
+        }
+        }
+
+        @foreach (var item in Model)
+        {
+            if (!item.InternalUser && !item.StaffAssistedPrint) //User is external and has not yet made arrangments to pay with the Office
+            {
+                <tr>
+                    <td style="background-color: greenyellow">
+                        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
+                        {
+                            @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
+                        }
+                        else
+                        {
+                            @item.FileName
+                        }
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @Html.DisplayFor(modelItem => item.TermsAndConditionsAgreement)
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @foreach (string matid in item.MaterialIds.Split(','))
+                        {
+                            @Materials[long.Parse(matid)].MaterialName
+                        }
+                    </td>
+                    <td style="background-color: greenyellow">
+                        @if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
+                        {
+                            @Html.ActionLink("Cancel", "Cancel", new { id = item.PrintId })
+                        }
+                    </td>
+                </tr>
+            }
+        }
     </table>

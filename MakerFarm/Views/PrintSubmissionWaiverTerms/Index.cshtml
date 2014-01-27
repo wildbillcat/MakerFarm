@@ -17,6 +17,12 @@
         <th>
             @Html.DisplayNameFor(model => model.WaiverText)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShowInternalUsers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShowExternalUsers)
+        </th>
         <th></th>
     </tr>
 
@@ -27,6 +33,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.WaiverText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShowInternalUsers)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShowExternalUsers)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PrintSubmissionWaiverTermId }) |

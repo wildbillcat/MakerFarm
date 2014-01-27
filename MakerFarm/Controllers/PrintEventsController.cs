@@ -89,10 +89,10 @@ namespace MakerFarm.Controllers
                 string PrintAssignmentsQuery = "Select * " +
             "from dbo.PrintEvents " +
             "inner join ( " +
-            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
             "from dbo.PrintEvents " +
             "group by dbo.PrintEvents.PrintID " +
-            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
                 SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
                 Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
@@ -297,7 +297,6 @@ namespace MakerFarm.Controllers
 
         // GET: /PrintEvents/Edit/5
 
-        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -309,8 +308,8 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", printevent.PrinterId);
+            List<PrintEventType> evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+            ViewBag.EventTypes = evts;
             return View(printevent);
         }
 
@@ -319,17 +318,16 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include="PrintEventId,EventType,EventTimeStamp,MaterialUsed,PrinterId,UserName,PrintId")] PrintEvent printevent)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(printevent).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Prints", new { id = printevent.PrintId});
             }
-            ViewBag.PrintId = new SelectList(db.Prints, "PrintId", "FileName", printevent.PrintId);
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", printevent.PrinterId);
+            List<PrintEventType> evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
+            ViewBag.EventTypes = evts;
             return View(printevent);
         }
 
@@ -392,8 +390,11 @@ namespace MakerFarm.Controllers
 
                     MailMessage msg = new MailMessage();
                     msg.To.Add(user.EmailAddress);
-                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
-                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    if (System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress") != null && !System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress").Equals(""))
+                    {
+                        msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    }
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailFromAddress"));
                     if (Success)
                     {
                         msg.Subject = string.Concat("Your print of ", userPrint.FileName, " has Completed.");

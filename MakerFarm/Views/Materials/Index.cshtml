@@ -24,13 +24,16 @@
         <th>
             @Html.DisplayNameFor(model => model.MaterialSpoolQuantity)
         </th>
+        <th>
+            Available Qty.
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.MaterialName)
+            @Html.ActionLink(item.MaterialName, "Details", new { id = item.MaterialId })            
         </td>
         <td>
             @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
@@ -39,18 +42,11 @@
             @Html.DisplayFor(modelItem => item.MaterialSpoolQuantity)
         </td>
         <td>
-         @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
-         {
-            @Html.ActionLink("Edit", "Edit", new { id=item.MaterialId })
-            <text> | </text>
-         }
+            @Html.Action("AvailableSpools", new { id = item.MaterialId })
+        </td>
+        <td>
             @Html.ActionLink("Details", "Details", new { id=item.MaterialId }) | 
             @Html.ActionLink("Update Quantity", "UpdateQuantity", new { id = item.MaterialId })
-        @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
-        {
-            <text> | </text>
-            @Html.ActionLink("Delete", "Delete", new { id=item.MaterialId })
-        }
         </td>
     </tr>
 }

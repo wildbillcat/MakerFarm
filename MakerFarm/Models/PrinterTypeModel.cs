@@ -73,6 +73,14 @@ namespace MakerFarm.Models
 
         [Display(Name = "Allow users to submit to queue?", Description = "This denotes if the printer queue should be avaiable for submission for users.")]
         public bool SubmissionEnabled { set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        [Display(Name = "Cost of print per unit for internal users", Description = "This is the cost per unit that should be charged for internal users")]
+        public double InternalCostPerUnit { set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        [Display(Name = "Cost of print per unit for external users", Description = "This is the cost per unit that should be charged for external users")]
+        public double ExternalCostPerUnit { set; get; }
     }
         
 }

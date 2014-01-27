@@ -34,6 +34,22 @@
         </dd>
 
         <dt>
+            @Html.LabelFor(model => model.PapercutPrintServer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PapercutPrintServer)
+        </dd>
+
+        <dt>
+            @Html.LabelFor(model => model.PapercutPrintQueue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PapercutPrintQueue)
+        </dd>
+
+        <dt>
             @Html.Label("", "Printer Status", new { })
         </dt>
 
@@ -42,7 +58,7 @@
             @if (!Model.PrinterName.Equals("Null Printer") && Print == null)
             {
                <text> | </text> 
-            @Html.ActionLink("Update", "Create", "PrinterStatusLogs", new { id = Model.PrinterId }, null)
+               <input type="button" value="Update" onclick="location.href='@Url.Action("Create", "PrinterStatusLogs", new { id = Model.PrinterId })'" />
             }
         </dd>
 
@@ -130,7 +146,7 @@
         </tr>
         <tr>
             <td>
-                @Html.ActionLink(Print.FileName, "Details", new { id = Print.PrintId })
+                @Html.ActionLink(Print.FileName, "Details", "Prints", new { id = Print.PrintId }, null)
             </td>
             <td>
                 @Print.UserName

@@ -120,6 +120,13 @@
     </div>
 
     <div class="display-label">
+        @Html.LabelFor(model => model.ProcessingCharge)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProcessingCharge)
+    </div>
+
+    <div class="display-label">
         @Html.LabelFor(model => model.FullColorPrint)
     </div>
     <div class="display-field">
@@ -155,6 +162,22 @@
              @Html.DisplayFor(model => model.FlaggedComment)
         </div>
         }
+    
+    <div class="display-label">
+         @Html.LabelFor(model => model.InternalUser)
+    </div>
+    <div class="display-field">
+         @Html.DisplayFor(model => model.InternalUser)
+    </div>
+    
+    <div class="display-label">
+         @Html.LabelFor(model => model.BilledUser)
+    </div>
+    <div class="display-field">
+         @Html.DisplayFor(model => model.BilledUser)
+    </div>
+        
+
         
         if ((bool)ViewData["DownloadAvailable"])
         {
@@ -200,10 +223,12 @@
         <th>
             Comment
         </th> 
+        <th>
+        </th> 
         }
     </tr>
 
-    @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.EventTimeStamp))
+    @foreach (MakerFarm.Models.PrintEvent p in Model.PrintEvents.OrderByDescending(x => x.PrintEventId))
     {
         <tr>
             <td>
@@ -225,6 +250,9 @@
            {
             <td>
                @p.Comment 
+            </td>
+            <td>
+               @Html.ActionLink("Edit", "Edit", "PrintEvents", new { id = p.PrintEventId }, null)
             </td>
            }
         </tr>

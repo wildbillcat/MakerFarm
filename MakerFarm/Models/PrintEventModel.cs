@@ -18,7 +18,6 @@ namespace MakerFarm.Models
         public PrintEventType EventType { get; set; } /* The Event Type ID (One of the Staticly Defined Types) */
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Event Timestamp", Description = "This is the TimeStamp of when the event was created")]
         public DateTime EventTimeStamp { get; set; } /* Time the Event was Registered */
 

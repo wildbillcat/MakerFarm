@@ -47,7 +47,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="PrintSubmissionWaiverTermId,Enabled,WaiverText")] PrintSubmissionWaiverTerm printsubmissionwaiverterm)
+        public ActionResult Create([Bind(Include = "PrintSubmissionWaiverTermId,Enabled,WaiverText,ShowInternalUsers,ShowExternalUsers")] PrintSubmissionWaiverTerm printsubmissionwaiverterm)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PrintSubmissionWaiverTermId,Enabled,WaiverText")] PrintSubmissionWaiverTerm printsubmissionwaiverterm)
+        public ActionResult Edit([Bind(Include = "PrintSubmissionWaiverTermId,Enabled,WaiverText,ShowInternalUsers,ShowExternalUsers")] PrintSubmissionWaiverTerm printsubmissionwaiverterm)
         {
             if (ModelState.IsValid)
             {

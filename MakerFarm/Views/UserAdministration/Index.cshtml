@@ -1,15 +1,26 @@
-﻿@model IEnumerable<MakerFarm.Models.UserProfile>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<MakerFarm.Models.UserProfile>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User Administration";
 }
 
-<h2>Index</h2>
+<h2>User Administration</h2>
+
+@using (Html.BeginForm("Index", "UserAdministration", FormMethod.Get))
+{
+    <p>
+        Find by UserName: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.ActionLink("Username", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th></th>
     </tr>
@@ -26,3 +37,9 @@
 }
 
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

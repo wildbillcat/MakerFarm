@@ -35,21 +35,11 @@
                     {
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Materials", "Index", "Materials")</li>                            
-                        </ul>
-                    </nav>
-                    }
-                    @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
-                    { 
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Printer Types", "Administration", "PrinterTypes")</li>
-                            <li>@Html.ActionLink("Printers", "Index", "Printers")</li>
-                            <li>@Html.ActionLink("Printer Logs", "Index", "PrinterStatusLogs")</li>
-                            <li>@Html.ActionLink("Print Error Types", "Index", "PrintErrorTypes")</li>
-                            <li>@Html.ActionLink("Print Events", "Index", "PrintEvents")</li>
-                            <li>@Html.ActionLink("Submission Waivers", "Index", "PrintSubmissionWaiverTerms")</li>
-                            <li>@Html.ActionLink("User Administration", "Index", "UserAdministration")</li>
+                            <li>@Html.ActionLink("Materials", "Index", "Materials")</li>  
+                            @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
+                            {
+                                <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
+                            }
                         </ul>
                     </nav>
                     }

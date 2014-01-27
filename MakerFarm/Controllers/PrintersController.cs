@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
+using PaperCutMF;
 
 namespace MakerFarm.Controllers
 {
@@ -15,6 +16,7 @@ namespace MakerFarm.Controllers
     public class PrintersController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
+        ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
 
         // GET: /Printers/
         public ActionResult Index()
@@ -116,27 +118,7 @@ namespace MakerFarm.Controllers
                 status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
             }
             ViewData["PrinterHistory"] = PrinterHistory;
-            /* Pretty sure this is garbage, not sure what I was on when I wrote that.
-            try
-            {
-                SqlParameter[] Params1 = { new SqlParameter("@PrinterID", printer.PrinterId) };
-                PrinterStatusLog P = db.PrinterStatusLogs.SqlQuery(
-                "Select dbo.PrinterStatusLogs.* " +
-                "From dbo.PrinterStatusLogs " +
-                "inner join " +
-                    "(" +
-                    "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.LogEntryDate) as MaxEntryTime " +
-                    "from dbo.PrinterStatusLogs " +
-                    "group by dbo.PrinterStatusLogs.PrinterID" +
-                    ") " +
-                "mxe ON dbo.PrinterStatusLogs.LogEntryDate = mxe.MaxEntryTime " +
-                "where (dbo.PrinterStatusLogs.PrinterID = @PrinterID)", Params1).First();
-                
-            }
-            catch 
-            {
-                //oh myyyyy
-            }*/
+            
             
             ViewData["Status"] = status;
             
@@ -148,10 +130,10 @@ namespace MakerFarm.Controllers
                 "from dbo.PrintEvents " +
                 "inner join " +
                 "( " +
-                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
                 "from dbo.PrintEvents " +
                 "group by dbo.PrintEvents.PrintID " +
-                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
                 "where EventType = @PrintingEventStart and pnt.PrinterID = @PrinterId";
             SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
@@ -190,8 +172,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
+        public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
+
             if (printer.PrinterName.Equals("Null Printer"))
             {
                 ModelState.AddModelError("TypeName", new Exception("Sorry, this is a Special Internal Name for Makerfarm. Please choose something else."));
@@ -234,7 +217,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName")] Printer printer)
+        public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
             if (printer.PrinterName.Equals("Null Printer"))
             {

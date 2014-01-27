@@ -38,6 +38,9 @@ namespace MakerFarm.Models
         [Display(Name = "Staff Assisted Print", Description = "Denotes if a Printing staff member assisted with the submission of this print")]
         public bool StaffAssistedPrint { get; set; } /* Denotes if a staff member assited with the print submission */
 
+        [Display(Name = "Processing Charge", Description = "Labor charge by the DM Office for the Processing of the file")]
+        public double ProcessingCharge { get; set; } /* The amount charge by the DM Office for assitance with prints */
+
         public string Comment { get; set; } /*Commonly used to denote on multiple extruder machines which extruder gets */
 
         [Display(Name = "Flagged Print", Description = "Denotes if a Print has been flagged by a staff member for some reason")]
@@ -54,8 +57,39 @@ namespace MakerFarm.Models
         [Display(Name = "Full Color Print", Description = "This denotes if you would like the print in full color, instead of the default monochrome material color.")]
         public bool FullColorPrint { get; set; } /*Denotes if user wants a full color print*/
 
+        [Display(Name = "Print submitted by internal user?")]
+        public bool InternalUser { get; set; }
+
+        [Display(Name = "Print has been billed to user?")]
+        public bool BilledUser { get; set; }
+
         public virtual PrinterType PrinterType { get; set; }
         public virtual ICollection<PrintEvent> PrintEvents { get; set; }
+
+        public Printer GetLastPrinter()
+        {
+            Printer P = null;
+            foreach (PrintEvent E in PrintEvents)
+            {
+                if (!E.Printer.PrinterName.Equals("Null Printer"))
+                {
+                    P = E.Printer;
+                }
+            }
+            return P;
+        }
+
+        public string GetPath()
+        {
+            string OriginalPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", SubmissionTime.ToString("yyyy-MMM-d"), "\\", PrintId, "_", FileName);
+            return OriginalPath;
+        }
+
+        public string GetFlaggedPath()
+        {
+            string FlaggedPath = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\Flagged\\", SubmissionTime.ToString("yyyy-MMM-d"), "\\", PrintId, "_", FileName);
+            return FlaggedPath;
+        }
     }
         
 }

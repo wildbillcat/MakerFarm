@@ -12,6 +12,8 @@ using System.Net.Mail;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
 using System.Configuration;
+using PaperCutMF;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -19,7 +21,10 @@ namespace MakerFarm.Controllers
     public class PrintsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
+        private ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
+        // set up domain context
         
+
         //
         // GET: /Prints/
         public ActionResult Index(int id = 0)
@@ -89,6 +94,20 @@ namespace MakerFarm.Controllers
                 ViewData["Assigned"] = Assigned;//Print Start Query
                 List<Printer> Printers = db.Printers.Where(p => p.PrinterTypeId == id).OrderBy(p => p.PrinterName).ToList();
                 ViewData["Printers"] = Printers;
+
+                //count up active user jobs
+                Dictionary<string, int> ActiveCount = new Dictionary<string,int>();
+                foreach (long key in Assigned.Keys)
+                {
+                    if(ActiveCount.ContainsKey(Assigned[key].UserName)){
+                        ActiveCount[Assigned[key].UserName] = ActiveCount[Assigned[key].UserName] + 1; 
+                    }else{
+                        ActiveCount.Add(Assigned[key].UserName, 1);
+                    }
+                }
+                ViewData["ActiveCount"] = ActiveCount;
+                Dictionary<long, Material> Materials = db.Materials.Where(P => P.PrinterTypeId == id).ToDictionary(p => p.MaterialId);
+                ViewData["Materials"] = Materials;
                 Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
             "Select dbo.PrinterStatusLogs.* " +
             "From dbo.PrinterStatusLogs " +
@@ -105,22 +124,32 @@ namespace MakerFarm.Controllers
             }
         }
 
-        //
-        // GET: /Prints/Completed
-        public ActionResult Completed(int id = 0)
+        public ActionResult PastPrints(int? id, int? page, string sortOrder, string currentFilter, string searchString)
         {
-            if (id == 0)
+            if (id == null || id == 0)
             {
                 return RedirectToAction("Index", "PrinterTypes");
             }
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
             else
             {
-                //Need to edit it to pull prints 
-                string CompleteFilesQuery = "Select dbo.Prints.* " +
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            string CompleteFilesQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
                 "left outer join " +
                 "( " +
-                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, mxe.MostReventEvent " +
                 "from dbo.PrintEvents " +
                 "inner join " +
                 "( " +
@@ -129,28 +158,38 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType = @PrintingEventCompleted or pnt.EventType = @PrintingEventCanceled) and dbo.Prints.PrinterTypeID = @PrinterTypeID " +
-                "order by dbo.prints.PrintID DESC";
-                string PrintAssignmentsQuery = "Select * " +
-             "from dbo.PrintEvents " +
-             "inner join ( " +
-             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
-             "from dbo.PrintEvents " +
-             "group by dbo.PrintEvents.PrintID " +
-             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
-             "where dbo.PrintEvents.EventType = @PrintingEventCompleted or dbo.PrintEvents.EventType = @PrintingEventCanceled";
-                SqlParameter PrintingEventCompleted = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-                SqlParameter PrintingEventCanceled = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-                SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
-                SqlParameter PrintingEventCompleted2 = new SqlParameter("@PrintingEventCompleted", PrintEventType.PRINT_COMPLETED);
-                SqlParameter PrintingEventCanceled2 = new SqlParameter("@PrintingEventCanceled", PrintEventType.PRINT_CANCELED);
-                ViewBag.Title = db.PrinterTypes.Where(s => s.PrinterTypeId.Equals(id)).First().TypeName;
-                ViewBag.id = id;
-                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventCompleted2, PrintingEventCanceled2).ToDictionary(p => p.PrintId);
-                ViewBag.PrintingAssignments = PrintingAssignments;
-                List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery, PrintingEventCompleted, PrintingEventCanceled, PrinterTypeId).ToList();
-                return View(Waiting);
+                "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") and dbo.Prints.PrinterTypeID = " + id + " " +
+                "order by pnt.MostReventEvent DESC";
+
+            ViewBag.Title = db.PrinterTypes.Find(id).TypeName;
+            ViewBag.id = id;
+
+            var prints = (IEnumerable<Print>)db.Prints.SqlQuery(CompleteFilesQuery);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                prints = prints.Where(s => s.UserName.ToUpper().Contains(searchString.ToUpper()));
             }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    prints = prints.OrderByDescending(s => s.UserName);
+                    break;
+                case "Date":
+                    prints = prints.Reverse();
+                    break;
+                case "Name":
+                    prints = prints.OrderByDescending(s => s.UserName);
+                    break;
+                default:
+                    //Query Sorts by this by default
+                    break;
+            }
+
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+            return View(prints.ToPagedList(pageNumber, pageSize));
+            
         }
 
          //
@@ -251,15 +290,46 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection values, HttpPostedFileBase PrintFile)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             Print print = new Print();
             string saveAsDirectory = string.Concat(AppDomain.CurrentDomain.GetData("DataDirectory"), "\\3DPrints\\", DateTime.Now.ToString("yyyy-MMM-d"));
-            
+            print.Comment = values.Get("Comment");
+            print.BilledUser = false;
+            print.ProcessingCharge = 0;
             print.UserName = values["UserName"];
             print.FlaggedPrint = false;
             print.FlaggedComment = "";
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
-
+            print.InternalUser = false; //By Default Assumed External, perform AD lookup below to verify
+            //Check AD Membership            
+            try
+            {
+                UserPrincipal ADUser = UserPrincipal.FindByIdentity(ctx, print.UserName); //Use ID to prevent Parsing issues
+                PrincipalSearchResult<Principal> UserGroups = ADUser.GetAuthorizationGroups();
+                foreach (string group in System.Configuration.ConfigurationManager.AppSettings.Get("InternalUserGroups").Split(','))
+                {
+                    try
+                    {
+                        foreach (GroupPrincipal gTmp in UserGroups)
+                        {
+                            if (gTmp.Name.Equals(group))
+                            {
+                                print.InternalUser = true;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        print.Comment = string.Concat(print.Comment, "\n", e.Message); //Write Message in comment if exception is being thrown
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                print.Comment = string.Concat(print.Comment, "\n", e.Message);
+            }
+            
             /*Printer Type ID*/
             print.PrinterTypeId = int.Parse(values["PrinterTypeID"]);
 
@@ -278,6 +348,11 @@ namespace MakerFarm.Controllers
                 ModelState.AddModelError("PrintFile", "Incorrect File Type!");
             }
             print.FileName = PrintFile.FileName;
+
+            if (PrintFile.ContentLength < 2048)
+            {
+                ModelState.AddModelError("PrintFile", "File appears to be Empty");
+            }
 
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
@@ -315,7 +390,7 @@ namespace MakerFarm.Controllers
             /*Staff Assistance*/
             print.StaffAssistedPrint = false;
 
-            print.Comment = values.Get("Comment");
+            
 
             if (ModelState.IsValid)
             {
@@ -328,6 +403,7 @@ namespace MakerFarm.Controllers
                 db.SaveChanges();
                 string printFileName = string.Concat(saveAsDirectory, "\\", print.PrintId, "_", PrintFile.FileName);
                 PrintFile.SaveAs(printFileName);
+                ctx.Dispose();
                 return RedirectToAction("PrintWaiver", new { id = print.PrintId });
             }
             long id = print.PrinterTypeId;
@@ -341,6 +417,7 @@ namespace MakerFarm.Controllers
             if (materials.Count() == 0)
             {
                 //The printer you attempted to use does not have any materials available
+                ctx.Dispose();
                 return RedirectToAction("Index", "Materials");
             }
             ViewData["MaterialsList"] = new SelectList(materials, "MaterialId", "MaterialName");
@@ -365,6 +442,7 @@ namespace MakerFarm.Controllers
             ViewData["PrinterMeasurmentUnit"] = printerType.MaterialUseUnit;
             ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             ViewData["FullColorPrint"] = printerType.OffersFullColorPrinting;
+            ctx.Dispose();
             return View(print);
         }
 
@@ -408,6 +486,9 @@ namespace MakerFarm.Controllers
 
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
 
+            print.InternalUser = values.Get("InternalUser").Contains("true");
+
+            print.BilledUser = values.Get("BilledUser").Contains("true");
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
             string matIds = tempMaterial[0];
@@ -428,6 +509,8 @@ namespace MakerFarm.Controllers
 
             /*Staff Assistance*/
             print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");
+
+            print.ProcessingCharge = double.Parse(values["ProcessingCharge"]);
 
             print.Comment = values.Get("Comment");
 
@@ -535,8 +618,7 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchCancelationEmail(Print userPrint, bool Success)
         {
-            // set up domain context
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             // find the user in question
             try
             {
@@ -636,7 +718,14 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
+            if (print.InternalUser)
+            {
+                ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true) && p.ShowInternalUsers).ToList();
+            }
+            else
+            {
+                ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true) && p.ShowExternalUsers).ToList();
+            }
             return View(print);
         }
 
@@ -660,7 +749,7 @@ namespace MakerFarm.Controllers
                     return View(print);
                 }
             }
-            catch (Exception e) {
+            catch {
                 ViewData["Waiver"] = true;
                 return View(print);
             }
@@ -681,8 +770,7 @@ namespace MakerFarm.Controllers
         //Returns true if e-mail is successfully sent
         private bool DispatchAgreementEmail(Print userPrint)
         {
-            // set up domain context
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, System.Configuration.ConfigurationManager.AppSettings.Get("ADDomain"));
             // find the user in question
             try{
                 UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name);
@@ -703,8 +791,12 @@ namespace MakerFarm.Controllers
                     }
                     MailMessage msg = new MailMessage();
                     msg.To.Add(user.EmailAddress);
-                    msg.CC.Add(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
-                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress"));
+                    string CC = System.Configuration.ConfigurationManager.AppSettings.Get("EmailCCAddress");
+                    if (CC != null && !CC.Equals(""))
+                    {
+                        msg.CC.Add(CC);
+                    }
+                    msg.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings.Get("EmailFromAddress"));
                     msg.Subject = string.Concat("Your Print Submission of ", userPrint.FileName, " at ", userPrint.SubmissionTime.ToString());
                     msg.Body = emailAgreement.ToString();
                     NetworkCredential cred = new NetworkCredential(System.Configuration.ConfigurationManager.AppSettings.Get("SMTPUser"), System.Configuration.ConfigurationManager.AppSettings.Get("SMTPPassword"));

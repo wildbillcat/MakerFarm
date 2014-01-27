@@ -63,7 +63,7 @@ namespace MakerFarm.Migrations
             {
                 context.Database.ExecuteSqlCommand(CreateAdministratorRoleSQL);
             }
-            catch (Exception e)
+            catch
             {
 
             }
@@ -71,7 +71,7 @@ namespace MakerFarm.Migrations
             {
                 context.Database.ExecuteSqlCommand(CreateModeratorRoleSQL);
             }
-            catch (Exception e)
+            catch
             {
 
             }

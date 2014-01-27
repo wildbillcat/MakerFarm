@@ -15,7 +15,7 @@
     }
     <td>
         <a href=@Url.Action("Index", "Prints", new { id = item.PrinterTypeId }, null)>
-            <img src="@Url.Content(item.PrinterIcon)" alt="Image" />
+            <img src="@Url.Content(item.PrinterIcon)" alt="@item.TypeName Image" height="200" />
             <br />
             @item.TypeName
         </a>
@@ -28,7 +28,7 @@
         }
         <td>
             <a href=@Url.Action("UnapprovedAdmin", "Prints", new { id = item.PrinterTypeId }, null)>
-                <img src="@Url.Content("/Content/StaticIcons/Question.png")" alt="Unwaived Prints Icon" />
+                <img src="@Url.Content("/Content/StaticIcons/Question.png")" alt="Unwaived Prints Icon" height="200"/>
                 <br />
                 Prints Missing Waivers
             </a>

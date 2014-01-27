@@ -18,6 +18,12 @@ namespace MakerFarm.Models
         [Display(Name = "Printer Type", Description = "The printer type associated with the printer")]
         public int PrinterTypeId { set; get; }
 
+        [Display(Name = "Papercut Print Server", Description = "This is the name of the print server associated w/ the virtual queue")]
+        public string PapercutPrintServer { get; set; }
+
+        [Display(Name = "Papercut Print Queue", Description = "This is the name of the virtual papercut queue associated with the printer")]
+        public string PapercutPrintQueue { get; set; }
+
         [Display(Name = "Loaded Material(s)", Description = "This the the current type of material(s) loaded (Or thought to be) in the printer")]
         public virtual ICollection<MaterialCheckout> MaterialsInUse { set; get; }
 

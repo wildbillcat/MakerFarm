@@ -156,3 +156,8 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+#WebPublishingTransform
+Web.Release.config
+
+Web.Debug.config
