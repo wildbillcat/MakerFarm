@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -16,9 +17,42 @@ namespace MakerFarm.Controllers
         private MakerfarmDBContext db = new MakerfarmDBContext();
 
         // GET: /UserAdministration/
-        public ActionResult Index()
+        public ActionResult Index(int? page, string sortOrder, string currentFilter, string searchString)
         {
-            return View(db.UserProfiles.OrderBy(P => P.UserName).ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var users = from u in db.UserProfiles
+                        select u;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(s => s.UserName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    users = users.OrderByDescending(s => s.UserName);
+                    break;
+                default:
+                    users = users.OrderBy(s => s.UserName);
+                    break;
+            }
+
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+            return View(users.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /UserAdministration/Details/5
