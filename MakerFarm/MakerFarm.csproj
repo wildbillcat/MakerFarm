@@ -411,6 +411,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\StaticIcons\dialog-error-5.png" />
     <Content Include="Content\StaticIcons\document-multiple.png" />
+    <Content Include="Content\StaticIcons\emblem-money-2.png" />
     <Content Include="Content\StaticIcons\okteta.png" />
     <Content Include="Content\StaticIcons\printer-2.png" />
     <Content Include="Content\StaticIcons\print_class.png" />
