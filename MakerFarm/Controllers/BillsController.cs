@@ -35,7 +35,7 @@ namespace MakerFarm.Controllers
                 "group by dbo.PrintEvents.PrintID " +
                 ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
                 ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
-                "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") " +
+                "where (pnt.EventType = " + (int)PrintEventType.PRINT_COMPLETED + " or pnt.EventType = " + (int)PrintEventType.PRINT_CANCELED + ") and dbo.Prints.BilledUser = 0 " +
                 "order by pnt.MostReventEvent DESC";
             
             List<Print> Waiting = db.Prints.SqlQuery(CompleteFilesQuery).ToList();
@@ -126,10 +126,16 @@ namespace MakerFarm.Controllers
         public ActionResult Create([Bind(Include="BillId,UserName,TotalBillingAmount,PrintEventId,PrintId,Comment")] Bill bill)
         {
             PrintEvent BilledEvent = db.PrintEvents.Find(bill.PrintEventId);
+            Print print = BilledEvent.Print;
+            bill.PrintEvent = BilledEvent;
+            bill.Print = print;
             bill.BillingTime = DateTime.Now;
+            if (db.Bills.Where(p => p.PrintEventId == BilledEvent.PrintEventId).ToList().Count() > 0)
+            {
+                return RedirectToAction("Index");
+            }
             if (ModelState.IsValid && BilledEvent != null)
             {
-                Print print = BilledEvent.Print;
                 print.BilledUser = true;
                 db.Entry(print).State = EntityState.Modified;
                 db.Bills.Add(bill);
@@ -139,23 +145,34 @@ namespace MakerFarm.Controllers
                     Printer P = print.GetLastPrinter();
                     if (P != null && !P.PapercutPrintQueue.Equals("") && !P.PapercutPrintServer.Equals(""))
                     {
-                        string printjob = "document-name=" + print.FileName +",user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",time=" + BilledEvent.EventTimeStamp.ToString("yyyyMMddTHHmmss") + ",cost=" + bill.TotalBillingAmount + ",comment=BillID:" + bill.BillId + " EventID:" + bill.PrintEventId + " PrintID: " + bill.PrintId; // This assembles a string of information to submit the printjob 
-                        if (System.IO.File.Exists(print.GetPath()))
+                        try
                         {
-                            long size = new System.IO.FileInfo(print.GetPath()).Length/1024;
-                            printjob = printjob + ",document-size-kb=" + size;
+                            string printjob = "document-name=" + print.FileName + ",user=" + print.UserName + ",server=" + P.PapercutPrintServer + ",printer=" + P.PapercutPrintQueue + ",time=" + BilledEvent.EventTimeStamp.ToString("yyyyMMddTHHmmss") + ",cost=" + bill.TotalBillingAmount + ",comment=BillID:" + bill.BillId + " EventID:" + bill.PrintEventId + " PrintID: " + bill.PrintId; // This assembles a string of information to submit the printjob 
+                            if (System.IO.File.Exists(print.GetPath()))
+                            {
+                                long size = new System.IO.FileInfo(print.GetPath()).Length / 1024;
+                                printjob = printjob + ",document-size-kb=" + size;
+                            }
+                            else if (System.IO.File.Exists(print.GetFlaggedPath()))
+                            {
+                                long size = new System.IO.FileInfo(print.GetFlaggedPath()).Length / 1024;
+                                printjob = printjob + ",document-size-kb=" + size;
+                            }
+                            PapercutServerProxy.ProcessJob(printjob);
                         }
-                        else if (System.IO.File.Exists(print.GetFlaggedPath()))
+                        catch
                         {
-                            long size = new System.IO.FileInfo(print.GetFlaggedPath()).Length / 1024;
-                            printjob = printjob + ",document-size-kb=" + size;
+                            //Charging Print Failed, Mark Print as uncharged
+                            print.BilledUser = false;
+                            db.Entry(print).State = EntityState.Modified;
+                            db.Bills.Remove(bill);
+                            db.SaveChanges();
                         }
-                        PapercutServerProxy.ProcessJob(printjob);
+                        
                     }
                 }
                 return RedirectToAction("Index");
             }
-
             return View(bill);
         }
 

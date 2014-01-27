@@ -42,7 +42,7 @@
             @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FileName)
+            @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserName)
@@ -99,7 +99,7 @@
                     @Html.DisplayFor(modelItem => item.PrinterType.TypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
+                    @Html.ActionLink(item.FileName, "Details", "Prints", new { id = item.PrintId }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)

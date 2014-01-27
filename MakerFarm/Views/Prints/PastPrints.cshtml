@@ -10,7 +10,7 @@
     <input type="button" value="Current Queue" onclick="location.href='@Url.Action("Index", new { id = ViewBag.id })'" />
 </p>
 
-@using (Html.BeginForm("BillingHistory", "Bills", FormMethod.Get, new { id = ViewBag.id }))
+@using (Html.BeginForm("PastPrints", "Prints", FormMethod.Get, new { id = ViewBag.id }))
 {
     <p>
         Find by UserName: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
