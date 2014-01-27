@@ -413,6 +413,7 @@
     <Content Include="Content\StaticIcons\document-multiple.png" />
     <Content Include="Content\StaticIcons\okteta.png" />
     <Content Include="Content\StaticIcons\printer-2.png" />
+    <Content Include="Content\StaticIcons\print_class.png" />
     <Content Include="Content\StaticIcons\Question.png" />
     <Content Include="Content\StaticIcons\system-settings-2.png" />
     <Content Include="Content\StaticIcons\view-calendar-upcoming-events.png" />
