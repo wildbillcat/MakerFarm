@@ -7,13 +7,16 @@ namespace MakerFarm.Models
     public class Machine
     {
         [Key]
-        [Display(Name = "Unique Hardware Device ID", Description = "This is the unique hardware ID as reported by the client.")]
+        [Display(Name = "Machine ID", Description = "This is the unique Machine id Makerfarm uses.")]
         public long MachineId { set; get; }
+
+        [Display(Name = "MachineName", Description = "This is the unique hardware ID as reported by the client.")]
+        public string MachineName { get; set; }
 
         [Display(Name = "PrinterId", Description = "This is the affiliated ID of the Printer affiliated with this hardware.")]
         public long? PrinterId { set; get; }
 
-        [Display(Name = "Reported Status", Description = "This string is filled with reported information on what the printer is up to.")]
+        [Display(Name = "Reported Status", Description = "This string is filled with reported information on what the printer is up to. First line should be Brief")]
         public string Status { set; get; }
 
         [Display(Name = "Denotes if hardware is idle/active", Description = "The name of the print material. (IE: Navy Blue ABS)")]
@@ -24,6 +27,8 @@ namespace MakerFarm.Models
 
         [Display(Name = "Active Client Support", Description = "This denotes if the printer supports the sending/cancelation of jobs Via the client.")]
         public bool ClientJobSupport { set; get; }
+
+        public bool Enabled { get; set; }
 
         [ForeignKey("PrinterId")]
         public Printer AffiliatedPrinter { get; set; }

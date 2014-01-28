@@ -13,5 +13,7 @@ namespace MakerFarm.Models
         public string ClientAPIKey { set; get; }
 
         public DateTime LastUpdated { set; get; }
+
+        public bool Enabled { set; get; }
     }
 }

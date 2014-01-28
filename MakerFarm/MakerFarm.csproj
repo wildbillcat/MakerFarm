@@ -254,7 +254,9 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BillsController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MachinesController.cs" />
     <Compile Include="Controllers\MaterialCheckoutsController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
     <Compile Include="Controllers\PrintErrorTypesController.cs" />
@@ -387,6 +389,14 @@
     <Compile Include="Migrations\201401281641030_added RepRancher Client ClientPermission, Machine Job.Designer.cs">
       <DependentUpon>201401281641030_added RepRancher Client ClientPermission, Machine Job.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401281720106_Updatted Enable flag for Clients and Machines.cs" />
+    <Compile Include="Migrations\201401281720106_Updatted Enable flag for Clients and Machines.Designer.cs">
+      <DependentUpon>201401281720106_Updatted Enable flag for Clients and Machines.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401281739501_added machine name property.cs" />
+    <Compile Include="Migrations\201401281739501_added machine name property.Designer.cs">
+      <DependentUpon>201401281739501_added machine name property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -420,7 +430,9 @@
     <Content Include="Content\StaticIcons\dialog-error-5.png" />
     <Content Include="Content\StaticIcons\document-multiple.png" />
     <Content Include="Content\StaticIcons\emblem-money-2.png" />
+    <Content Include="Content\StaticIcons\enlightened_sound_daemon.png" />
     <Content Include="Content\StaticIcons\okteta.png" />
+    <Content Include="Content\StaticIcons\preferences-system-network-sharing-2.png" />
     <Content Include="Content\StaticIcons\printer-2.png" />
     <Content Include="Content\StaticIcons\print_class.png" />
     <Content Include="Content\StaticIcons\Question.png" />
@@ -634,6 +646,16 @@
     <Content Include="Views\Bills\BillingHistory.cshtml" />
     <Content Include="Views\Bills\Index.cshtml" />
     <Content Include="Views\Prints\PastPrints.cshtml" />
+    <Content Include="Views\Clients\Create.cshtml" />
+    <Content Include="Views\Clients\Delete.cshtml" />
+    <Content Include="Views\Clients\Details.cshtml" />
+    <Content Include="Views\Clients\Edit.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\Machines\Create.cshtml" />
+    <Content Include="Views\Machines\Delete.cshtml" />
+    <Content Include="Views\Machines\Details.cshtml" />
+    <Content Include="Views\Machines\Edit.cshtml" />
+    <Content Include="Views\Machines\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -731,6 +753,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401281641030_added RepRancher Client ClientPermission, Machine Job.resx">
       <DependentUpon>201401281641030_added RepRancher Client ClientPermission, Machine Job.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401281720106_Updatted Enable flag for Clients and Machines.resx">
+      <DependentUpon>201401281720106_Updatted Enable flag for Clients and Machines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401281739501_added machine name property.resx">
+      <DependentUpon>201401281739501_added machine name property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
