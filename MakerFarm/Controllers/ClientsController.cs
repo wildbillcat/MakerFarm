@@ -11,6 +11,7 @@ using PagedList;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ClientsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
