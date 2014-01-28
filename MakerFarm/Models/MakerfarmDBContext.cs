@@ -20,6 +20,11 @@ namespace MakerFarm.Models
         public DbSet<MaterialCheckout> MaterialCheckouts { get; set; }
         public DbSet<PrintSubmissionWaiverTerm> PrintSubmissionWaiverTerms { get; set; }
         public DbSet<Bill> Bills { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientPermission> ClientPermissions { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Machine> Machines { get; set; }
+
 
         public MakerfarmDBContext() : base("DefaultConnection")
         {

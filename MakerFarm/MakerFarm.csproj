@@ -383,6 +383,10 @@
     <Compile Include="Migrations\201401270227433_added virtual properties to the bill model.Designer.cs">
       <DependentUpon>201401270227433_added virtual properties to the bill model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401281641030_added RepRancher Client ClientPermission, Machine Job.cs" />
+    <Compile Include="Migrations\201401281641030_added RepRancher Client ClientPermission, Machine Job.Designer.cs">
+      <DependentUpon>201401281641030_added RepRancher Client ClientPermission, Machine Job.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -724,6 +728,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401270227433_added virtual properties to the bill model.resx">
       <DependentUpon>201401270227433_added virtual properties to the bill model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401281641030_added RepRancher Client ClientPermission, Machine Job.resx">
+      <DependentUpon>201401281641030_added RepRancher Client ClientPermission, Machine Job.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
