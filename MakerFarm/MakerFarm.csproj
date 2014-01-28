@@ -385,7 +385,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\BillModel.cs" />
     <Compile Include="Models\ClientModel.cs" />
     <Compile Include="Models\ClientPermissionModel.cs" />
     <Compile Include="Models\MachineModel.cs" />
