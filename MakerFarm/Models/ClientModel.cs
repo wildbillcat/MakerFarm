@@ -10,6 +10,8 @@ namespace MakerFarm.Models
 
         public string ClientName { set; get; }
 
-        public string ClientSemmetricAPIKey { set; get; }
+        public string ClientAPIKey { set; get; }
+
+        public DateTime LastUpdated { set; get; }
     }
 }

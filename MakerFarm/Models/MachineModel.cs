@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MakerFarm.Models
 {
-    public class HardwareDevice
+    public class Machine
     {
         [Key]
         [Display(Name = "Unique Hardware Device ID", Description = "This is the unique hardware ID as reported by the client.")]
-        public string HardwareDeviceId { set; get; }
+        public string MachineId { set; get; }
 
         [Display(Name = "PrinterId", Description = "This is the affiliated ID of the Printer affiliated with this hardware.")]
         public long? PrinterId { set; get; }
@@ -27,6 +27,8 @@ namespace MakerFarm.Models
 
         [ForeignKey("PrinterId")]
         public Printer AffiliatedPrinter { get; set; }
+
+        public virtual Job? AssignedJob;
 
     }
 }
