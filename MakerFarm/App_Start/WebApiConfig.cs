@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MakerFarm.Models;
 using System.Web.Http;
+using System.Web.Http.OData.Builder;
 
 namespace MakerFarm
 {
@@ -9,12 +8,15 @@ namespace MakerFarm
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Client>("ClientsAPI");
+            
 
+             // New code: Add an action to the EDM, and define the parameter and return type.
+            ActionConfiguration rateProduct = builder.Entity<Client>().Action("ISpy");
+            rateProduct.Parameter<string[]>("Machines");
+
+            config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
             // To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.
             // For more information, visit http://go.microsoft.com/fwlink/?LinkId=279712.

@@ -59,6 +59,7 @@ namespace MakerFarm.Migrations
             context.Printers.AddOrUpdate(p => p.PrinterName, NullPrinter);
             string CreateAdministratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Administrator')";
             string CreateModeratorRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('Moderator')";
+            string CreateAPIRoleSQL = "Insert Into dbo.webpages_Roles(dbo.webpages_Roles.RoleName) values('APIUser')";
             try
             {
                 context.Database.ExecuteSqlCommand(CreateAdministratorRoleSQL);
@@ -70,6 +71,14 @@ namespace MakerFarm.Migrations
             try
             {
                 context.Database.ExecuteSqlCommand(CreateModeratorRoleSQL);
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                context.Database.ExecuteSqlCommand(CreateAPIRoleSQL);
             }
             catch
             {
