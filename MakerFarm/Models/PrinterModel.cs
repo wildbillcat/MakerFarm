@@ -29,8 +29,5 @@ namespace MakerFarm.Models
         public virtual ICollection<MaterialCheckout> MaterialsInUse { set; get; }
 
         public virtual PrinterType PrinterType { get; set; } /*Provides easier access to the Associated Printer! */
-
-        [InverseProperty("AffiliatedPrinter")]
-        public virtual Machine AssociatedMachine { get; set; }
     }
 }
