@@ -19,7 +19,7 @@ namespace MakerFarm.Models
         [Display(Name = "Reported Status", Description = "This string is filled with reported information on what the printer is up to. First line should be Brief")]
         public string Status { set; get; }
 
-        [Display(Name = "Denotes if hardware is idle/active", Description = "The name of the print material. (IE: Navy Blue ABS)")]
+        [Display(Name = "Idle?", Description = "The name of the print material. (IE: Navy Blue ABS)")]
         public bool idle { set; get; }
 
         [Display(Name = "Last Update", Description = "This is the DateTime of the last time this printer was update by the Client.")]
@@ -31,7 +31,7 @@ namespace MakerFarm.Models
         public bool Enabled { get; set; }
 
         [ForeignKey("PrinterId")]
-        public Printer AffiliatedPrinter { get; set; }
+        public virtual Printer AffiliatedPrinter { get; set; }
 
         //reference to the job assigned to the current machine
         public virtual Job AssignedJob { get; set; }

@@ -16,6 +16,10 @@
     </p>
 }
 
+    <p>
+        @Html.ActionLink("Add Client", "Create")
+    </p>
+
 <table class="table">
     <tr>
         <th>
@@ -29,6 +33,9 @@
         </th>
         <th>
             @Html.ActionLink("Last Updated", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Client Username
         </th>
         <th>
             Enabled?
@@ -49,6 +56,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LastUpdated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClientUserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Enabled)

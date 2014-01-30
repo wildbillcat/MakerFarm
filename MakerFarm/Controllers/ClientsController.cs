@@ -89,8 +89,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ClientId,ClientName,ClientAPIKey,LastUpdated,Enabled")] Client client)
+        public ActionResult Create([Bind(Include="ClientId,ClientName,ClientAPIKey,Enabled")] Client client)
         {
+            client.LastUpdated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Clients.Add(client);
@@ -121,8 +122,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ClientId,ClientName,ClientAPIKey,LastUpdated,Enabled")] Client client)
+        public ActionResult Edit([Bind(Include="ClientId,ClientName,ClientAPIKey,Enabled")] Client client)
         {
+            client.LastUpdated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(client).State = EntityState.Modified;

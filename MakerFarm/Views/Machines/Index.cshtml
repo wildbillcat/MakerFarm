@@ -47,7 +47,15 @@
             @Html.ActionLink(item.MachineName, "Details", new { id = item.MachineId })
         </td>
         <td>
-            @Html.ActionLink(item.AffiliatedPrinter.PrinterName, "Details", "Printers", new { id = item.AffiliatedPrinter.PrinterId })
+            @if (item.AffiliatedPrinter == null)
+            {
+                <text>None</text>
+            }
+            else
+            {
+                @Html.ActionLink(item.AffiliatedPrinter.PrinterName, "Details", "Printers", new { id = item.AffiliatedPrinter.PrinterId }, null)
+            }
+            
         </td>
         <td>
             @item.Status.Split('\n')[0]

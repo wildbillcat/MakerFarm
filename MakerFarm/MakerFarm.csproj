@@ -425,10 +425,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\MakerFarm.mdf" />
-    <Content Include="App_Data\MakerFarm_log.ldf">
-      <DependentUpon>MakerFarm.mdf</DependentUpon>
-    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\StaticIcons\dialog-error-5.png" />
@@ -665,6 +661,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Content\SmallStaticIcons\" />
   </ItemGroup>
   <ItemGroup>

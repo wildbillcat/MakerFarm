@@ -11,6 +11,14 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.MachineName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MachineName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.AffiliatedPrinter.PrinterName)
         </dt>
 
@@ -23,7 +31,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @foreach (string S in Model.Status.Split('\n'))
+            {
+                @S
+                <br />
+            }
         </dd>
 
         <dt>

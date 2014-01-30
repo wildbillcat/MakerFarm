@@ -15,7 +15,10 @@ namespace MakerFarm.Controllers
     public class MachinesController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
-
+        private static string UnassigndPrintersSQL = "select dbo.Printers.* " +
+            "from dbo.Printers left outer join dbo.Machines " +
+            "on dbo.Printers.PrinterID = dbo.Machines.PrinterId " +
+            "where dbo.Machines.PrinterId is null";
         // GET: /Machines/
         public ActionResult Index(int? page, string sortOrder, string currentFilter, string searchString)
         {
@@ -78,10 +81,11 @@ namespace MakerFarm.Controllers
             return View(machine);
         }
 
+        /*
         // GET: /Machines/Create
         public ActionResult Create()
         {
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName");
+            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(UnassigndPrintersSQL), "PrinterId", "PrinterName");
             return View();
         }
 
@@ -90,8 +94,9 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="MachineId,PrinterId,Status,idle,LastUpdated,ClientJobSupport,Enabled")] Machine machine)
+        public ActionResult Create([Bind(Include = "MachineId,MachineName,PrinterId,Status,idle,ClientJobSupport,Enabled")] Machine machine)
         {
+            machine.LastUpdated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Machines.Add(machine);
@@ -99,9 +104,9 @@ namespace MakerFarm.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", machine.PrinterId);
+            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(UnassigndPrintersSQL), "PrinterId", "PrinterName", machine.PrinterId);
             return View(machine);
-        }
+        }*/
 
         // GET: /Machines/Edit/5
         public ActionResult Edit(long? id)
@@ -115,7 +120,11 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", machine.PrinterId);
+            string psql = UnassigndPrintersSQL;
+            if(machine.PrinterId != null){
+                psql = psql + "  or dbo.Printers.PrinterID = " + machine.PrinterId;
+            }
+            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(psql), "PrinterId", "PrinterName", machine.PrinterId);
             return View(machine);
         }
 
@@ -124,15 +133,21 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="MachineId,PrinterId,Status,idle,LastUpdated,ClientJobSupport,Enabled")] Machine machine)
+        public ActionResult Edit([Bind(Include = "MachineName,MachineId,PrinterId,Status,idle,ClientJobSupport,Enabled")] Machine machine)
         {
+            machine.LastUpdated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(machine).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PrinterId = new SelectList(db.Printers, "PrinterId", "PrinterName", machine.PrinterId);
+            string psql = UnassigndPrintersSQL;
+            if (machine.PrinterId != null)
+            {
+                psql = psql + "  or dbo.Printers.PrinterID = " + machine.PrinterId;
+            }
+            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(psql), "PrinterId", "PrinterName", machine.PrinterId);
             return View(machine);
         }
 

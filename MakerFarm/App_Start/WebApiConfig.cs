@@ -11,10 +11,10 @@ namespace MakerFarm
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Client>("ClientsAPI");
             
-
              // New code: Add an action to the EDM, and define the parameter and return type.
-            ActionConfiguration rateProduct = builder.Entity<Client>().Action("ISpy");
-            rateProduct.Parameter<string[]>("Machines");
+            ActionConfiguration ISpy = builder.Entity<Client>().Action("ISpy");
+            ISpy.Parameter<string>("ClientAPIKey");
+            ISpy.CollectionParameter<string>("Machines");
 
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
