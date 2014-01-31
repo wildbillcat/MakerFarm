@@ -26,4 +26,15 @@ namespace MakerFarm.Models
         public Printer AffiliatedMachine { get; set; }
 
     }
+
+    public class JobStatusUpdate
+    {
+        public int JobId { get; set; } //This is the internal Job id for Makerfarm, not the JobID for Conveyor
+
+        public string Status { get; set; }
+
+        public bool started { get; set; } //Notes that the Client has sent the Print Command
+
+        public bool complete { get; set; } //Notes if the job is of a completed state
+    }
 }

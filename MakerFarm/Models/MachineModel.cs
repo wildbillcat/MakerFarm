@@ -53,4 +53,9 @@ namespace MakerFarm.Models
         public string MachineName { get; set; }
         public int CurrentJob { get; set; }
     }
+    public class MachineStatusUpdate
+    {
+        public string MachineName { get; set; }
+        public string MachineStatus { get; set; }
+    }
 }

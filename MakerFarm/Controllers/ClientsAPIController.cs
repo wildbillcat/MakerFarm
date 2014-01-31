@@ -76,12 +76,11 @@ namespace MakerFarm.Controllers
                 return NotFound();
             }
             string ClientAPIKey = (string)parameters["ClientAPIKey"];
-            /*
-             * Removed for testing purposes without any authentication
-            if (!User.Identity.IsAuthenticated || !User.Identity.Name.Equals(Client.ClientUserName) || !ClientAPIKey.Equals(Client.ClientAPIKey)) //User isn't authenticated or They do not have access to this particular Client or the Client API Key is wrong
+            if (!Client.ClientAPIKey.Equals(ClientAPIKey))
             {
-                return NotFound();
-            }*/
+                //API Key is invalid reject request
+                return BadRequest();
+            }
 
             //List of the Machines 
             IEnumerable<string> machlist = (IEnumerable<string>)parameters["Machines"];
@@ -122,12 +121,18 @@ namespace MakerFarm.Controllers
         /*
          * This method is used to have MakerFarm tell the Client what it is interested in (Jobs, Machines)
          */
-        public List<MachineInterest> DoTell([FromODataUri] int key)
+        public MachineInterest[] DoTell([FromODataUri] int key, ODataActionParameters parameters)
         {
             Client Me =  db.Clients.Find(key);
             if (Me == null || !Me.Enabled) //Client Doesnt exist or isnt enabled
             {
-                return new List<MachineInterest>();
+                return new List<MachineInterest>().ToArray();
+            }
+            string ClientAPIKey = (string)parameters["ClientAPIKey"];
+            if (!Me.ClientAPIKey.Equals(ClientAPIKey))
+            {
+                //API Key is invalid reject request
+                return new MachineInterest[0];
             }
             List<MachineInterest> Machines = new List<MachineInterest>();
             foreach (ClientPermission P in Me.ClientPermissions)
@@ -137,7 +142,51 @@ namespace MakerFarm.Controllers
                     Machines.Add(P.Machine.GetMachineInterest());
                 }
             }
-            return Machines;
+            return Machines.ToArray();
+        }
+
+        // POST odata/ClientsAPI(5)/ISay
+        /*
+         * This method is used to have MakerFarm tell the Client what it is interested in (Jobs, Machines)
+         */
+        public IHttpActionResult ISay([FromODataUri] int key, ODataActionParameters parameters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            Client Client = db.Clients.Find(key);
+            if (Client == null || !Client.Enabled) //Client Doesnt exist or isnt enabled
+            {
+                return NotFound();
+            }
+            string ClientAPIKey = (string)parameters["ClientAPIKey"];
+            if (!Client.ClientAPIKey.Equals(ClientAPIKey))
+            {
+                //API Key is invalid reject request
+                return BadRequest();
+            }
+            MachineStatusUpdate MachineUpdate = (MachineStatusUpdate)parameters["MachineUpdate"];
+            JobStatusUpdate JobUpdate = (JobStatusUpdate)parameters["JobUpdate"];
+            ClientPermission P = Client.ClientPermissions.FirstOrDefault(p => p.Machine.MachineName.Equals(MachineUpdate.MachineName) && p.SetInformation);
+            if (P != null || P.Machine != null)
+            {
+                Machine M = P.Machine;
+                M.Status = MachineUpdate.MachineStatus;
+                M.LastUpdated = DateTime.Now;
+                if (M.AssignedJob != null && JobUpdate.JobId == M.AssignedJob.JobId)
+                {
+                    Job J = M.AssignedJob;
+                    J.Status = JobUpdate.Status;
+                    J.started = JobUpdate.started;
+                    J.complete = JobUpdate.complete;
+                    J.LastUpdated = DateTime.Now;
+                    db.Entry(J).State = EntityState.Modified;
+                }
+                db.Entry(M).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Ok();
         }
 
     }

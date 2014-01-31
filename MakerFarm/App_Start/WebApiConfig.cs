@@ -17,7 +17,13 @@ namespace MakerFarm
             ISpy.CollectionParameter<string>("Machines");
 
             ActionConfiguration DoTell = builder.Entity<Client>().Action("DoTell");
+            DoTell.Parameter<string>("ClientAPIKey");
             DoTell.ReturnsCollection<MachineInterest>();
+
+            ActionConfiguration ISay = builder.Entity<Client>().Action("ISay");
+            ISay.Parameter<string>("ClientAPIKey");
+            ISay.Parameter<MachineStatusUpdate>("MachineUpdate");
+            ISay.Parameter<JobStatusUpdate>("JobUpdate");
 
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
