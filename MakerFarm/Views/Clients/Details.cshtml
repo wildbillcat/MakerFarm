@@ -50,6 +50,18 @@
             @Html.DisplayFor(model => model.Enabled)
         </dd>
 
+        <dt>
+            Printer Permissions: @Html.ActionLink("Add Permission", "Create", "ClientPermissions", new { id = Model.ClientId }, null) 
+        </dt>
+        @foreach (MakerFarm.Models.ClientPermission perm in Model.ClientPermissions)
+        {
+            <dd>
+                @perm.Machine.MachineName
+                | @Html.ActionLink("Edit", "Edit", "ClientPermissions", new { id = perm.ClientPermissionId }, null)
+                | @Html.ActionLink("Delete", "Delete", "ClientPermissions", new { id = perm.ClientPermissionId }, null)
+            </dd>
+        }
+
     </dl>
 </div>
 <p>

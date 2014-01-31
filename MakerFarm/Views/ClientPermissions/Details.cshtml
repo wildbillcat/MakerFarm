@@ -1,0 +1,50 @@
+﻿@model MakerFarm.Models.ClientPermission
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ClientPermission</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.ClientName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Machine.MachineName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Machine.MachineName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GetInformation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GetInformation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SetInformation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SetInformation)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClientPermissionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

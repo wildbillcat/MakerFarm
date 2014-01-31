@@ -27,122 +27,22 @@ namespace MakerFarm.Controllers
     public class ClientsAPIController : ODataController
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
-       // /*
+       
         // GET odata/ClientsAPI
-        public List<string> GetClientsAPI()
+        [Queryable]
+        public IQueryable<Client> GetClientsAPI()
         {
-            List<string> names = new List<string>();
-            foreach(Client C in db.Clients){
-                names.Add(C.ClientName);
-            }
-            return names;
+            //Narrow by authenticated user's access
+            return db.Clients.Where(client => client.ClientUserName.Equals(User.Identity.Name));
         }
 
         // GET odata/ClientsAPI(5)
-        
-        public string GetClient([FromODataUri] int key)
+        [Queryable]
+        public SingleResult<Client> GetClient([FromODataUri] int key)
         {
-            return db.Clients.Find(key).ClientName;
+            //Narrow by authenticated user's access
+            return SingleResult.Create(db.Clients.Where(client => client.ClientId == key && client.ClientUserName.Equals(User.Identity.Name)));
         }
-        /*
-        // PUT odata/ClientsAPI(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Client client)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (key != client.ClientId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(client).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClientExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Updated(client);
-        }
-
-        // POST odata/ClientsAPI
-        public async Task<IHttpActionResult> Post(Client client)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Clients.Add(client);
-            await db.SaveChangesAsync();
-
-            return Created(client);
-        }
-
-        // PATCH odata/ClientsAPI(5)
-        [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Client> patch)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Client client = await db.Clients.FindAsync(key);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            patch.Patch(client);
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClientExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Updated(client);
-        }
-
-        // DELETE odata/ClientsAPI(5)
-        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
-        {
-            Client client = await db.Clients.FindAsync(key);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            db.Clients.Remove(client);
-            await db.SaveChangesAsync();
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }//*/
 
         protected override void Dispose(bool disposing)
         {
@@ -158,8 +58,13 @@ namespace MakerFarm.Controllers
             return db.Clients.Count(e => e.ClientId == key) > 0;
         }
 
+        // POST odata/ClientsAPI(5)/ISpy
+        /*
+         * This method is used to allow a client to report what machines it sees to Makerfarm, 
+         * populating the printers and improving the ease of configuration. 
+         */
         [HttpPost]
-        public async Task<IHttpActionResult> ISpy([FromODataUri] int key, ODataActionParameters parameters)
+        public  IHttpActionResult ISpy([FromODataUri] int key, ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
@@ -181,16 +86,16 @@ namespace MakerFarm.Controllers
             //List of the Machines 
             IEnumerable<string> machlist = (IEnumerable<string>)parameters["Machines"];
             string[] Machines = machlist.ToArray();
-            Task<bool>[] exists = new Task<bool>[Machines.Length];
+            bool[] exists = new bool[Machines.Length];
             for(int i = 0; i < Machines.Length; i++)
             {
                 string Name = Machines[i];
-                exists[i] = db.Machines.AnyAsync(p => p.MachineName.Equals(Name));               
+                exists[i] = db.Machines.Any(p => p.MachineName.Equals(Name));               
             }
             bool sync = false;
             for(int i = 0; i < Machines.Length; i++)
             {
-                bool existence = await exists[i];
+                bool existence = exists[i];
                 if (!existence) //If the machine isn't known to Makerfarm, 
                 {
                     sync = true;
@@ -208,24 +113,32 @@ namespace MakerFarm.Controllers
 
             if (sync)
             {
-                await db.SaveChangesAsync();
+                db.SaveChanges();
             }
-
-            /*
-            Product product = await db.Products.FindAsync(key);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            product.Ratings.Add(new ProductRating() { Rating = rating });
-            db.SaveChanges();
-
-            double average = product.Ratings.Average(x => x.Rating);
-
-            return Ok(average);
-             * */
             return Ok();
         }
+
+        // POST odata/ClientsAPI(5)/DoTell
+        /*
+         * This method is used to have MakerFarm tell the Client what it is interested in (Jobs, Machines)
+         */
+        public List<MachineInterest> DoTell([FromODataUri] int key)
+        {
+            Client Me =  db.Clients.Find(key);
+            if (Me == null || !Me.Enabled) //Client Doesnt exist or isnt enabled
+            {
+                return new List<MachineInterest>();
+            }
+            List<MachineInterest> Machines = new List<MachineInterest>();
+            foreach (ClientPermission P in Me.ClientPermissions)
+            {
+                if (P.Machine.Enabled)
+                {
+                    Machines.Add(P.Machine.GetMachineInterest());
+                }
+            }
+            return Machines;
+        }
+
     }
 }

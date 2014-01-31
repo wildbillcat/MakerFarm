@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MakerFarm.Models.ClientPermission>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Invalid User Permissions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Client
+        </th>
+        <th>
+            Machine
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GetInformation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SetInformation)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (item.Client != null)
+            {
+                @item.Client.ClientName
+            }
+        </td>
+        <td>
+            @if (item.Machine != null)
+            {
+                @item.Machine.MachineName
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GetInformation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetInformation)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.ClientPermissionId })
+        </td>
+    </tr>
+}
+
+</table>

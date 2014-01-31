@@ -36,5 +36,21 @@ namespace MakerFarm.Models
         //reference to the job assigned to the current machine
         public virtual Job AssignedJob { get; set; }
 
+        public MachineInterest GetMachineInterest()
+        {
+            MachineInterest M = new MachineInterest();
+            M.MachineName = MachineName;
+            if(AssignedJob == null){
+                M.CurrentJob = 0;
+            }else{
+                M.CurrentJob = AssignedJob.JobId;
+            }
+            return M;
+        }
+    }
+    public class MachineInterest
+    {
+        public string MachineName { get; set; }
+        public int CurrentJob { get; set; }
     }
 }

@@ -254,6 +254,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BillsController.cs" />
+    <Compile Include="Controllers\ClientPermissionsController.cs" />
     <Compile Include="Controllers\ClientsAPIController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -656,6 +657,11 @@
     <Content Include="Views\Machines\Details.cshtml" />
     <Content Include="Views\Machines\Edit.cshtml" />
     <Content Include="Views\Machines\Index.cshtml" />
+    <Content Include="Views\ClientPermissions\Create.cshtml" />
+    <Content Include="Views\ClientPermissions\Delete.cshtml" />
+    <Content Include="Views\ClientPermissions\Details.cshtml" />
+    <Content Include="Views\ClientPermissions\Edit.cshtml" />
+    <Content Include="Views\ClientPermissions\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
