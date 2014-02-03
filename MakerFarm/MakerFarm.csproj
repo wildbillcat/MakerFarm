@@ -662,6 +662,7 @@
     <Content Include="Views\ClientPermissions\Details.cshtml" />
     <Content Include="Views\ClientPermissions\Edit.cshtml" />
     <Content Include="Views\ClientPermissions\Index.cshtml" />
+    <Content Include="Views\Printers\_PhysicalPrinterStatusPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

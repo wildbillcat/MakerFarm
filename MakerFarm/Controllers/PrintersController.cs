@@ -278,6 +278,16 @@ namespace MakerFarm.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Administrator, Moderator")]
+        [ChildActionOnly] //Partial
+        public ActionResult PhysicalPrinterStatus(long id)
+        {
+            Machine M = db.Machines.Where(p => p.PrinterId == id).FirstOrDefault();
+            ViewData["Machine"] = M;
+
+            return PartialView("_PhysicalPrinterStatusPartial");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
