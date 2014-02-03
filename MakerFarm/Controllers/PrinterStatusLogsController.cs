@@ -79,6 +79,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintStatusLogs/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -96,6 +97,7 @@ namespace MakerFarm.Controllers
         // POST: /PrintStatusLogs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="PrinterStatusLogId,LogEntryDate,LoggedPrinterStatus,Comment,PrinterId")] PrinterStatusLog printerstatuslog)
@@ -115,6 +117,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintStatusLogs/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -130,6 +133,7 @@ namespace MakerFarm.Controllers
         }
 
         // POST: /PrintStatusLogs/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)

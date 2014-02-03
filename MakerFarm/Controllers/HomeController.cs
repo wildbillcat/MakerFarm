@@ -20,7 +20,7 @@ namespace MakerFarm.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Moderator, Administrator")]
         public ActionResult Administration()
         {
             return View();

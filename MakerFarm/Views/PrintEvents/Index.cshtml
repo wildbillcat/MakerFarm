@@ -50,9 +50,7 @@
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrintEventId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrintEventId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrintEventId })
+            @Html.ActionLink("Details", "Details", new { id=item.PrintEventId })
         </td>
     </tr>
 }

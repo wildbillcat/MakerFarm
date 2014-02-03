@@ -35,11 +35,8 @@
                     {
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Materials", "Index", "Materials")</li>  
-                            @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
-                            {
-                                <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
-                            }
+                            <li>@Html.ActionLink("Materials", "Index", "Materials")</li> 
+                            <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
                         </ul>
                     </nav>
                     }

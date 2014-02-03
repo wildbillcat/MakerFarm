@@ -9,10 +9,10 @@
 <table class="table">
     <tr>
         <td>
-            <a href=@Url.Action("Administration", "PrinterTypes")>
-                <img src="@Url.Content("/Content/StaticIcons/print_class.png")" alt="Printer Types Icon" height="200" />
+            <a href=@Url.Action("Index", "Bills")>
+                <img src="@Url.Content("/Content/StaticIcons/emblem-money-2.png")" alt="Billing Administration Icon" height="200" />
                 <br />
-                Printer Types Administration
+                Billing Administration
             </a>
         </td>
         <td>
@@ -22,6 +22,8 @@
                 Printers Administration
             </a>
         </td>
+        @if (User.IsInRole("Administrator"))
+        {
         <td>
             <a href=@Url.Action("Index", "PrinterStatusLogs")>
                 <img src="@Url.Content("/Content/StaticIcons/okteta.png")" alt="Printer Status Logs Icon" height="200" />
@@ -30,19 +32,22 @@
             </a>
         </td>
         <td>
-            <a href=@Url.Action("Index", "PrintErrorTypes")>
-                <img src="@Url.Content("/Content/StaticIcons/dialog-error-5.png")" alt="Print Error Icon" height="200" />
-                <br />
-                Print Error Types
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <a href=@Url.Action("Index", "PrintEvents")>
                 <img src="@Url.Content("/Content/StaticIcons/view-calendar-upcoming-events.png")" alt="Print Events Icon" height="200" />
                 <br />
                 Print Events
+            </a>
+        </td>
+        }
+    </tr>
+    @if (User.IsInRole("Administrator"))
+    {
+    <tr>
+        <td>
+            <a href=@Url.Action("Index", "PrintErrorTypes")>
+                <img src="@Url.Content("/Content/StaticIcons/dialog-error-5.png")" alt="Print Error Icon" height="200" />
+                <br />
+                Print Error Types
             </a>
         </td>
         <td>
@@ -60,10 +65,10 @@
             </a>
         </td>
         <td>
-            <a href=@Url.Action("Index", "Bills")>
-                <img src="@Url.Content("/Content/StaticIcons/emblem-money-2.png")" alt="Billing Administration Icon" height="200" />
+            <a href=@Url.Action("Administration", "PrinterTypes")>
+                <img src="@Url.Content("/Content/StaticIcons/print_class.png")" alt="Printer Types Icon" height="200" />
                 <br />
-                Billing Administration
+                Printer Types Administration
             </a>
         </td>
     </tr>
@@ -89,4 +94,6 @@
             
         </td>
     </tr>
+    }
+    
 </table>
