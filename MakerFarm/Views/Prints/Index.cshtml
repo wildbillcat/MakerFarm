@@ -25,6 +25,10 @@
         <th>
             Printer Status
         </th>
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+        {
+            <th>HW Status</th>
+        }
         <th>
             Status Update
         </th>
@@ -105,6 +109,12 @@
                 }
             }
             </td><!--End Printer Status/Username + Print File-->
+        @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")))
+        {
+            <td id="@string.Concat("PrinterHardware", item.PrinterId.ToString())">
+
+            </td>
+        }
             <td>
                 <!--Status Update-->
                 @if (PrinterStatus.ContainsKey(item.PrinterId))
@@ -277,3 +287,25 @@
             }
         }
     </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+    $(document).ready(function () {
+        @foreach (MakerFarm.Models.Printer P in Printers)
+        {
+            @Html.Raw("$('#PrinterHardware") @P.PrinterId @Html.Raw("').load('") @Url.Action("PhysicalPrinterStatus", "Printers", new { id = P.PrinterId, compressed = true }).ToString() @Html.Raw("');")
+        }
+        setInterval(function () {
+            @foreach (MakerFarm.Models.Printer P in Printers)
+            {
+            @Html.Raw("$('#PrinterHardware") @P.PrinterId @Html.Raw("').load('") @Url.Action("PhysicalPrinterStatus", "Printers", new { id = P.PrinterId, compressed = true }).ToString() @Html.Raw("');")
+            }
+        }, 5000); //Refreshes every 5 seconds
+        $.ajaxSetup({ cache: false });  //Turn off caching
+
+    });
+    </script>
+
+}

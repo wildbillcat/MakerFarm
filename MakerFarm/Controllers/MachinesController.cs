@@ -18,7 +18,7 @@ namespace MakerFarm.Controllers
         private static string UnassigndPrintersSQL = "select dbo.Printers.* " +
             "from dbo.Printers left outer join dbo.Machines " +
             "on dbo.Printers.PrinterID = dbo.Machines.PrinterId " +
-            "where dbo.Machines.PrinterId is null";
+            "where dbo.Machines.PrinterId is null and dbo.Printers.PrinterName != 'Null Printer'";
         // GET: /Machines/
         public ActionResult Index(int? page, string sortOrder, string currentFilter, string searchString)
         {

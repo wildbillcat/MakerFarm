@@ -1,68 +1,28 @@
-﻿@model MakerFarm.Models.Machine
+﻿@{
+    MakerFarm.Models.Machine M = (MakerFarm.Models.Machine)ViewData["M"];
+    bool compressed = (bool)ViewData["compressed"];
+}
+@if(M == null){
 
-<div>
-    <h4>Machine</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AffiliatedPrinter.PrinterName)
-        </dt>
+}
+else if (compressed) {
+    @M.Status.Split()[0]
+    if (M.CurrentTaskProgress != null)
+    {
+        <progress value=@M.CurrentTaskProgress.ToString() max="100">@M.CurrentTaskProgress.ToString() %</progress>
+    }    
+}
+else
+{
+     foreach (string S in M.Status.Split('\n'))
+     {
+         @S
+         <br />
+     }
+    if (M.CurrentTaskProgress != null)
+    {
+        <progress value=@M.CurrentTaskProgress.ToString() max="100">@M.CurrentTaskProgress.ToString() %</progress>
+    }           
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.AffiliatedPrinter.PrinterName)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MachineName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MachineName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.idle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.idle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClientJobSupport)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClientJobSupport)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Enabled)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Enabled)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MachineId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

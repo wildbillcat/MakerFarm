@@ -279,12 +279,11 @@ namespace MakerFarm.Controllers
         }
 
         [Authorize(Roles = "Administrator, Moderator")]
-        [ChildActionOnly] //Partial
-        public ActionResult PhysicalPrinterStatus(long id)
+        public ActionResult PhysicalPrinterStatus(long id, bool compressed)
         {
             Machine M = db.Machines.Where(p => p.PrinterId == id).FirstOrDefault();
-            ViewData["Machine"] = M;
-
+            ViewData["M"] = M;
+            ViewData["compressed"] = compressed;
             return PartialView("_PhysicalPrinterStatusPartial");
         }
 

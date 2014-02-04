@@ -30,6 +30,8 @@ namespace MakerFarm.Models
 
         public bool Enabled { get; set; }
 
+        public double? CurrentTaskProgress { get; set; }
+
         [ForeignKey("PrinterId")]
         public virtual Printer AffiliatedPrinter { get; set; }
 
@@ -57,5 +59,6 @@ namespace MakerFarm.Models
     {
         public string MachineName { get; set; }
         public string MachineStatus { get; set; }
+        public double CurrentTaskProgress { get; set; }
     }
 }

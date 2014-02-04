@@ -106,6 +106,7 @@ namespace MakerFarm.Controllers
                     Mach.LastUpdated = DateTime.Now;
                     Mach.ClientJobSupport = false;
                     Mach.Enabled = false;
+                    Mach.CurrentTaskProgress = null;
                     db.Machines.Add(Mach);
                 }
             }
@@ -174,6 +175,7 @@ namespace MakerFarm.Controllers
                 Machine M = P.Machine;
                 M.Status = MachineUpdate.MachineStatus;
                 M.LastUpdated = DateTime.Now;
+                M.CurrentTaskProgress = MachineUpdate.CurrentTaskProgress;
                 if (M.AssignedJob != null && JobUpdate.JobId == M.AssignedJob.JobId)
                 {
                     Job J = M.AssignedJob;
