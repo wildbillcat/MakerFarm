@@ -140,6 +140,9 @@ namespace MakerFarm.Controllers
                 db.Entry(print).State = EntityState.Modified;
                 db.Bills.Add(bill);
                 db.SaveChanges();
+                if(System.IO.File.Exists(print.GetPath())){
+                    System.IO.File.Delete(print.GetPath());
+                }
                 if (bool.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("EnablePaperCutIntegration")) && print.InternalUser && PapercutServerProxy.UserExists(print.UserName))
                 {//Dispatch Print off to papercut
                     Printer P = print.GetLastPrinter();
