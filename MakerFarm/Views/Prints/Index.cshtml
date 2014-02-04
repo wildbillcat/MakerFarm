@@ -9,6 +9,7 @@
     Dictionary<long, MakerFarm.Models.Material> Materials = (Dictionary<long, MakerFarm.Models.Material>)ViewData["Materials"];
     Dictionary<string, int> ActiveCount = (Dictionary<string, int>)ViewData["ActiveCount"];
     int ActiveQueueLimit = int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ActiveQueueLimit"));
+    int queueTotal = 1;
 }
 <h2>@ViewBag.Title</h2>
 
@@ -154,6 +155,7 @@
 
     <table class="table">
         <tr>
+            <th>#</th>
             <th>
                 @Html.DisplayNameFor(model => model.FileName)
             </th>
@@ -173,6 +175,12 @@
         {
             if (item.InternalUser) { 
             <tr>
+                <td>
+                    @queueTotal.ToString()
+                    @{
+                        queueTotal++;
+                    }
+                </td>
                 <td>
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                 {
@@ -215,6 +223,12 @@
             { 
             <tr>
                 <td style="background-color: greenyellow">
+                    @queueTotal.ToString()
+                    @{
+                        queueTotal++;
+                    }
+                </td>
+                <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                     {
                         @Html.ActionLink(item.FileName, "Details", new { id = item.PrintId })
@@ -255,6 +269,12 @@
             if (!item.InternalUser && !item.StaffAssistedPrint) //User is external and has not yet made arrangments to pay with the Office
             {
                 <tr>
+                    <td style="background-color: greenyellow">
+                        @queueTotal.ToString()
+                        @{
+                            queueTotal++;
+                        }
+                    </td>
                     <td style="background-color: greenyellow">
                         @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator") || User.Identity.Name.Equals(item.UserName)))
                         {
