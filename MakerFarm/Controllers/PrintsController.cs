@@ -124,6 +124,231 @@ namespace MakerFarm.Controllers
             }
         }
 
+        public ActionResult NewIndex(int id = 0)
+        {
+            return View();
+        }
+
+        //Partial
+        public ActionResult PrintQueue(int id = 0)
+        {
+            PrinterType Type = db.PrinterTypes.Find(id);
+            if (Type == null)
+            {
+                return HttpNotFound();
+            }
+            string UnstartedPrintsSQL = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join PrintEvents " +
+                "on dbo.Prints.PrintId = PrintEvents.PrintID " +
+                "where dbo.PrintEvents.PrinterID IS NULL and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL ";
+            Dictionary<long, Print> UnstartedCancelEligiblePrints = db.Prints.SqlQuery(UnstartedPrintsSQL).ToDictionary(p => p.PrintId);
+            ViewData["UnstartedCancelEligiblePrints"] = UnstartedCancelEligiblePrints;
+            //Need to edit it to pull prints 
+            string PrintStartQuery = "Select dbo.Prints.* " +
+            "from dbo.Prints " +
+            "inner join (" +
+                "Select dbo.PrintEvents.* " +
+        "from dbo.PrintEvents " +
+        "inner join ( " +
+        "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+        "from dbo.PrintEvents " +
+        "group by dbo.PrintEvents.PrintID " +
+        ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+        "where dbo.PrintEvents.EventType = @PrintingEventStart" +
+        ") tde on dbo.Prints.PrintId = tde.PrintID " +
+        "where dbo.Prints.PrinterTypeID = @PrinterTypeID and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL " +
+        "Order by dbo.Prints.TermsAndConditionsAgreement";
+            string WaitingPrintFilesQuery = "Select dbo.Prints.* " +
+            "from dbo.Prints " +
+            "left outer join " +
+            "( " +
+            "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType " +
+            "from dbo.PrintEvents " +
+            "inner join " +
+            "( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+            ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+            "where (pnt.EventType is null or pnt.EventType = @PrintingEventFile or pnt.EventType = @PrintingEventMachine) and dbo.Prints.PrinterTypeID = @PrinterTypeID and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL " +
+            "Order by dbo.Prints.TermsAndConditionsAgreement";
+            SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            SqlParameter PrintingEventFile = new SqlParameter("@PrintingEventFile", PrintEventType.PRINT_FAILURE_FILE);
+            SqlParameter PrintingEventMachine = new SqlParameter("@PrintingEventMachine", PrintEventType.PRINT_FAILURE_MACHINE);
+            SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
+            SqlParameter PrinterTypeId2 = new SqlParameter("@PrinterTypeID", id);
+            Dictionary<long, Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2, PrinterTypeId).ToDictionary(p => p.PrintId);
+            ViewData["Assigned"] = Assigned;//Print Start Query
+
+            //count up active user jobs
+            Dictionary<string, int> ActiveCount = new Dictionary<string, int>();
+            foreach (long key in Assigned.Keys)
+            {
+                if (ActiveCount.ContainsKey(Assigned[key].UserName))
+                {
+                    ActiveCount[Assigned[key].UserName] = ActiveCount[Assigned[key].UserName] + 1;
+                }
+                else
+                {
+                    ActiveCount.Add(Assigned[key].UserName, 1);
+                }
+            }
+            ViewData["ActiveCount"] = ActiveCount;
+            Dictionary<long, Material> Materials = db.Materials.Where(P => P.PrinterTypeId == id).ToDictionary(p => p.MaterialId);
+            ViewData["Materials"] = Materials;
+            List<Print> Waiting = db.Prints.SqlQuery(WaitingPrintFilesQuery, PrintingEventFile, PrintingEventMachine, PrinterTypeId2).ToList();
+            ViewData["Waiting"] = Waiting;
+            return PartialView("_PrintQueuePartial");
+        }
+
+            //Partial
+        public ActionResult ActivePrinters(int id = 0)
+        {
+            if (id == 0)
+            {
+                //List All Printers
+                string PrintStartQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "inner join (" +
+                    "Select dbo.PrintEvents.* " +
+            "from dbo.PrintEvents " +
+            "inner join ( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+            "where dbo.PrintEvents.EventType = @PrintingEventStart" +
+            ") tde on dbo.Prints.PrintId = tde.PrintID " +
+            "where dbo.Prints.TermsAndConditionsAgreement IS NOT NULL ";
+                string PrintAssignmentsQuery = "Select * " +
+             "from dbo.PrintEvents " +
+             "inner join ( " +
+             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+             "from dbo.PrintEvents " +
+             "group by dbo.PrintEvents.PrintID " +
+             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
+                SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventFile = new SqlParameter("@PrintingEventFile", PrintEventType.PRINT_FAILURE_FILE);
+                SqlParameter PrintingEventMachine = new SqlParameter("@PrintingEventMachine", PrintEventType.PRINT_FAILURE_MACHINE);
+                //
+                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
+                ViewData["PrintingAssignments"] = PrintingAssignments;
+                Dictionary<long, Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2).ToDictionary(p => p.PrintId);
+                ViewData["Assigned"] = Assigned;//Print Start Query
+
+                //
+                List<Printer> Printers = db.Printers.OrderBy(p => p.PrinterName).ToList();
+                ViewData["Printers"] = Printers;
+
+                //
+                Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
+            "Select dbo.PrinterStatusLogs.* " +
+            "From dbo.PrinterStatusLogs " +
+            "inner join " +
+                "(" +
+                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.PrinterStatusLogID) as MaxEntryTime " +
+                "from dbo.PrinterStatusLogs " +
+                "group by dbo.PrinterStatusLogs.PrinterID" +
+                ") " +
+            "mxe ON dbo.PrinterStatusLogs.PrinterStatusLogID = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
+                ViewData["PrinterStatus"] = PrinterStatus;
+
+                Dictionary<long, string> PrinterMaterials = new Dictionary<long, string>();
+                foreach (Printer p in Printers)
+                {
+                    string mats = "";
+                    foreach (MaterialCheckout s in p.MaterialsInUse)
+                    {
+                        mats = mats + s.Material.MaterialName;
+                    }
+                    if (p.MaterialsInUse.Count() != p.PrinterType.SupportedNumberMaterials)
+                    {
+                        mats = "Load Material!";
+                    }
+                    PrinterMaterials.Add(p.PrinterId, mats);
+                }
+                ViewData["PrinterMaterials"] = PrinterMaterials;
+                return PartialView("_ActivePrintersPartial");
+            }
+            else
+            {
+                //Need to edit it to pull prints 
+                string PrintStartQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "inner join (" +
+                    "Select dbo.PrintEvents.* " +
+            "from dbo.PrintEvents " +
+            "inner join ( " +
+            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+            "from dbo.PrintEvents " +
+            "group by dbo.PrintEvents.PrintID " +
+            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+            "where dbo.PrintEvents.EventType = @PrintingEventStart" +
+            ") tde on dbo.Prints.PrintId = tde.PrintID " +
+            "where dbo.Prints.PrinterTypeID = @PrinterTypeID and dbo.Prints.TermsAndConditionsAgreement IS NOT NULL " +
+            "Order by dbo.Prints.TermsAndConditionsAgreement";
+                string PrintAssignmentsQuery = "Select * " +
+             "from dbo.PrintEvents " +
+             "inner join ( " +
+             "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+             "from dbo.PrintEvents " +
+             "group by dbo.PrintEvents.PrintID " +
+             ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
+                SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+                SqlParameter PrintingEventFile = new SqlParameter("@PrintingEventFile", PrintEventType.PRINT_FAILURE_FILE);
+                SqlParameter PrintingEventMachine = new SqlParameter("@PrintingEventMachine", PrintEventType.PRINT_FAILURE_MACHINE);
+                SqlParameter PrinterTypeId = new SqlParameter("@PrinterTypeID", id);
+                SqlParameter PrinterTypeId2 = new SqlParameter("@PrinterTypeID", id);
+                ViewData["id"] = id;
+                //
+                Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
+                ViewData["PrintingAssignments"] = PrintingAssignments;
+                Dictionary<long, Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2, PrinterTypeId).ToDictionary(p => p.PrintId);
+                ViewData["Assigned"] = Assigned;//Print Start Query
+
+                //
+                List<Printer> Printers = db.Printers.Where(p => p.PrinterTypeId == id).OrderBy(p => p.PrinterName).ToList();
+                ViewData["Printers"] = Printers;
+                
+                //
+                Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
+            "Select dbo.PrinterStatusLogs.* " +
+            "From dbo.PrinterStatusLogs " +
+            "inner join " +
+                "(" +
+                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.PrinterStatusLogID) as MaxEntryTime " +
+                "from dbo.PrinterStatusLogs " +
+                "group by dbo.PrinterStatusLogs.PrinterID" +
+                ") " +
+            "mxe ON dbo.PrinterStatusLogs.PrinterStatusLogID = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
+                ViewData["PrinterStatus"] = PrinterStatus;
+
+                Dictionary<long, string> PrinterMaterials = new Dictionary<long, string>();
+                foreach (Printer p in Printers)
+                {
+                    string mats = "";
+                    foreach (MaterialCheckout s in p.MaterialsInUse)
+                    {
+                        mats = mats + s.Material.MaterialName;
+                    }
+                    if (p.MaterialsInUse.Count() != p.PrinterType.SupportedNumberMaterials)
+                    {
+                        mats = "Load Material!";
+                    }
+                    PrinterMaterials.Add(p.PrinterId, mats);
+                }
+                ViewData["PrinterMaterials"] = PrinterMaterials;
+                return PartialView("_ActivePrintersPartial");
+            }
+        }
+
         public ActionResult PastPrints(int? id, int? page, string sortOrder, string currentFilter, string searchString)
         {
             if (id == null || id == 0)

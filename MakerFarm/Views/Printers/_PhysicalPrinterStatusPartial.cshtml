@@ -6,7 +6,10 @@
 
 }
 else if (compressed) {
-    @M.Status.Split()[0]
+    if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    {
+        @M.Status.Split()[0]    
+    }    
     if (M.CurrentTaskProgress != null)
     {
         <progress value=@M.CurrentTaskProgress.ToString() max="100">@M.CurrentTaskProgress.ToString() %</progress>
@@ -14,11 +17,14 @@ else if (compressed) {
 }
 else
 {
-     foreach (string S in M.Status.Split('\n'))
-     {
-         @S
-         <br />
-     }
+    if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    {
+        foreach (string S in M.Status.Split('\n'))
+        {
+            @S
+            <br />
+        }   
+    }
     if (M.CurrentTaskProgress != null)
     {
         <progress value=@M.CurrentTaskProgress.ToString() max="100">@M.CurrentTaskProgress.ToString() %</progress>

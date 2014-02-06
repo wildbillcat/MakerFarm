@@ -12,13 +12,14 @@ using PaperCutMF;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize]
     public class PrintersController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
         ServerCommandProxy PapercutServerProxy = new ServerCommandProxy(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutServerDNS"), int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("PapercutPort")), System.Configuration.ConfigurationManager.AppSettings.Get("PaperCutAuthToken"));
 
         // GET: /Printers/
+        [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Index()
         {
             ViewBag.Title = "Printers";
@@ -85,6 +86,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Printers/Details/5
+        [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -154,6 +156,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Printers/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             ViewBag.Title = "Create Printer";
@@ -172,6 +175,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
 
@@ -190,6 +194,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Printers/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -217,6 +222,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "PrinterId,PrinterName,PrinterTypeId,InternalName,PapercutPrintServer,PapercutPrintQueue")] Printer printer)
         {
             if (printer.PrinterName.Equals("Null Printer"))
@@ -233,6 +239,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Printers/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -254,6 +261,7 @@ namespace MakerFarm.Controllers
         // POST: /Printers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(long id)
         {
             Printer printer = db.Printers.Find(id);
@@ -277,8 +285,7 @@ namespace MakerFarm.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        [Authorize(Roles = "Administrator, Moderator")]
+        
         public ActionResult PhysicalPrinterStatus(long id, bool compressed)
         {
             Machine M = db.Machines.Where(p => p.PrinterId == id).FirstOrDefault();
