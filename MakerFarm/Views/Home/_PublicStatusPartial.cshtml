@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "System Status";
+    List<MakerFarm.Models.PrinterType> Types = (List<MakerFarm.Models.PrinterType>)ViewData["Types"];
+}
+
+<h2>System Status</h2>
+
+ <table>
+     <tr>
+
+         @foreach(MakerFarm.Models.PrinterType T in Types){
+         <td>@Html.Action("ActivePrinters", "Prints", new { id = @T.PrinterTypeId, C = true })</td>
+        }
+     </tr>
+
+     <tr>
+        @foreach(MakerFarm.Models.PrinterType T in Types){
+        <td>@Html.Action("PrintQueue", new { id = @Url.RequestContext.RouteData.Values["id"] })</td>
+        }
+     </tr>
+</table>  

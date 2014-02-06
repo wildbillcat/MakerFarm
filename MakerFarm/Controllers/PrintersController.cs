@@ -12,7 +12,7 @@ using PaperCutMF;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize]
+    
     public class PrintersController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
