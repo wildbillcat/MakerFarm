@@ -64,7 +64,7 @@ namespace MakerFarm.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
 
-        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled,InternalCostPerUnit,ExternalCostPerUnit")] PrinterType printertype, HttpPostedFileBase IconFile)
+        public ActionResult Create([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled,InternalCostPerUnit,ExternalCostPerUnit,InternalInitialCost,ExternalInitialCost")] PrinterType printertype, HttpPostedFileBase IconFile)
         {
             if (printertype.TypeName.Equals("Null Printer"))
             {
@@ -117,7 +117,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled,InternalCostPerUnit,ExternalCostPerUnit")] PrinterType printertype)
+        public ActionResult Edit([Bind(Include = "PrinterTypeId,TypeName,SupportedNumberMaterials,MaterialUseUnit,PrinterIcon,MaxNumberUserAttempts,SupportedFileTypes,CommentField,AboutPrinter,HyperLink,MaximumNumberOfCopies,BuildLength,BuildWidth,BuildHeight,OffersBreakawaySupport,OffersNonBreakAwaySupport,BuildSupportUsesMaterialSlot,OffersFullColorPrinting,FunctionalModelSupport,QueueVisible,SubmissionEnabled,InternalCostPerUnit,ExternalCostPerUnit,InternalInitialCost,ExternalInitialCost")] PrinterType printertype)
         {
             if (printertype.TypeName.Equals("Null Printer"))
             {

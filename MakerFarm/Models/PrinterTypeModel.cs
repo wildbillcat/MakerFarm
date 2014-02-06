@@ -81,6 +81,14 @@ namespace MakerFarm.Models
         [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
         [Display(Name = "Cost of print per unit for external users", Description = "This is the cost per unit that should be charged for external users")]
         public double ExternalCostPerUnit { set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        [Display(Name = "Initial Cost for internal users", Description = "This is the cost that should be charged to internal users for each print submitted, in addition to the Material Cost")]
+        public double InternalInitialCost { set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        [Display(Name = "Initial cost for external users", Description = "This is the cost that should be charged to external users for each print submitted, in addition to the Material Cost")]
+        public double ExternalInitialCost { set; get; }
     }
         
 }

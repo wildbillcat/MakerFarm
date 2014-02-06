@@ -53,6 +53,20 @@
         }
     }
     expectedBilling = expectedBilling + BilledEvent.Print.ProcessingCharge;
+    if (!(expectedBilling == 0 && BilledEvent.EventType == MakerFarm.Models.PrintEventType.PRINT_CANCELED))
+    {
+        if (BilledEvent.Print.InternalUser)
+        {
+            expectedBilling = expectedBilling + BilledEvent.Printer.PrinterType.InternalInitialCost;
+            billingSummary = string.Concat(billingSummary, "Initial Charge: $", BilledEvent.Printer.PrinterType.InternalInitialCost, "\n");
+        }
+        else
+        {
+            expectedBilling = expectedBilling + BilledEvent.Printer.PrinterType.ExternalInitialCost;
+            billingSummary = string.Concat(billingSummary, "Initial Charge: $", BilledEvent.Printer.PrinterType.ExternalInitialCost, "\n");
+        }
+    }
+    
     billingSummary = string.Concat(billingSummary, "Processing Charge: $", BilledEvent.Print.ProcessingCharge);
 }
 

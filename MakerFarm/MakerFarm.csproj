@@ -407,6 +407,10 @@
     <Compile Include="Migrations\201402040243242_Added Task Progress property to Machines for percentile assesments of progress.Designer.cs">
       <DependentUpon>201402040243242_Added Task Progress property to Machines for percentile assesments of progress.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402060636117_added internal and external initial cost value to PrinterTypes.cs" />
+    <Compile Include="Migrations\201402060636117_added internal and external initial cost value to PrinterTypes.Designer.cs">
+      <DependentUpon>201402060636117_added internal and external initial cost value to PrinterTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -779,6 +783,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402040243242_Added Task Progress property to Machines for percentile assesments of progress.resx">
       <DependentUpon>201402040243242_Added Task Progress property to Machines for percentile assesments of progress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402060636117_added internal and external initial cost value to PrinterTypes.resx">
+      <DependentUpon>201402060636117_added internal and external initial cost value to PrinterTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
