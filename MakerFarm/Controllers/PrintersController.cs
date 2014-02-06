@@ -22,67 +22,7 @@ namespace MakerFarm.Controllers
         [Authorize(Roles = "Administrator, Moderator")]
         public ActionResult Index()
         {
-            ViewBag.Title = "Printers";
-            Dictionary<int, PrinterType> PrinterTypes = db.PrinterTypes.ToDictionary(p => p.PrinterTypeId);
-            ViewBag.PrinterNames = PrinterTypes;
-            Dictionary<long, PrinterStatusLog> PrinterStatus = db.PrinterStatusLogs.SqlQuery(
-            "Select dbo.PrinterStatusLogs.* " +
-            "From dbo.PrinterStatusLogs " +
-            "inner join " +
-                "(" +
-                "select PrinterStatusLogs.PrinterID, MAX(PrinterStatusLogs.PrinterStatusLogID) as MaxEntryTime " +
-                "from dbo.PrinterStatusLogs " +
-                "group by dbo.PrinterStatusLogs.PrinterID" +
-                ") " +
-            "mxe ON dbo.PrinterStatusLogs.PrinterStatusLogID = mxe.MaxEntryTime ").ToDictionary(p => p.PrinterId);
-            ViewBag.PrinterStatus = PrinterStatus;
-            
-            List<Printer> ValidMaterialStatus = db.Printers.SqlQuery(
-                "Select dbo.Printers.* " +
-                "From dbo.Printers " +
-                "inner join " +
-                "( " +
-                    "select dbo.MaterialCheckouts.PrinterId, Count(Distinct dbo.MaterialCheckouts.MaterialCheckoutId) as MaterialsAssigned " +
-                    "from dbo.MaterialCheckouts " +
-                    "group by dbo.MaterialCheckouts.PrinterId " +
-                    ") cnt ON dbo.Printers.PrinterID = cnt.PrinterId " +
-                "inner join dbo.PrinterTypes on dbo.Printers.PrinterTypeId = dbo.PrinterTypes.PrinterTypeId " +
-                "where MaterialsAssigned = SupportedNumberMaterials").ToList();
-
-            ViewBag.ValidMaterialStatus = ValidMaterialStatus;
-
-            string PrintAssignmentsQuery = "Select * " +
-             "from dbo.PrintEvents " +
-             "inner join ( " +
-             "select dbo.PrintEvents.PrinterID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
-             "from dbo.PrintEvents " +
-             "group by dbo.PrintEvents.PrinterID " +
-             ") mxe on dbo.PrintEvents.PrinterID = mxe.PrinterID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
-             "where dbo.PrintEvents.EventType = @PrintingEventStart ";
-
-            string PrintStartQuery = "Select dbo.Prints.* " +
-                "from dbo.Prints " +
-                "inner join (" +
-                    "Select dbo.PrintEvents.* " +
-            "from dbo.PrintEvents " +
-            "inner join ( " +
-            "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.EventTimeStamp) as MostReventEvent " +
-            "from dbo.PrintEvents " +
-            "group by dbo.PrintEvents.PrintID " +
-            ") mxe on dbo.PrintEvents.PrintID = mxe.PrintID and dbo.PrintEvents.EventTimeStamp = mxe.MostReventEvent " +
-            "where dbo.PrintEvents.EventType = @PrintingEventStart" +
-            ") tde on dbo.Prints.PrintId = tde.PrintID ";
-
-            SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
-            SqlParameter PrintingEventStart2 = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
-            Dictionary<long, PrintEvent> PrintingAssignments = db.PrintEvents.SqlQuery(PrintAssignmentsQuery, PrintingEventStart).ToDictionary(p => p.PrinterId);
-            List<Print> Assigned = db.Prints.SqlQuery(PrintStartQuery, PrintingEventStart2).ToList();
-
-            ViewData["PrintingAssignments"] = PrintingAssignments;
-            ViewData["Assigned"] = Assigned;
-
-
-            return View(db.Printers.Where(p => !p.PrinterName.Equals("Null Printer")).ToList());
+            return View();
         }
 
         // GET: /Printers/Details/5

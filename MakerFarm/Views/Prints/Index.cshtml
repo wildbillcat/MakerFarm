@@ -1,10 +1,16 @@
 ﻿
 
 @{
-    ViewBag.Title = "New Print Index";
+    MakerFarm.Models.PrinterType PType = (MakerFarm.Models.PrinterType)ViewData["PType"];
+    ViewBag.Title = PType.TypeName;
 }
 
-<h2>New Print Index (IE Queue)</h2>
+<h2>@PType.TypeName Queue</h2>
+
+<p>
+    <input type="button" value="Past Prints" onclick="location.href='@Url.Action("PastPrints", new { id = PType.PrinterTypeId })'" />
+</p>
+
 <div id="ActivePrinters">
     @Html.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] })
 </div>

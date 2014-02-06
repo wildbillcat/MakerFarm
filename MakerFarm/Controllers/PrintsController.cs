@@ -29,6 +29,12 @@ namespace MakerFarm.Controllers
         // GET: /Prints/
         public ActionResult Index(int id = 0)
         {
+            PrinterType PType = db.PrinterTypes.Find(id);
+            if (PType == null)
+            {
+                return HttpNotFound();
+            }
+            ViewData["PType"] = PType;
             return View();
         }
 

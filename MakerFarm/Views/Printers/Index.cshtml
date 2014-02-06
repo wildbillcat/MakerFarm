@@ -1,11 +1,9 @@
 ﻿@model IEnumerable<MakerFarm.Models.Printer>
 @{
-    ViewBag.Title = "Index";
-    Dictionary<long, MakerFarm.Models.PrintEvent> PrintingAssignments = (Dictionary<long, MakerFarm.Models.PrintEvent>)ViewData["PrintingAssignments"];
-    List<MakerFarm.Models.Print> Assigned = (List<MakerFarm.Models.Print>)ViewData["Assigned"];
+    ViewBag.Title = "Printers";
 }
 
-<h2>Index</h2>
+<h2>Printers</h2>
 
 @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
 { 
