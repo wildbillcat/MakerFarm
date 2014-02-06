@@ -5,6 +5,14 @@
     Dictionary<long, MakerFarm.Models.PrinterStatusLog> PrinterStatus = (Dictionary<long, MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterStatus"];
     Dictionary<long, string> PrinterMaterials = (Dictionary<long, string>)ViewData["PrinterMaterials"];
 }
+<style>
+    td {
+        padding: 0.25em 2em 0.25em 0em;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+    }
+</style>
+
 
 <h3>Printers:</h3>
 <table class="table">

@@ -531,7 +531,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0.75em;
-    border: 0 none;
+    
 }
 
 th {
@@ -579,7 +579,6 @@ th {
 
 td {
     padding: 0.25em 2em 0.25em 0em;
-    border: 0 none;
 }
 
 tr.pager td {
