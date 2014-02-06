@@ -14,64 +14,20 @@
     </p>
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PrinterName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InternalName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrinterTypeId)
-        </th>
-        <th>
-            Printer Status
-        </th>
-        <th>
-            Material Status
-        </th>
-        <th></th>
-    </tr>
+<div id="ActivePrinters">
+    @Html.Action("ActivePrinters", "Prints")
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.PrinterName, "Details", new { id = item.PrinterId })
-        </td>
-        <td>
-            @item.InternalName
-        </td>
-        <td>
-            @ViewBag.PrinterNames[item.PrinterTypeId].TypeName
-        </td>
-        <td>
-            @if(PrintingAssignments.ContainsKey(item.PrinterId)){
-                <text>Printing: </text>
-                @Html.ActionLink(Assigned.Find(p => p.PrintId.Equals(PrintingAssignments[item.PrinterId].PrintId)).FileName, "Details", "Prints", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)
-            }else 
-            if(ViewBag.PrinterStatus.ContainsKey(item.PrinterId)){
-                @ViewBag.PrinterStatus[item.PrinterId].LoggedPrinterStatus.ToString()
-            }
-            else
-            {
-                <text>Unknown</text>
-            }
-        </td>
-        <td>
-            @if (ViewBag.ValidMaterialStatus.Contains(item))
-            {
-                <text>Ready</text>
-            }
-            else
-            {
-                <text>Unknown</text>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id=item.PrinterId })
-        </td>
-    </tr>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+        setInterval(function () {
+            @Html.Raw("$('#ActivePrinters').load('")@Url.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
+        }, 5000);
+        $.ajaxSetup({ cache: false });  //Turn off caching
+    });
+    </script>
+
 }
-
-</table>

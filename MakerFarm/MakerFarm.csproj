@@ -592,7 +592,6 @@
     <Content Include="Views\Prints\Create.cshtml" />
     <Content Include="Views\Prints\Edit.cshtml" />
     <Content Include="Views\Prints\Delete.cshtml" />
-    <Content Include="Views\Prints\Index.cshtml" />
     <Content Include="Views\PrinterTypes\Create.cshtml" />
     <Content Include="Views\PrinterTypes\Delete.cshtml" />
     <Content Include="Views\PrinterTypes\Details.cshtml" />
@@ -668,7 +667,7 @@
     <Content Include="Views\ClientPermissions\Index.cshtml" />
     <Content Include="Views\Printers\_PhysicalPrinterStatusPartial.cshtml" />
     <Content Include="Views\Prints\_ActivePrintersPartial.cshtml" />
-    <Content Include="Views\Prints\NewIndex.cshtml" />
+    <Content Include="Views\Prints\Index.cshtml" />
     <Content Include="Views\Prints\_PrintQueuePartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
