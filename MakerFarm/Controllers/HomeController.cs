@@ -70,9 +70,19 @@ namespace MakerFarm.Controllers
             return PartialView("_CompactWaitingPrintsPartial");
         }
 
-        public ActionResult CompactActivePrinters()
+        public ActionResult CompactActivePrinters(int id = 0)
         {
-            List<PrinterType> TypeList = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
+            List<PrinterType> MasterTypes = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
+            ViewData["MasterTypes"] = MasterTypes;
+            List<PrinterType> TypeList;
+            if (id == 0)
+            {
+                TypeList = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
+            }
+            else
+            {
+                TypeList = db.PrinterTypes.Where(p => p.QueueVisible && p.PrinterTypeId == id).ToList();
+            }
             ViewData["TypeList"] = TypeList;
             //List All Printers
             string PrintStartQuery = "Select dbo.Prints.* " +

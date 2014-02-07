@@ -6,7 +6,7 @@
 <h2>System Status</h2>
 
 <div id="CompactActivePrinters">
-    @Html.Action("CompactActivePrinters")
+    @Html.Action("CompactActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] })
 </div>
 
 <div id="CompactWaitingPrints">
@@ -17,11 +17,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
     <script>
         $(document).ready(function () {
         setInterval(function () {
-            @Html.Raw("$('#CompactActivePrinters').load('")@Url.Action("CompactActivePrinters").ToString()@Html.Raw("');")
+            @Html.Raw("$('#CompactActivePrinters').load('")@Url.Action("CompactActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
         }, 15);
         setInterval(function () {
             @Html.Raw("$('#CompactWaitingPrints').load('")@Url.Action("CompactWaitingPrints").ToString()@Html.Raw("');")

@@ -7,6 +7,7 @@
     Dictionary<long, PrintEvent> PrintingAssignments = (Dictionary<long, PrintEvent>)ViewData["PrintingAssignments"];
     List<PrinterType> TypeList = (List<PrinterType>)ViewData["TypeList"];
     Dictionary<long?, Machine> Machines = (Dictionary<long?, Machine>)ViewData["Machines"];
+    
 }
 
 <style>
@@ -22,16 +23,16 @@
 <table>
     <tr>
         @foreach (PrinterType PType in TypeList)
-{
-    <th colspan="3" style="border-right: 2px solid #000000; border-left: 2px solid #000000;">@PType.TypeName</th>
-}
+        {
+            <th colspan="3" style="border-right: 2px solid #000000; border-left: 2px solid #000000; width: @((100/(3*TypeList.Count())).ToString())%;">@PType.TypeName</th>
+        }
     </tr>
     <tr>
         @foreach (PrinterType PType in TypeList)
         {
-            <th style="border-left:2px solid #000000;">Printer</th>
+            <th style="border-left:2px solid #000000; ">Printer</th>
             <th>Printer Status</th>
-            <th style ="border-right:2px solid #000000;">HW Status</th>
+            <th style="border-right:2px solid #000000;">HW Status</th>
         }
     </tr>
     @for (long i = 0; i < GreatestNumberOfPrinters; i++)
@@ -52,21 +53,21 @@
                         else
                         {
                             if (PrinterStatus.ContainsKey(@PrintersByType[PType.PrinterTypeId][i].PrinterId))
-                                {<!--If Printer has a status-->
-                                    if (PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance)
-                                    {
-                                        <text>Online</text>
-                                    }
-                                    else
-                                    {
-                                        @PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus.ToString()
-                                    }
+                            {<!--If Printer has a status-->
+                                if (PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance)
+                                {
+                                    <text>Online</text>
                                 }
                                 else
-                                {<!--If Printer Status is unkown, mark it as down-->
-                                <text>Offline</text>
+                                {
+                                    @PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus.ToString()
                                 }
-                            
+                            }
+                            else
+                            {<!--If Printer Status is unkown, mark it as down-->
+                            <text>Offline</text>
+                            }
+
                         }
                     </td>
                     <td style="border-right:2px solid #000000">
@@ -86,4 +87,6 @@
         </tr>
     }
 </table>
+
+
 
