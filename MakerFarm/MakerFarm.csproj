@@ -673,6 +673,9 @@
     <Content Include="Views\Prints\_ActivePrintersPartial.cshtml" />
     <Content Include="Views\Prints\Index.cshtml" />
     <Content Include="Views\Prints\_PrintQueuePartial.cshtml" />
+    <Content Include="Views\Home\_CompactPrintQueueStatusPartial.cshtml" />
+    <Content Include="Views\Home\SystemStatus.cshtml" />
+    <Content Include="Views\Home\_CompactWaitingPrintsPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

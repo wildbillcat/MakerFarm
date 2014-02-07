@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "System Status";
+}
+
+<h2>System Status</h2>
+
+<div id="CompactActivePrinters">
+    @Html.Action("CompactActivePrinters")
+</div>
+
+<div id="CompactWaitingPrints">
+    @Html.Action("CompactWaitingPrints")
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+        setInterval(function () {
+            @Html.Raw("$('#CompactActivePrinters').load('")@Url.Action("CompactActivePrinters").ToString()@Html.Raw("');")
+        }, 15);
+        setInterval(function () {
+            @Html.Raw("$('#CompactWaitingPrints').load('")@Url.Action("CompactWaitingPrints").ToString()@Html.Raw("');")
+          }, 30000); //Refreshes every 5 seconds
+        $.ajaxSetup({ cache: false });  //Turn off caching
+    });
+    </script>
+
+}

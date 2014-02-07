@@ -1,0 +1,89 @@
+﻿@using MakerFarm.Models;
+@{
+    Dictionary<long, PrinterStatusLog> PrinterStatus = (Dictionary<long, PrinterStatusLog>)ViewData["PrinterStatus"];
+    long GreatestNumberOfPrinters = (long)ViewData["GreatestNumberOfPrinters"];
+    Dictionary<int, Printer[]> PrintersByType = (Dictionary<int, Printer[]>)ViewData["PrintersByType"];
+    Dictionary<long, Print> Assigned = (Dictionary<long, Print>)ViewData["Assigned"];
+    Dictionary<long, PrintEvent> PrintingAssignments = (Dictionary<long, PrintEvent>)ViewData["PrintingAssignments"];
+    List<PrinterType> TypeList = (List<PrinterType>)ViewData["TypeList"];
+    Dictionary<long?, Machine> Machines = (Dictionary<long?, Machine>)ViewData["Machines"];
+}
+
+<style>
+    td, th {
+        padding: 0.25em 2em 0.25em 0em;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+    }
+</style>
+
+<h2>System Status</h2>
+
+<table>
+    <tr>
+        @foreach (PrinterType PType in TypeList)
+{
+    <th colspan="3" style="border-right: 2px solid #000000; border-left: 2px solid #000000;">@PType.TypeName</th>
+}
+    </tr>
+    <tr>
+        @foreach (PrinterType PType in TypeList)
+        {
+            <th style="border-left:2px solid #000000;">Printer</th>
+            <th>Printer Status</th>
+            <th style ="border-right:2px solid #000000;">HW Status</th>
+        }
+    </tr>
+    @for (long i = 0; i < GreatestNumberOfPrinters; i++)
+    {
+        <tr>
+            @foreach (PrinterType PType in TypeList)
+            {
+                if (PrintersByType[PType.PrinterTypeId].Length > i)
+                {
+                    <td style="border-left:2px solid #000000;">
+                        @PrintersByType[PType.PrinterTypeId][i].PrinterName
+                    </td>
+                    <td>
+                        @if (PrintingAssignments.ContainsKey(@PrintersByType[PType.PrinterTypeId][i].PrinterId))
+                        {
+                            <text>User: </text> @Assigned[PrintingAssignments[@PrintersByType[PType.PrinterTypeId][i].PrinterId].PrintId].UserName <text> | Printing: </text> @Assigned[PrintingAssignments[@PrintersByType[PType.PrinterTypeId][i].PrinterId].PrintId].FileName
+                        }
+                        else
+                        {
+                            if (PrinterStatus.ContainsKey(@PrintersByType[PType.PrinterTypeId][i].PrinterId))
+                                {<!--If Printer has a status-->
+                                    if (PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus == MakerFarm.Models.PrinterStatus.RequiresMaintenance)
+                                    {
+                                        <text>Online</text>
+                                    }
+                                    else
+                                    {
+                                        @PrinterStatus[@PrintersByType[PType.PrinterTypeId][i].PrinterId].LoggedPrinterStatus.ToString()
+                                    }
+                                }
+                                else
+                                {<!--If Printer Status is unkown, mark it as down-->
+                                <text>Offline</text>
+                                }
+                            
+                        }
+                    </td>
+                    <td style="border-right:2px solid #000000">
+                        @if (Machines.ContainsKey(PrintersByType[PType.PrinterTypeId][i].PrinterId) && Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress != null)
+                        {
+                            <progress value="@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()">@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()</progress>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td style="border-left:2px solid #000000;"></td>
+                    <td></td>
+                    <td style="border-right:2px solid #000000;"></td>
+                }
+            }
+        </tr>
+    }
+</table>
+

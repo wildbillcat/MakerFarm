@@ -1,0 +1,55 @@
+﻿@using MakerFarm.Models;
+@{
+    List<PrinterType> TypeList = (List<PrinterType>)ViewData["TypeList"];
+    Dictionary<int, Print[]> PrintQueues = (Dictionary<int, Print[]>)ViewData["PrintQueues"];
+    Dictionary<long, Material> Materials = (Dictionary<long, Material>)ViewData["Materials"];
+    long LongestQueue = (long)ViewData["LongestQueue"];
+}
+
+<table>
+    <tr>
+         @foreach (PrinterType T in TypeList)
+         {
+            <th colspan="4" style="border-right: 2px solid #000000; border-left: 2px solid #000000;">@T.TypeName Queue (@PrintQueues[T.PrinterTypeId].Length Jobs)</th>
+         }
+    </tr>
+    <tr>
+        @foreach (PrinterType T in TypeList)
+        {
+            <th style="border-left:2px solid #000000;">#</th>
+            <th>File Name</th>
+            <th>User Name</th>
+            <th style="border-right:2px solid #000000;">Materials</th>
+        }
+    </tr>
+    @for (long i = 0; i < LongestQueue; i++)
+    {
+        <tr>
+            @foreach (PrinterType T in TypeList)
+            {
+                <td style="border-left:2px solid #000000">@((i+1).ToString())</td>
+                if (PrintQueues[T.PrinterTypeId].Length > i)
+                {
+                    <td>@PrintQueues[T.PrinterTypeId][i].FileName</td>
+                    <td>@PrintQueues[T.PrinterTypeId][i].UserName</td>
+                    <td style="border-right:2px solid #000000;">
+                    @foreach (string S in @PrintQueues[T.PrinterTypeId][i].MaterialIds.Split(','))
+                    {
+                        @Materials[long.Parse(S)].MaterialName
+                        <br />
+                    }
+            </td>
+
+                }
+                else
+                {
+                    <td></td>
+                    <td></td>
+                    <td style="border-right:2px solid #000000;"></td>
+                }
+                
+            }
+        </tr>
+        
+    }
+</table>
