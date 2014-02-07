@@ -21,10 +21,7 @@
         $(document).ready(function () {
         setInterval(function () {
             @Html.Raw("$('#CompactActivePrinters').load('")@Url.Action("CompactActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
-        }, 15);
-        setInterval(function () {
-            @Html.Raw("$('#CompactWaitingPrints').load('")@Url.Action("CompactWaitingPrints").ToString()@Html.Raw("');")
-          }, 30000); //Refreshes every 5 seconds
+        }, 10);
         $.ajaxSetup({ cache: false });  //Turn off caching
     });
     </script>
