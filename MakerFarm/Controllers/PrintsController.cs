@@ -114,7 +114,7 @@ namespace MakerFarm.Controllers
         }
 
             //Partial
-        public ActionResult ActivePrinters(int id = 0, bool compact = false)
+        public ActionResult ActivePrinters(int id = 0)
         {
             if (id == 0)
             {
@@ -254,15 +254,7 @@ namespace MakerFarm.Controllers
                     PrinterMaterials.Add(p.PrinterId, mats);
                 }
                 ViewData["PrinterMaterials"] = PrinterMaterials;
-
-                if (compact)
-                {
-                    return PartialView("_ActiveCompactPrintersPartial");
-                }
-                else
-                {
-                    return PartialView("_ActivePrintersPartial");
-                }
+                return PartialView("_ActivePrintersPartial");
             }
         }
 

@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
     public class HomeController : Controller
     {
-        private MakerfarmDBContext db = new MakerfarmDBContext();
-
         public ActionResult Index()
         {
             return RedirectToAction("SubmissionSelection", "PrinterTypes");
@@ -21,13 +18,6 @@ namespace MakerFarm.Controllers
             ViewBag.Message = "Your app description page.";
 
             return View();
-        }
-
-        public ActionResult PublicStatus()
-        {
-            List<PrinterType> Types = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
-            ViewData["Types"] = Types;
-            return PartialView();
         }
 
         [Authorize(Roles = "Moderator, Administrator")]
