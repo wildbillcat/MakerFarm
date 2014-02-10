@@ -1,24 +1,41 @@
 ﻿@{
     MakerFarm.Models.Machine M = (MakerFarm.Models.Machine)ViewData["M"];
     bool compressed = (bool)ViewData["compressed"];
+    bool TimedOut = false;
+    if (M != null && DateTime.Now.Subtract(M.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ClientTimeout"))))
+    {
+        TimedOut = true;
+    }
+    
 }
+
 @if(M == null){
 
 }
 else if (compressed) {
     if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
     {
-        @M.Status.Split()[0]    
+        if (TimedOut)
+        {
+            <text>PRINTER TIMEOUT</text>
+        }else{
+            @M.Status.Split()[0]    
+        }
     }    
     if (M.CurrentTaskProgress != null)
     {
         <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
-    }    
+    }
 }
 else
 {
     if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
     {
+        if (TimedOut)
+        {
+            <text>PRINTER TIMEOUT</text> 
+            <br />
+        }
         foreach (string S in M.Status.Split('\n'))
         {
             @S
@@ -27,7 +44,7 @@ else
     }
     if (M.CurrentTaskProgress != null)
     {
-        <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString() %</progress>
+        <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
     }           
 }
 
