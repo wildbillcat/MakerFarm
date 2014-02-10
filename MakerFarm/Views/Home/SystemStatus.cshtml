@@ -12,18 +12,3 @@
 <div id="CompactWaitingPrints">
     @Html.Action("CompactWaitingPrints")
 </div>
-
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        $(document).ready(function () {
-        setInterval(function () {
-            @Html.Raw("$('#CompactActivePrinters').load('")@Url.Action("CompactActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
-        }, 10);
-        $.ajaxSetup({ cache: false });  //Turn off caching
-    });
-    </script>
-
-}

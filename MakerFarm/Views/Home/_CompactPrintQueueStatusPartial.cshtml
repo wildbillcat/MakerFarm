@@ -71,7 +71,7 @@
                     <td style="border-right:2px solid #000000">
                         @if (Machines.ContainsKey(PrintersByType[PType.PrinterTypeId][i].PrinterId) && Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress != null)
                         {
-                            <progress value="@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()">@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()</progress>
+                            <progress value="@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()" max="100">@Machines[PrintersByType[PType.PrinterTypeId][i].PrinterId].CurrentTaskProgress.ToString()%</progress>
                         }
                     </td>
                 }

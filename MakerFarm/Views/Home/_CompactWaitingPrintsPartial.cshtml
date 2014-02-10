@@ -11,7 +11,7 @@
     <tr>
          @foreach (PrinterType T in TypeList)
          {
-            <th colspan="4" style="border-right: 2px solid #000000; border-left: 2px solid #000000;">@T.TypeName Queue (@PrintQueues[T.PrinterTypeId].Length Jobs)</th>
+            <th colspan="3" style="border-right: 2px solid #000000; border-left: 2px solid #000000;">@T.TypeName Queue (@PrintQueues[T.PrinterTypeId].Length Jobs)</th>
          }
     </tr>
     <tr>
@@ -19,8 +19,7 @@
         {
             <th style="border-left:2px solid #000000;">#</th>
             <th>File Name</th>
-            <th>User Name</th>
-            <th style="border-right:2px solid #000000;">Materials</th>
+            <th style="border-right:2px solid #000000;">User Name</th>
         }
     </tr>
     @for (long i = 0; i < LongestQueue; i++)
@@ -32,13 +31,8 @@
                 if (PrintQueues[T.PrinterTypeId].Length > i)
                 {
                     <td>@PrintQueues[T.PrinterTypeId][i].FileName</td>
-                    <td>@PrintQueues[T.PrinterTypeId][i].UserName</td>
                     <td style="border-right:2px solid #000000;">
-                    @foreach (string S in @PrintQueues[T.PrinterTypeId][i].MaterialIds.Split(','))
-                    {
-                        @Materials[long.Parse(S)].MaterialName
-                        <br />
-                    }
+                    @PrintQueues[T.PrinterTypeId][i].UserName
             </td>
 
                 }
