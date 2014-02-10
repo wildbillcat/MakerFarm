@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MakerFarm.Models;
 using System.Data.SqlClient;
 using PaperCutMF;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -27,8 +28,16 @@ namespace MakerFarm.Controllers
 
         // GET: /Printers/Details/5
         [Authorize(Roles = "Administrator, Moderator")]
-        public ActionResult Details(long? id)
+        public ActionResult Details(long? id, int? page, string sortOrder, int? page2, string sortOrder2)
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "";
+
+            ViewBag.CurrentSort2 = sortOrder2;
+            ViewBag.NameSortParm2 = sortOrder2 == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSortParm2 = String.IsNullOrEmpty(sortOrder2) ? "Date" : "";
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -53,17 +62,66 @@ namespace MakerFarm.Controllers
             ViewData["Materials"] = new SelectList(Materials, "MaterialId", "MaterialName");
             
             string status = "Unknown";
-            List<PrinterStatusLog> PrinterHistory = db.PrinterStatusLogs.Where(P => P.PrinterId == id).OrderByDescending(E => E.PrinterStatusLogId).ToList();
-            if (PrinterHistory.Count > 0)
+            var PrinterHistory = db.PrinterStatusLogs.Where(P => P.PrinterId == id);
+
+            switch (sortOrder)
             {
-                PrinterStatusLog P = PrinterHistory.First();
-                status = string.Concat(P.LoggedPrinterStatus.ToString(), " : ", P.LogEntryDate.ToString("F"));
+                case "name_desc":
+                    PrinterHistory = PrinterHistory.OrderByDescending(s => s.LoggedPrinterStatus);
+                    break;
+                case "Date":
+                    PrinterHistory = PrinterHistory.OrderBy(s => s.LogEntryDate);
+                    break;
+                case "Name":
+                    PrinterHistory = PrinterHistory.OrderBy(s => s.LoggedPrinterStatus);
+                    break;
+                default:
+                    PrinterHistory = PrinterHistory.OrderByDescending(s => s.LogEntryDate);
+                    break;
             }
-            ViewData["PrinterHistory"] = PrinterHistory;
-            
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+
+            ViewData["PrinterHistory"] = PrinterHistory.ToPagedList(pageNumber, pageSize);
+
+            PrinterStatusLog PStat = null;
+            foreach (PrinterStatusLog pntsts in PrinterHistory)
+            {
+                if (PStat == null || PStat.LogEntryDate < pntsts.LogEntryDate)
+                {
+                    PStat = pntsts;
+                }
+            }
+
+            if (PStat != null)
+            {
+                status = string.Concat(PStat.LoggedPrinterStatus.ToString(), " : ", PStat.LogEntryDate.ToString("F"));
+            }
             
             ViewData["Status"] = status;
-            
+
+            var PrintHistory = db.PrintEvents.Where(P => P.PrinterId == id);
+
+            switch (sortOrder2)
+            {
+                case "name_desc":
+                    PrintHistory = PrintHistory.OrderByDescending(s => s.UserName);
+                    break;
+                case "Date":
+                    PrintHistory = PrintHistory.OrderBy(s => s.EventTimeStamp);
+                    break;
+                case "Name":
+                    PrintHistory = PrintHistory.OrderBy(s => s.UserName);
+                    break;
+                default:
+                    PrintHistory = PrintHistory.OrderByDescending(s => s.EventTimeStamp);
+                    break;
+            }
+            int pageSize2 = 20;
+            int pageNumber2 = (page2 ?? 1);
+
+            ViewData["PrintHistory"] = PrintHistory.ToPagedList(pageNumber2, pageSize2);
+
             string AssignedPrintQuery = "Select dbo.Prints.* " +
                 "from dbo.Prints " +
                 "left outer join " +

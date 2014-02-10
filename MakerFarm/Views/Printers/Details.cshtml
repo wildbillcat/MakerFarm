@@ -1,7 +1,11 @@
 ﻿@model MakerFarm.Models.Printer
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
-    List<MakerFarm.Models.PrinterStatusLog> PrinterHistory = (List<MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterHistory"];
+    PagedList.IPagedList<MakerFarm.Models.PrinterStatusLog> PrinterHistory = (PagedList.IPagedList<MakerFarm.Models.PrinterStatusLog>)ViewData["PrinterHistory"];
     MakerFarm.Models.Print Print = (MakerFarm.Models.Print)ViewBag.AssignedPrint;
+    PagedList.IPagedList<MakerFarm.Models.PrintEvent> PrintHistory = (PagedList.IPagedList<MakerFarm.Models.PrintEvent>)ViewData["PrintHistory"];
 }
 <head>
     <title>Printer Details</title>
@@ -185,15 +189,16 @@
 </p>   
 }
 
-<h2>Index</h2>
+<h2>Printer Logs</h2>
 
 <table class="table">
     <tr>
         <th>
-            Log Entry Date
+            
+            @Html.ActionLink("Log Entry Date", "Details", new { id = Model.PrinterId, sortOrder = ViewBag.DateSortParm, page2 = PrintHistory.PageCount, sortOrder2 = ViewBag.CurrentSort2 })
         </th>
         <th>
-            Printer Status
+            @Html.ActionLink("Printer Status", "Details", new { id = Model.PrinterId, sortOrder = ViewBag.NameSortParm, page2 = PrintHistory.PageCount, sortOrder2 = ViewBag.CurrentSort2 })
         </th>
         <th>
             Comment
@@ -216,6 +221,69 @@
     }
 
 </table>
+
+<br />
+Page @(PrinterHistory.PageCount < PrinterHistory.PageNumber ? 0 : PrinterHistory.PageNumber) of @PrinterHistory.PageCount
+
+@Html.PagedListPager(PrinterHistory, page => Url.Action("Details", new { id = Model.PrinterId, page = page, sortOrder = ViewBag.CurrentSort, page2 = PrintHistory.PageCount, sortOrder2 = ViewBag.CurrentSort2 }))
+
+
+<h2>Print Event History</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Event TimeStamp", "Details", new { id = Model.PrinterId, sortOrder2 = ViewBag.DateSortParm2, page = PrinterHistory.PageCount, sortOrder = ViewBag.CurrentSort })
+        </th>
+        <th>
+            Event Type
+        </th>
+        <th>
+            Printer
+        </th>
+        <th>
+            @Html.ActionLink("User", "Details", new { id = Model.PrinterId, sortOrder2 = ViewBag.NameSortParm2, page = PrinterHistory.PageNumber, sortOrder = ViewBag.CurrentSort })
+        </th>
+        <th>
+            Material
+        </th>
+        <th>
+            Comment
+        </th>
+    </tr>
+
+    @foreach (var item in PrintHistory)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventTimeStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Printer.PrinterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialUsed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(PrintHistory.PageCount < PrintHistory.PageNumber ? 0 : PrintHistory.PageNumber) of @PrintHistory.PageCount
+
+@Html.PagedListPager(PrinterHistory, page => Url.Action("Details", new { id = Model.PrinterId, page2 = page, sortOrder2 = ViewBag.CurrentSort2, page = PrinterHistory.PageNumber, sortOrder = ViewBag.CurrentSort }))
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
