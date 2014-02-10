@@ -81,6 +81,9 @@ namespace MakerFarm.Controllers
                 //API Key is invalid reject request
                 return BadRequest();
             }
+            Client.LastUpdated = DateTime.Now;
+            db.Entry(Client).State = EntityState.Modified;
+
 
             //List of the Machines 
             IEnumerable<string> machlist = (IEnumerable<string>)parameters["Machines"];
@@ -110,11 +113,8 @@ namespace MakerFarm.Controllers
                     db.Machines.Add(Mach);
                 }
             }
-
-            if (sync)
-            {
-                db.SaveChanges();
-            }
+                        
+            db.SaveChanges();
             return Ok();
         }
 
@@ -167,6 +167,8 @@ namespace MakerFarm.Controllers
                 //API Key is invalid reject request
                 return BadRequest();
             }
+            Client.LastUpdated = DateTime.Now;
+            db.Entry(Client).State = EntityState.Modified;
             MachineStatusUpdate MachineUpdate = (MachineStatusUpdate)parameters["MachineUpdate"];
             JobStatusUpdate JobUpdate = (JobStatusUpdate)parameters["JobUpdate"];
             ClientPermission P = Client.ClientPermissions.FirstOrDefault(p => p.Machine.MachineName.Equals(MachineUpdate.MachineName) && p.SetInformation);
@@ -186,8 +188,8 @@ namespace MakerFarm.Controllers
                     db.Entry(J).State = EntityState.Modified;
                 }
                 db.Entry(M).State = EntityState.Modified;
-                db.SaveChanges();
             }
+            db.SaveChanges();
             return Ok();
         }
 
