@@ -3,7 +3,7 @@
 @model PagedList.IPagedList<MakerFarm.Models.Client>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Clients";
 }
 
 <h2>Clients</h2>
@@ -54,7 +54,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.ClientAPIKey)
         </td>
-        <td>
+        <td @if(item !=null && DateTime.Now.Subtract(item.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ClientTimeout")))){ <text> style="background-color:red" </text> } >
             @Html.DisplayFor(modelItem => item.LastUpdated)
         </td>
         <td>
