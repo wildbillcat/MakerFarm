@@ -2,7 +2,7 @@
     MakerFarm.Models.Machine M = (MakerFarm.Models.Machine)ViewData["M"];
     bool compressed = (bool)ViewData["compressed"];
     bool TimedOut = false;
-    if (M != null && DateTime.Now.Subtract(M.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("ClientTimeout"))))
+    if (M != null && DateTime.Now.Subtract(M.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout"))))
     {
         TimedOut = true;
     }
