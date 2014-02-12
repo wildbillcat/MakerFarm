@@ -223,7 +223,7 @@ namespace MakerFarm.Controllers
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 System.IO.FileStream stream = new System.IO.FileStream(fileLocation, System.IO.FileMode.Open);
                 result.Content = new StreamContent(stream);
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
                 return result;
             }
             catch { 
