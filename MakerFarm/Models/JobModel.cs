@@ -21,7 +21,7 @@ namespace MakerFarm.Models
         [Display(Name = "Last Update", Description = "This is the DateTime of the last time this printer was update by the Client.")]
         public DateTime LastUpdated { get; set; }
 
-        public Printer AffiliatedPrint { get; set; }
+        public Print AffiliatedPrint { get; set; }
 
         public Printer AffiliatedMachine { get; set; }
 

@@ -411,6 +411,10 @@
     <Compile Include="Migrations\201402060636117_added internal and external initial cost value to PrinterTypes.Designer.cs">
       <DependentUpon>201402060636117_added internal and external initial cost value to PrinterTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402121735099_corrected the affiliated print property on the Job.cs" />
+    <Compile Include="Migrations\201402121735099_corrected the affiliated print property on the Job.Designer.cs">
+      <DependentUpon>201402121735099_corrected the affiliated print property on the Job.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -789,6 +793,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402060636117_added internal and external initial cost value to PrinterTypes.resx">
       <DependentUpon>201402060636117_added internal and external initial cost value to PrinterTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402121735099_corrected the affiliated print property on the Job.resx">
+      <DependentUpon>201402121735099_corrected the affiliated print property on the Job.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
