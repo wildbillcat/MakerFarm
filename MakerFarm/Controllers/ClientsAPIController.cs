@@ -217,9 +217,9 @@ namespace MakerFarm.Controllers
             int JobId = (int)parameters["JobId"];
             string MachineName = (string)parameters["MachineName"];
             try{
-                //Machine PrinterUsed = Client.ClientPermissions.FirstOrDefault(p => p.Machine.AssignedJob.JobId == JobId && p.Machine.MachineName.Equals(MachineName)).Machine;
-                //string fileLocation = PrinterUsed.AssignedJob.AffiliatedPrint.GetPath();
-                string fileLocation = db.Prints.Find(53).GetPath();
+                Machine PrinterUsed = Client.ClientPermissions.FirstOrDefault(p => p.Machine.AssignedJob.JobId == JobId && p.Machine.MachineName.Equals(MachineName)).Machine;
+                string fileLocation = PrinterUsed.AssignedJob.AffiliatedPrint.GetPath();
+                //string fileLocation = db.Prints.Find(53).GetPath();
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 System.IO.FileStream stream = new System.IO.FileStream(fileLocation, System.IO.FileMode.Open);
                 result.Content = new StreamContent(stream);
