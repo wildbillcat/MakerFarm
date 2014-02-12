@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
@@ -94,13 +95,11 @@ namespace MakerFarm.Controllers
                 string Name = Machines[i];
                 exists[i] = db.Machines.Any(p => p.MachineName.Equals(Name));               
             }
-            bool sync = false;
             for(int i = 0; i < Machines.Length; i++)
             {
                 bool existence = exists[i];
                 if (!existence) //If the machine isn't known to Makerfarm, 
                 {
-                    sync = true;
                     Machine Mach = new Machine();
                     Mach.MachineName = Machines[i];
                     Mach.PrinterId = null;
@@ -191,6 +190,46 @@ namespace MakerFarm.Controllers
             }
             db.SaveChanges();
             return Ok();
+        }
+
+        public HttpResponseMessage TakeThis([FromODataUri] int key, ODataActionParameters parameters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return null;
+                //return BadRequest();
+            }
+            Client Client = db.Clients.Find(key);
+            if (Client == null || !Client.Enabled) //Client Doesnt exist or isnt enabled
+            {
+                return null;
+                //return NotFound();
+            }
+            string ClientAPIKey = (string)parameters["ClientAPIKey"];
+            if (!Client.ClientAPIKey.Equals(ClientAPIKey))
+            {
+                return null;
+                //API Key is invalid reject request
+                //return BadRequest();
+            }
+            Client.LastUpdated = DateTime.Now;
+            db.Entry(Client).State = EntityState.Modified;
+            int JobId = (int)parameters["JobId"];
+            string MachineName = (string)parameters["MachineName"];
+            try{
+                //Machine PrinterUsed = Client.ClientPermissions.FirstOrDefault(p => p.Machine.AssignedJob.JobId == JobId && p.Machine.MachineName.Equals(MachineName)).Machine;
+                //string fileLocation = PrinterUsed.AssignedJob.AffiliatedPrint.GetPath();
+                string fileLocation = db.Prints.Find(53).GetPath();
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                System.IO.FileStream stream = new System.IO.FileStream(fileLocation, System.IO.FileMode.Open);
+                result.Content = new StreamContent(stream);
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                return result;
+            }
+            catch { 
+                return null;
+                //return NotFound(); 
+            }
         }
 
     }
