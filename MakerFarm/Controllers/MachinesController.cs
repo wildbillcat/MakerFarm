@@ -66,6 +66,78 @@ namespace MakerFarm.Controllers
             return View(machines.ToPagedList(pageNumber, pageSize));
         }
 
+        public ActionResult MachineControlPanel(long id = 0)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Machine machine = db.Machines.Find(id);
+            if (machine == null)
+            {
+                return HttpNotFound();
+            }
+            ViewData["MachineId"] = machine.MachineId;
+            if (machine.PoisonJobs)
+            {
+                //Poison flag is set, so the printer is currently trying to cancel jobs
+                if (machine.CurrentTaskProgress != null)
+                {
+                    /*
+                     * Machine has been set to cancel all jobs associated with it, but they have not yet been canceled.
+                     * Let user know that the machine is still in the midst of canceling jobs.
+                     */
+
+                }
+                else if (machine.AssignedJob == null)
+                {
+                    /*
+                     * Machine is set to cancel jobs but it isn't working on anything and no job is assigned.
+                     * Offer user ability to clear the poison flag (ie. Enable Printing)
+                     */
+                }
+                else
+                {
+                    /*
+                     * The Printer was told to cancel all jobs, and is now no longer working on any. 
+                     * There is a Job assigned to the printer however, so offer user the ability to clear the job and reset the poison flag.
+                     * IE. machine.poison = false and machine.job = null
+                     */
+                }
+            }else{
+                //Poison flag has not been set on the printer, so jobs can be sent.
+                if (machine.CurrentTaskProgress == null)
+                {
+                    if (machine.AssignedJob == null)
+                    {
+                        /*
+                         * The Machine is currently Idle
+                         * Offer the User the ability to send a job
+                         */
+                        return PartialView("_ControlPanel_IdleMachineUnassignedJobPartial");
+                    }
+                    else
+                    {
+                        /*
+                         * The Machine is Idle, but a Job was assigned.
+                         * Machine should be starting the Job shortly. Allow user to cancel Job if they so wish.
+                         */
+                        ViewData["AssignedJob"] = machine.AssignedJob;
+                        return PartialView("_ControlPanel_IdleMachineAssignedJobPartial");
+                    }
+                }
+                else
+                {
+                    /*
+                     * The Machine is currently working on something, but hasn't been told to cancel it.
+                     * Offer the user the option of canceling the Job on the Printer.
+                     */
+                }
+            }
+
+
+        }
+
         // GET: /Machines/Details/5
         public ActionResult Details(long? id)
         {

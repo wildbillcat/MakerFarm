@@ -30,6 +30,9 @@ namespace MakerFarm.Models
 
         public bool Enabled { get; set; }
 
+        [Display(Name = "Poison Jobs", Description = "When true this will cause RepRancher to cancel any active jobs on the Machine.")]
+        public bool PoisonJobs { get; set; }
+
         public double? CurrentTaskProgress { get; set; }
 
         [ForeignKey("PrinterId")]
@@ -42,6 +45,7 @@ namespace MakerFarm.Models
         {
             MachineInterest M = new MachineInterest();
             M.MachineName = MachineName;
+            M.PoisonJobs = PoisonJobs;
             if(AssignedJob == null){
                 M.CurrentJob = 0;
             }else{
@@ -54,6 +58,7 @@ namespace MakerFarm.Models
     {
         public string MachineName { get; set; }
         public int CurrentJob { get; set; }
+        public bool PoisonJobs { get; set; }
     }
     public class MachineStatusUpdate
     {

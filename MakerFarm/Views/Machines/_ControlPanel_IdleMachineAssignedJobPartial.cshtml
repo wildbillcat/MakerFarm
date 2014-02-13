@@ -1,0 +1,20 @@
+﻿@{
+    MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+    /*
+     * Either this Job hasn't yet started and we are waiting for the Printer to pick it up
+     * Or the job is presently printing
+     * Or or the job has completed!
+     * Status should reflect as such.
+     */
+}
+@AssignedJob.Status
+@using (Html.BeginForm("CancelJob", "Machines"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.Hidden("MachineId", (long)ViewData["MachineId"])
+            <input type="submit" value="Cancel Job?" class="btn btn-default" />
+        </div>
+    </div>
+}

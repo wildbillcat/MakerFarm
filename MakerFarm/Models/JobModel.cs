@@ -23,7 +23,7 @@ namespace MakerFarm.Models
 
         public Print AffiliatedPrint { get; set; }
 
-        public Printer AffiliatedMachine { get; set; }
+        public Printer AffiliatedPrinter { get; set; }
 
     }
 

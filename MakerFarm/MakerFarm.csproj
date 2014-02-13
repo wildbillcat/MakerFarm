@@ -258,6 +258,7 @@
     <Compile Include="Controllers\ClientsAPIController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\MachinesController.cs" />
     <Compile Include="Controllers\MaterialCheckoutsController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
@@ -415,6 +416,14 @@
     <Compile Include="Migrations\201402121735099_corrected the affiliated print property on the Job.Designer.cs">
       <DependentUpon>201402121735099_corrected the affiliated print property on the Job.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402130130468_Added Poison Jobs flag to the Machine.cs" />
+    <Compile Include="Migrations\201402130130468_Added Poison Jobs flag to the Machine.Designer.cs">
+      <DependentUpon>201402130130468_Added Poison Jobs flag to the Machine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402130215039_Changed name of affiliated machine to printer as it should have been.cs" />
+    <Compile Include="Migrations\201402130215039_Changed name of affiliated machine to printer as it should have been.Designer.cs">
+      <DependentUpon>201402130215039_Changed name of affiliated machine to printer as it should have been.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -450,6 +459,7 @@
     <Content Include="Content\StaticIcons\print_class.png" />
     <Content Include="Content\StaticIcons\Question.png" />
     <Content Include="Content\StaticIcons\system-settings-2.png" />
+    <Content Include="Content\StaticIcons\tools-hammer_and_nails.png" />
     <Content Include="Content\StaticIcons\view-calendar-upcoming-events.png" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -680,6 +690,15 @@
     <Content Include="Views\Home\_CompactPrintQueueStatusPartial.cshtml" />
     <Content Include="Views\Home\SystemStatus.cshtml" />
     <Content Include="Views\Home\_CompactWaitingPrintsPartial.cshtml" />
+    <Content Include="Views\Jobs\Create.cshtml" />
+    <Content Include="Views\Jobs\Delete.cshtml" />
+    <Content Include="Views\Jobs\Details.cshtml" />
+    <Content Include="Views\Jobs\Edit.cshtml" />
+    <Content Include="Views\Jobs\Index.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_CancelingPartial.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_ActiveMachinePartial.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_IdleMachineAssignedJobPartial.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_IdleMachineUnassignedJobPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -796,6 +815,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402121735099_corrected the affiliated print property on the Job.resx">
       <DependentUpon>201402121735099_corrected the affiliated print property on the Job.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402130130468_Added Poison Jobs flag to the Machine.resx">
+      <DependentUpon>201402130130468_Added Poison Jobs flag to the Machine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402130215039_Changed name of affiliated machine to printer as it should have been.resx">
+      <DependentUpon>201402130215039_Changed name of affiliated machine to printer as it should have been.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
