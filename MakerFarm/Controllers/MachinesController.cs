@@ -66,18 +66,26 @@ namespace MakerFarm.Controllers
             return View(machines.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult MachineControlPanel(long id = 0)
+        public ActionResult MachineControlPanel(long id = 0, bool MachineID = true)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machines.Find(id);
-            if (machine == null)
+            Machine machine;
+            if(MachineID){
+                machine = db.Machines.Find(id);
+            }
+            else
+            {
+                machine = db.Machines.FirstOrDefault(p => p.AffiliatedPrinter.PrinterId == id);
+            }
+            if (machine == null || !machine.ClientJobSupport)
             {
                 return HttpNotFound();
             }
             ViewData["MachineId"] = machine.MachineId;
+            ViewData["AssignedJob"] = machine.AssignedJob;
             if (machine.PoisonJobs)
             {
                 //Poison flag is set, so the printer is currently trying to cancel jobs
@@ -87,22 +95,20 @@ namespace MakerFarm.Controllers
                      * Machine has been set to cancel all jobs associated with it, but they have not yet been canceled.
                      * Let user know that the machine is still in the midst of canceling jobs.
                      */
-
+                    return PartialView("_ControlPanel_CancelingPartial");
                 }
-                else if (machine.AssignedJob == null)
+                else
                 {
                     /*
                      * Machine is set to cancel jobs but it isn't working on anything and no job is assigned.
                      * Offer user ability to clear the poison flag (ie. Enable Printing)
                      */
-                }
-                else
-                {
                     /*
                      * The Printer was told to cancel all jobs, and is now no longer working on any. 
                      * There is a Job assigned to the printer however, so offer user the ability to clear the job and reset the poison flag.
                      * IE. machine.poison = false and machine.job = null
                      */
+                    return PartialView("_ControlPanel_CanceledPartial");
                 }
             }else{
                 //Poison flag has not been set on the printer, so jobs can be sent.
@@ -122,7 +128,6 @@ namespace MakerFarm.Controllers
                          * The Machine is Idle, but a Job was assigned.
                          * Machine should be starting the Job shortly. Allow user to cancel Job if they so wish.
                          */
-                        ViewData["AssignedJob"] = machine.AssignedJob;
                         return PartialView("_ControlPanel_IdleMachineAssignedJobPartial");
                     }
                 }
@@ -132,6 +137,7 @@ namespace MakerFarm.Controllers
                      * The Machine is currently working on something, but hasn't been told to cancel it.
                      * Offer the user the option of canceling the Job on the Printer.
                      */
+                    return PartialView("_ControlPanel_IdleMachineAssignedJobPartial");
                 }
             }
 

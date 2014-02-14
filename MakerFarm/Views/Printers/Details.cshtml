@@ -77,6 +77,14 @@
              
         </dd>
 
+        <dt>
+            <label>Hardware Control</label>
+        </dt>
+
+        <dd id="HardwareControl">
+
+        </dd>
+
     </dl>
 
 </div>
@@ -292,6 +300,14 @@ Page @(PrintHistory.PageCount < PrintHistory.PageNumber ? 0 : PrintHistory.PageN
         $("#HardwareStatus").load("@Url.Action("PhysicalPrinterStatus", new { id = Model.PrinterId, compressed = false }).ToString()");
         setInterval(function () {
             $("#HardwareStatus").load("@Url.Action("PhysicalPrinterStatus", new { id = Model.PrinterId, compressed = false }).ToString()");
+        }, 5000); //Refreshes every 5 seconds
+        $.ajaxSetup({ cache: false });  //Turn off caching
+    });
+
+    $(document).ready(function () {
+        $("#HardwareControl").load("@Url.Action("MachineControlPanel", "Machines", new { id = Model.PrinterId, MachineID = false }).ToString()");
+        setInterval(function () {
+            $("#HardwareControl").load("@Url.Action("MachineControlPanel", "Machines", new { id = Model.PrinterId, MachineID = false }).ToString()");
         }, 5000); //Refreshes every 5 seconds
         $.ajaxSetup({ cache: false });  //Turn off caching
     });

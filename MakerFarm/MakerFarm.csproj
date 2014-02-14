@@ -699,6 +699,7 @@
     <Content Include="Views\Machines\_ControlPanel_ActiveMachinePartial.cshtml" />
     <Content Include="Views\Machines\_ControlPanel_IdleMachineAssignedJobPartial.cshtml" />
     <Content Include="Views\Machines\_ControlPanel_IdleMachineUnassignedJobPartial.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_CanceledPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
