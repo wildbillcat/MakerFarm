@@ -366,6 +366,12 @@ namespace MakerFarm.Controllers
                 CurrentPrinter = CurrentEvent.Printer;
                 ViewData["InactiveJob"] = CurrentEvent.EventType == PrintEventType.PRINT_CANCELED || CurrentEvent.EventType == PrintEventType.PRINT_COMPLETED;
             }
+            ViewData["AssignedJob"] = null;
+            Machine Mach = db.Machines.Where(p => p.AffiliatedPrinter.PrinterId == CurrentPrinter.PrinterId).FirstOrDefault();
+            if (Mach != null && Mach.AssignedJob != null)
+            {
+                ViewData["AssignedJob"] = Mach.AssignedJob;
+            }
             ViewData["CurrentEvent"] = CurrentEvent;
             ViewData["CurrentPrinter"] = CurrentPrinter;
             return View(print);

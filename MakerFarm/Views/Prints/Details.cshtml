@@ -5,6 +5,7 @@
     MakerFarm.Models.PrintEvent CurrentEvent = (MakerFarm.Models.PrintEvent)ViewData["CurrentEvent"];
     MakerFarm.Models.Printer CurrentPrinter = (MakerFarm.Models.Printer)ViewData["CurrentPrinter"];
     bool InactiveJob = (bool)ViewData["InactiveJob"];
+    MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
 }
 
 <h2>Details</h2>
@@ -26,7 +27,8 @@
     {
         <div class="display-field">
             Waiting to Print
-            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))){
+            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && AssignedJob == null)
+            {
                 <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
             }
         </div>
@@ -37,7 +39,8 @@
             @CurrentEvent.EventType.ToString()
             @if (!InactiveJob)
             {
-                if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator"))){
+                if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && AssignedJob == null)
+                {
                     <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
                 }
             }
