@@ -29,6 +29,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.ActionLink("item.AffiliatedPrint.FileName", "Details", new { id = item.JobId })
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
@@ -41,9 +44,7 @@
             @Html.DisplayFor(modelItem => item.LastUpdated)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.JobId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.JobId })
+            @Html.ActionLink("Details", "Details", new { id=item.JobId })
         </td>
     </tr>
 }

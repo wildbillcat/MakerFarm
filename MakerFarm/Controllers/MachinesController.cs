@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -66,6 +67,115 @@ namespace MakerFarm.Controllers
             return View(machines.ToPagedList(pageNumber, pageSize));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult QueueJob(long MId = 0)
+        {
+            Machine machine = db.Machines.Find(MId);
+            if (machine != null && machine.AssignedJob == null && machine.AffiliatedPrinter != null)
+            {
+                //Printer does not have an assigned job. Lets Create one!
+                Job JobAssignment = new Job();
+                JobAssignment.AffiliatedPrinter = machine.AffiliatedPrinter;
+                JobAssignment.AffiliatedPrint = AssignedPrint(machine.AffiliatedPrinter);
+                if (JobAssignment.AffiliatedPrint == null)
+                {
+                    //invalid - No Print is assigned to the machines Printer! pay no need
+                }else
+                {
+                    JobAssignment.LastUpdated = DateTime.Now;
+                    JobAssignment.Status = "Print has been Assigned, waiting for Printer.";
+                    JobAssignment.complete = false;
+                    JobAssignment.started = false;
+                    db.Jobs.Add(JobAssignment);
+                    db.SaveChanges();
+                    machine.AssignedJob = JobAssignment;
+                    db.Entry(machine).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            else if (machine != null && machine.AffiliatedPrinter != null)
+            {
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            else if (machine == null)
+            {
+                return HttpNotFound();
+            }
+            return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelJob(long MId = 0)
+        {
+            Machine machine = db.Machines.Find(MId);
+            if (machine != null)
+            {
+                //Machine isn't null, so lets operate!
+                if (!machine.PoisonJobs && (machine.AssignedJob == null || !machine.AssignedJob.complete))
+                {//If machine hasn't been told to poison jobs yet, so lets mark the machine so that it will cancel jobs
+                    machine.PoisonJobs = true;
+                    db.Entry(machine).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {//Machine was already told to poison jobs or the job was completed so unpoison the printer. Clear any assigned jobs, and be redirected to create a new Print Event if a print is assigned to the printer.
+                    if (machine.AssignedJob != null)
+                    {
+                        machine.AssignedJob = null;
+                    }
+                    machine.PoisonJobs = false;
+                    db.Entry(machine).State = EntityState.Modified;
+                    db.SaveChanges();
+                    if (machine.AffiliatedPrinter != null)
+                    {
+                        Print AssignPrint = AssignedPrint(machine.AffiliatedPrinter);
+                        if (AssignPrint != null)
+                        {
+                            //There is a print assigned to the printer, lets add a new print event!
+                            return RedirectToAction("Create", "PrintEvents", new { id = AssignPrint.PrintId });
+                        }
+                    }                    
+                }
+                //Let's Poison the Machine
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
+        }
+
+        //Internal Method
+        private Print AssignedPrint(Printer P)
+        {
+            string AssignedPrintQuery = "Select dbo.Prints.* " +
+                "from dbo.Prints " +
+                "left outer join " +
+                "( " +
+                "Select dbo.PrintEvents.PrintID, dbo.PrintEvents.EventType, dbo.PrintEvents.PrinterID " +
+                "from dbo.PrintEvents " +
+                "inner join " +
+                "( " +
+                "select dbo.PrintEvents.PrintID, MAX(dbo.PrintEvents.PrintEventId) as MostReventEvent " +
+                "from dbo.PrintEvents " +
+                "group by dbo.PrintEvents.PrintID " +
+                ") mxe on dbo.PrintEvents.PrintId = mxe.PrintID and dbo.PrintEvents.PrintEventId = mxe.MostReventEvent " +
+                ") pnt on dbo.Prints.PrintId = pnt.PrintID " +
+                "where EventType = @PrintingEventStart and pnt.PrinterID = @PrinterId";
+            SqlParameter PrintingEventStart = new SqlParameter("@PrintingEventStart", PrintEventType.PRINT_START);
+            SqlParameter PId = new SqlParameter("@PrinterId", P.PrinterId);
+            Print AssignedPrint = null;
+            try
+            {
+                AssignedPrint = db.Prints.SqlQuery(AssignedPrintQuery, PrintingEventStart, PId).Single();
+            }
+            catch
+            {
+
+            }
+            return AssignedPrint;
+        }
+
         //Partial Method
         public ActionResult MachineControlPanel(long id = 0, bool MachineID = true)
         {
@@ -85,8 +195,17 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["MachineId"] = machine.MachineId;
+            ViewData["MId"] = machine.MachineId;
             ViewData["AssignedJob"] = machine.AssignedJob;
+            ViewData["AssignedPrint?"] = false;
+            if (machine.AffiliatedPrinter != null)
+            {
+                Print P = AssignedPrint(machine.AffiliatedPrinter);
+                if (P != null)
+                {
+                    ViewData["AssignedPrint?"] = true;
+                }
+            }
             if (machine.PoisonJobs)
             {
                 //Poison flag is set, so the printer is currently trying to cancel jobs
@@ -159,33 +278,6 @@ namespace MakerFarm.Controllers
             }
             return View(machine);
         }
-
-        /*
-        // GET: /Machines/Create
-        public ActionResult Create()
-        {
-            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(UnassigndPrintersSQL), "PrinterId", "PrinterName");
-            return View();
-        }
-
-        // POST: /Machines/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MachineId,MachineName,PrinterId,Status,idle,ClientJobSupport,Enabled")] Machine machine)
-        {
-            machine.LastUpdated = DateTime.Now;
-            if (ModelState.IsValid)
-            {
-                db.Machines.Add(machine);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.PrinterId = new SelectList(db.Printers.SqlQuery(UnassigndPrintersSQL), "PrinterId", "PrinterName", machine.PrinterId);
-            return View(machine);
-        }*/
 
         // GET: /Machines/Edit/5
         public ActionResult Edit(long? id)

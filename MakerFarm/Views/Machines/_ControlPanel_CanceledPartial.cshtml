@@ -7,16 +7,17 @@
      * Status should reflect as such.
      */
 }
+Cancelation Issued. Awaiting Update. <br />
 @if (AssignedJob.Status != null)
 {
-    @AssignedJob.Status
+    <text>Job Status : </text> @AssignedJob.Status
 }
 @using (Html.BeginForm("CancelJob", "Machines"))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.Hidden("MachineId", (long)ViewData["MachineId"])
+            @Html.Hidden("MId", (long)ViewData["MId"])
             <input type="submit" value="Allow Printing" class="btn btn-default" />
         </div>
     </div>

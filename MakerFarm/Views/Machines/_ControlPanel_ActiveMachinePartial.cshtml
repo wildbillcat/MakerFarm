@@ -3,7 +3,7 @@
     @Html.AntiForgeryToken()
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.Hidden("MachineId", (long)ViewData["MachineId"])
+            @Html.Hidden("MId", (long)ViewData["MId"])
             <input type="submit" value="Cancel Job?" class="btn btn-default" />
         </div>
     </div>

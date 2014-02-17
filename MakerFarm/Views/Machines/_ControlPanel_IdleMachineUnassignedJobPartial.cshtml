@@ -1,10 +1,24 @@
-﻿@using (Html.BeginForm("QueueJob", "Machines"))
+﻿@{
+    bool AssignedPrint = (bool)ViewData["AssignedPrint?"];
+    long MId = (long)ViewData["MId"];
+    /*
+     * Either this Job hasn't yet started and we are waiting for the Printer to pick it up
+     * Or the job is presently printing
+     * Or or the job has completed!
+     * Status should reflect as such.
+     */
+}
+
+@if (AssignedPrint)
 {
+    using (Html.BeginForm("QueueJob", "Machines"))
+    {
     @Html.AntiForgeryToken()
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.Hidden("MachineId", (long)ViewData["MachineId"])
+            @Html.Hidden("MId", MId)
             <input type="submit" value="Queue Job?" class="btn btn-default" />
         </div>
     </div>
+    }
 }

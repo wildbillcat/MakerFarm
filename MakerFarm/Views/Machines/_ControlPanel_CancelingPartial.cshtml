@@ -1,1 +1,24 @@
-﻿Currently attempting to cancel any activity on machine, please wait.
+﻿@{
+    MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+    /*
+     * Either this Job hasn't yet started and we are waiting for the Printer to pick it up
+     * Or the job is presently printing
+     * Or or the job has completed!
+     * Status should reflect as such.
+     */
+}
+Currently attempting to cancel any activity on machine, please wait. <br />
+@if (AssignedJob.Status != null)
+{
+    <text>Job Status : </text> @AssignedJob.Status
+}
+@using (Html.BeginForm("CancelJob", "Machines"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.Hidden("MId", (long)ViewData["MId"])
+            <input type="submit" value="Allow Printing" class="btn btn-default" />
+        </div>
+    </div>
+}
