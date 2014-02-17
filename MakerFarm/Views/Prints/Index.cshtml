@@ -27,9 +27,11 @@
     <script>
         $(document).ready(function () {
         setInterval(function () {
+            (document.getElementById("PrintQueue")).innerHTML = "";
             @Html.Raw("$('#ActivePrinters').load('")@Url.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
         }, 5000);
         setInterval(function () {
+            (document.getElementById("PrintQueue")).innerHTML = "";
             @Html.Raw("$('#PrintQueue').load('")@Url.Action("PrintQueue", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
           }, 30000); //Refreshes every 5 seconds
         $.ajaxSetup({ cache: false });  //Turn off caching
