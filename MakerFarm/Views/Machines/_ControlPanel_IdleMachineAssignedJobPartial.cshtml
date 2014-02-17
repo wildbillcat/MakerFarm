@@ -7,12 +7,18 @@
      * Status should reflect as such.
      */
 }
-@if (AssignedJob.Status != null)
+@if (AssignedJob != null)
 {
     @AssignedJob.Status
 }
-@using (Html.BeginForm("CancelJob", "Machines"))
+@if (AssignedJob != null && AssignedJob.complete)
 {
+    <text>Job Complete</text>
+}
+else
+{
+    using (Html.BeginForm("CancelJob", "Machines"))
+    {
     @Html.AntiForgeryToken()
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -20,4 +26,5 @@
             <input type="submit" value="Cancel Job?" class="btn btn-default" />
         </div>
     </div>
+    }
 }

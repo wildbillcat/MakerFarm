@@ -66,6 +66,7 @@ namespace MakerFarm.Controllers
             return View(machines.ToPagedList(pageNumber, pageSize));
         }
 
+        //Partial Method
         public ActionResult MachineControlPanel(long id = 0, bool MachineID = true)
         {
             if (id == 0)
@@ -122,7 +123,7 @@ namespace MakerFarm.Controllers
                          */
                         return PartialView("_ControlPanel_IdleMachineUnassignedJobPartial");
                     }
-                    else
+                    else 
                     {
                         /*
                          * The Machine is Idle, but a Job was assigned.
