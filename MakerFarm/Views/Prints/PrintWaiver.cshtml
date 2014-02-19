@@ -73,7 +73,7 @@ foreach (MakerFarm.Models.PrintSubmissionWaiverTerm p in Terms)
 @Html.Hidden("id", Model.PrintId)
     <p>
         <input type="submit" value="I Agree" /> |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index", new { id = Model.PrinterType })
     </p>
 }
 
