@@ -198,7 +198,7 @@ namespace MakerFarm.Controllers
             {
                 return null;
                 //return BadRequest();
-            }
+           } 
             Client Client = db.Clients.Find(key);
             if (Client == null || !Client.Enabled) //Client Doesnt exist or isnt enabled
             {
@@ -217,8 +217,12 @@ namespace MakerFarm.Controllers
             int JobId = (int)parameters["JobId"];
             string MachineName = (string)parameters["MachineName"];
             try{
-                Machine PrinterUsed = Client.ClientPermissions.FirstOrDefault(p => p.Machine.AssignedJob.JobId == JobId && p.Machine.MachineName.Equals(MachineName)).Machine;
-                string fileLocation = PrinterUsed.AssignedJob.AffiliatedPrint.GetPath();
+                Job jobrequested = db.Jobs.Find(JobId);
+                if (db.Entry(jobrequested).Reference(p => p.AffiliatedPrint).IsLoaded == false)
+                {
+                    db.Entry(jobrequested).Reference(p => p.AffiliatedPrint).Load();
+                }
+                string fileLocation = jobrequested.AffiliatedPrint.GetPath();
                 //string fileLocation = db.Prints.Find(53).GetPath();
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 System.IO.FileStream stream = new System.IO.FileStream(fileLocation, System.IO.FileMode.Open);

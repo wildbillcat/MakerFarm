@@ -29,7 +29,7 @@ namespace MakerFarm
             TakeThis.Parameter<string>("ClientAPIKey");
             TakeThis.Parameter<string>("MachineName");
             TakeThis.Parameter<int>("JobId");
-            TakeThis.Returns<System.Net.Http.StreamContent>();
+            //TakeThis.Returns<HttpResponseMessage>();
 
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.

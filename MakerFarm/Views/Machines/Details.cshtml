@@ -70,6 +70,17 @@
             @Html.DisplayFor(model => model.Enabled)
         </dd>
 
+        @if (Model.AssignedJob != null)
+        {
+         <dt>
+            @Html.DisplayNameFor(model => model.AssignedJob)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedJob.JobId)
+        </dd>
+        }
+
     </dl>
 </div>
 <p>
