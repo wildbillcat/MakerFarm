@@ -46,10 +46,13 @@ namespace MakerFarm.Models
             MachineInterest M = new MachineInterest();
             M.MachineName = MachineName;
             M.PoisonJobs = PoisonJobs;
+            
             if(AssignedJob == null){
                 M.CurrentJob = 0;
+                M.PreviouslyCollected = false;
             }else{
                 M.CurrentJob = AssignedJob.JobId;
+                M.PreviouslyCollected = AssignedJob.started;
             }
             return M;
         }
