@@ -290,6 +290,10 @@ namespace MakerFarm.Controllers
                     Print print = db.Prints.Find(printevent.PrintId);
                     DispatchEventEmail(print, true);
                 }
+                if (printevent.EventType == PrintEventType.PRINT_START)
+                {
+                    return RedirectToAction("Details", "Printers", new { id = printevent.PrinterId });
+                }
                 return RedirectToAction("Index", "Prints", new { id = printerID });
             }
             return HttpNotFound("Sorry an error has occured");
