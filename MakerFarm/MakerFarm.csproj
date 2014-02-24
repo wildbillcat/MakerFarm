@@ -449,6 +449,7 @@
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\SmallStaticIcons\arrow-right-3.png" />
     <Content Include="Content\StaticIcons\dialog-error-5.png" />
     <Content Include="Content\StaticIcons\document-multiple.png" />
     <Content Include="Content\StaticIcons\emblem-money-2.png" />
@@ -706,7 +707,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\SmallStaticIcons\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

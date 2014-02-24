@@ -112,7 +112,7 @@
                 if (PrintingAssignments.ContainsKey(item.PrinterId))
                 {<!--Printer is Active-->
                 <td>@PrintingAssignments[item.PrinterId].Comment</td>
-                <td>@Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintingAssignments[item.PrinterId].PrintId }, null)</td>
+                <td>@Html.Action("MachineControlPanel", "Machines", new { id = Model.PrinterId, MachineID = false, Compressed = true })</td>
                 }
                 else if (PrinterStatus.ContainsKey(item.PrinterId))
                 {<!--Printer is Not Active-->
