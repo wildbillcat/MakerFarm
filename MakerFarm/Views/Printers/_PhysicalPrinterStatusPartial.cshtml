@@ -19,13 +19,27 @@ else if (compressed) {
         {
             <text>PRINTER TIMEOUT</text>
         }else{
-            @M.Status.Split()[0]    
+            if (M.AssignedJob == null){
+                <text>Job not yet queued</text>
+                <br />
+            }
+            else if (!M.AssignedJob.started)
+            {
+                <text>Job queued, awaiting print start</text>
+                <br />
+            }
+            else if (M.AssignedJob.complete)
+            {
+                <text>JOB COMPLETE</text>
+                <br />
+            }
+            @M.Status.Split()[0]
+            if (M.CurrentTaskProgress != null)
+            {
+                <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
+            }
         }
-    }    
-    if (M.CurrentTaskProgress != null)
-    {
-        <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
-    }
+    }        
 }
 else
 {

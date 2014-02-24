@@ -25,20 +25,19 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        $(document).ready(function () {
-        setInterval(function () {
-            $('#ActivePrinters').empty();
-            @Html.Raw("$('#ActivePrinters').load('")@Url.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
-        }, 5000);
-        setInterval(function () {
-            $('#ActivePrinters').empty();
-            @Html.Raw("$('#ActivePrinters').load('")@Url.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
-        }, 5000);
-            $('#PrintQueue').empty();
-            @Html.Raw("$('#PrintQueue').load('")@Url.Action("PrintQueue", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("');")
-          }, 30000); //Refreshes every 5 seconds
-        $.ajaxSetup({ cache: false });  //Turn off caching
-    });
+        $(document).ready(function () {        
+            setInterval(function () {
+                @Html.Raw("$.get(\"")@Url.Action("ActivePrinters", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("\", function (tmpVar) {")
+                    $('#ActivePrinters').html(tmpVar)
+                @Html.Raw("});")   
+                }, 5000);
+            setInterval(function () {
+                @Html.Raw("$.get(\"")@Url.Action("PrintQueue", new { id = @Url.RequestContext.RouteData.Values["id"] }).ToString()@Html.Raw("\", function (tmpVar) {")
+                    $('#PrintQueue').html(tmpVar)
+                @Html.Raw("});")          
+            }, 30000); //Refreshes every 5 seconds
+            $.ajaxSetup({ cache: false });  //Turn off caching
+        });
     </script>
 
 }

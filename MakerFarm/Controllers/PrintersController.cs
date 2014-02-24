@@ -287,6 +287,11 @@ namespace MakerFarm.Controllers
         public ActionResult PhysicalPrinterStatus(long id, bool compressed)
         {
             Machine M = db.Machines.Where(p => p.PrinterId == id).FirstOrDefault();
+            if (M != null && db.Entry(M).Reference(p => p.AssignedJob).IsLoaded == false)
+            {
+                //Force Lazy Loading
+                db.Entry(M).Reference(p => p.AssignedJob).Load();
+            }
             ViewData["M"] = M;
             ViewData["compressed"] = compressed;
             return PartialView("_PhysicalPrinterStatusPartial");
