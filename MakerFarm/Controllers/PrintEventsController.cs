@@ -204,8 +204,13 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent, FormCollection values, int MId = 0)
+        public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent, FormCollection values, string MID)
         {
+            int MId = 0;
+            if (!string.IsNullOrEmpty(MID))
+            {
+                MId = int.Parse(MID);
+            }
             printevent.EventTimeStamp = DateTime.Now;
             if (printevent.PrinterId == 0)
             {
@@ -228,6 +233,15 @@ namespace MakerFarm.Controllers
                     printevent.PrinterId = db.Printers.Where(p => p.PrinterName.Equals("Null Printer")).First().PrinterId;
                 }
                 db.PrintEvents.Add(printevent);
+                if (printevent.EventType != PrintEventType.PRINT_START && MId != 0)
+                {
+                    //If a machine ID was attached, toggle the printer back online / clear job
+                    Machine M = db.Machines.Find(MId);
+                    Job oldJob = M.AssignedJob;
+                    M.AssignedJob = null;
+                    M.PoisonJobs = false;
+                    db.Entry(M).State = EntityState.Modified;
+                }
                 db.SaveChanges();
 
                 //Mark printer as the new status recieved by the Event
@@ -297,15 +311,7 @@ namespace MakerFarm.Controllers
                 }
                 else
                 {
-                    if (MId != 0)
-                    {
-                        //If a machine ID was attached, toggle the printer back online / clear job
-                        Machine M = db.Machines.Find(MId);
-                        M.AssignedJob = null;
-                        M.PoisonJobs = false;
-                        db.Entry(M).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    
                 }
                 return RedirectToAction("Index", "Prints", new { id = printerID });
             }
