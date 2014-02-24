@@ -187,6 +187,14 @@ namespace MakerFarm.Controllers
             {
                 return HttpNotFound();
             }
+            if (db.Entry(machine.AssignedJob).Reference(p => p.AffiliatedPrint).IsLoaded == false)
+            {
+                db.Entry(machine.AssignedJob).Reference(p => p.AffiliatedPrint).Load();
+            }
+            if (db.Entry(machine.AssignedJob).Reference(p => p.AffiliatedPrinter).IsLoaded == false)
+            {
+                db.Entry(machine.AssignedJob).Reference(p => p.AffiliatedPrinter).Load();
+            }
             ViewData["MId"] = machine.MachineId;
             ViewData["AssignedJob"] = machine.AssignedJob;
             ViewData["AssignedPrint?"] = false;

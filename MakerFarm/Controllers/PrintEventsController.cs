@@ -45,6 +45,7 @@ namespace MakerFarm.Controllers
         // GET: /PrintEvents/Create
         public ActionResult Create(long id = 0, int MId = 0)
         {
+            ViewData["MId"] = MId;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -299,7 +300,11 @@ namespace MakerFarm.Controllers
                     if (MId != 0)
                     {
                         //If a machine ID was attached, toggle the printer back online / clear job
-                        return RedirectToAction("CancelJob", "Machines", new { MId = MId });
+                        Machine M = db.Machines.Find(MId);
+                        M.AssignedJob = null;
+                        M.PoisonJobs = false;
+                        db.Entry(M).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
                 return RedirectToAction("Index", "Prints", new { id = printerID });

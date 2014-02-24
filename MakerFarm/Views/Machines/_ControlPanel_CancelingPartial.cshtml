@@ -8,18 +8,15 @@
      */
     bool Compressed = (bool)ViewData["Compressed"];
 }
-Currently attempting to cancel any activity on machine, please wait. <br />
-@if (AssignedJob != null)
+@if (Compressed)
+{
+    
+}else{
+<text>attempting to cancel any activity on machine, please wait.</text>
+<br />
+if (AssignedJob != null)
 {
     <text>Job Status : </text> @AssignedJob.Status
 }
-@using (Html.BeginForm("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] }))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            @Html.Hidden("MId", (long)ViewData["MId"])
-            <input type="submit" value="Allow Printing" class="btn btn-default" />
-        </div>
-    </div>
+<input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
 }

@@ -10,23 +10,18 @@
 @{
     bool Compressed = (bool)ViewData["Compressed"];
 }
-@if (AssignedJob != null)
+@if (Compressed) { }
+else
+{
+if (AssignedJob != null)
 {
     <text>Job Status : </text> @AssignedJob.Status
 }
-@if (AssignedJob != null && AssignedJob.complete)
+if (AssignedJob != null && AssignedJob.complete)
 {
     <text>Job Complete</text>
-    using (Html.BeginForm("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] }))
-    {
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            @Html.Hidden("MId", (long)ViewData["MId"])
-            <input type="submit" value="Update Print Status" class="btn btn-default" />
-        </div>
-    </div>
-    }
+    <br />
+    <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
 }
 else
 {
@@ -40,4 +35,6 @@ else
         </div>
     </div>
     }
+}    
 }
+

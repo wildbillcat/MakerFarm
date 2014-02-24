@@ -1,7 +1,10 @@
 ﻿@{
     bool Compressed = (bool)ViewData["Compressed"];
 }
-@using (Html.BeginForm("CancelJob", "Machines"))
+@if (Compressed) { }
+else
+{
+using (Html.BeginForm("CancelJob", "Machines"))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
@@ -10,4 +13,6 @@
             <input type="submit" value="Cancel Job?" class="btn btn-default" />
         </div>
     </div>
+}    
 }
+

@@ -186,7 +186,9 @@
         </tr>
     </table>
 }
-<p>@Html.ActionLink("Back to Queue", "Index", "Prints", new { id = Model.PrinterTypeId }, null)</p>
+<p>
+    <input type="button" value="Back to Queue" onclick="location.href='@Url.Action("Index", "Prints", new { id = Model.PrinterTypeId })'" />
+</p>
 
 @if (User.Identity.IsAuthenticated && Roles.IsUserInRole("Administrator"))
 {

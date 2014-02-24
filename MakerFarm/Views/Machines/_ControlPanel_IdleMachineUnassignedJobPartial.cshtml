@@ -9,8 +9,10 @@
      */
     bool Compressed = (bool)ViewData["Compressed"];
 }
-
-@if (AssignedPrint)
+@if (Compressed) { }
+else
+{
+if (AssignedPrint)
 {
     using (Html.BeginForm("QueueJob", "Machines"))
     {
@@ -22,4 +24,6 @@
         </div>
     </div>
     }
+}    
 }
+
