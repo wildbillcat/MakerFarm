@@ -43,7 +43,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /PrintEvents/Create
-        public ActionResult Create(long id = 0)
+        public ActionResult Create(long id = 0, int MId = 0)
         {
             if (id == 0)
             {

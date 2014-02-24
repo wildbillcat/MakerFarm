@@ -17,7 +17,7 @@
 @if (AssignedJob != null && AssignedJob.complete)
 {
     <text>Job Complete</text>
-    using (Html.BeginForm("CancelJob", "Machines"))
+    using (Html.BeginForm("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] }))
     {
     @Html.AntiForgeryToken()
     <div class="form-group">
