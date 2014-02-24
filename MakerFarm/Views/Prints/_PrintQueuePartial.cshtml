@@ -64,7 +64,7 @@
                 <td>
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit))
                     {
-                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
+                        @Html.ActionLink("Assign/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }
                     else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {
@@ -111,7 +111,7 @@
                 <td style="background-color: greenyellow">
                     @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit))
                     {
-                        @Html.ActionLink("Print/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
+                        @Html.ActionLink("Assign/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }
                     else if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(item.UserName) && UnstartedCancelEligiblePrints.ContainsKey(item.PrintId))
                     {

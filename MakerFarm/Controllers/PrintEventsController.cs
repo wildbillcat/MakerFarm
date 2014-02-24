@@ -203,7 +203,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent, FormCollection values)
+        public ActionResult Create([Bind(Include = "PrintEventId,EventType,MaterialUsed,PrinterId,UserName,PrintId,PrintErrorTypeId,Comment")] PrintEvent printevent, FormCollection values, int MId = 0)
         {
             printevent.EventTimeStamp = DateTime.Now;
             if (printevent.PrinterId == 0)
@@ -293,6 +293,14 @@ namespace MakerFarm.Controllers
                 if (printevent.EventType == PrintEventType.PRINT_START)
                 {
                     return RedirectToAction("Details", "Printers", new { id = printevent.PrinterId });
+                }
+                else
+                {
+                    if (MId != 0)
+                    {
+                        //If a machine ID was attached, toggle the printer back online / clear job
+                        return RedirectToAction("CancelJob", "Machines", new { MId = MId });
+                    }
                 }
                 return RedirectToAction("Index", "Prints", new { id = printerID });
             }

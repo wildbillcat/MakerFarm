@@ -12,7 +12,7 @@ using PagedList;
 
 namespace MakerFarm.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     public class MachinesController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
@@ -21,6 +21,7 @@ namespace MakerFarm.Controllers
             "on dbo.Printers.PrinterID = dbo.Machines.PrinterId " +
             "where dbo.Machines.PrinterId is null and dbo.Printers.PrinterName != 'Null Printer'";
         // GET: /Machines/
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index(int? page, string sortOrder, string currentFilter, string searchString)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -129,15 +130,6 @@ namespace MakerFarm.Controllers
                     machine.PoisonJobs = false;
                     db.Entry(machine).State = EntityState.Modified;
                     db.SaveChanges();
-                    if (machine.AffiliatedPrinter != null)
-                    {
-                        Print AssignPrint = AssignedPrint(machine.AffiliatedPrinter);
-                        if (AssignPrint != null)
-                        {
-                            //There is a print assigned to the printer, lets add a new print event!
-                            return RedirectToAction("Create", "PrintEvents", new { id = AssignPrint.PrintId });
-                        }
-                    }                    
                 }
                 //Let's Poison the Machine
                 return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
@@ -265,6 +257,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Machines/Details/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -280,6 +273,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Machines/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -304,6 +298,7 @@ namespace MakerFarm.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "MachineName,MachineId,PrinterId,Status,idle,ClientJobSupport,Enabled")] Machine machine)
         {
             machine.LastUpdated = DateTime.Now;
@@ -323,6 +318,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Machines/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -338,6 +334,7 @@ namespace MakerFarm.Controllers
         }
 
         // POST: /Machines/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
