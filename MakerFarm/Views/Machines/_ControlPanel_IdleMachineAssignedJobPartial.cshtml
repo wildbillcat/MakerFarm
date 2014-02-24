@@ -7,6 +7,9 @@
      * Status should reflect as such.
      */
 }
+@{
+    bool Compressed = (bool)ViewData["Compressed"];
+}
 @if (AssignedJob != null)
 {
     <text>Job Status : </text> @AssignedJob.Status

@@ -6,11 +6,16 @@
      * Or or the job has completed!
      * Status should reflect as such.
      */
+    bool Compressed = (bool)ViewData["Compressed"];
 }
 Cancelation Issued. Awaiting Update. <br />
 @if (AssignedJob != null)
 {
     <text>Job Status : </text> @AssignedJob.Status
+}
+else
+{
+    
 }
 @using (Html.BeginForm("CancelJob", "Machines"))
 {

@@ -1,4 +1,7 @@
-﻿@using (Html.BeginForm("CancelJob", "Machines"))
+﻿@{
+    bool Compressed = (bool)ViewData["Compressed"];
+}
+@using (Html.BeginForm("CancelJob", "Machines"))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">

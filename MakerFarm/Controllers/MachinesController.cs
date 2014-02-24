@@ -169,7 +169,7 @@ namespace MakerFarm.Controllers
         }
 
         //Partial Method
-        public ActionResult MachineControlPanel(long id = 0, bool MachineID = true)
+        public ActionResult MachineControlPanel(long id = 0, bool MachineID = true, bool Compressed = false)
         {
             if (id == 0)
             {
@@ -190,6 +190,7 @@ namespace MakerFarm.Controllers
             ViewData["MId"] = machine.MachineId;
             ViewData["AssignedJob"] = machine.AssignedJob;
             ViewData["AssignedPrint?"] = false;
+            ViewData["Compressed"] = Compressed;
             if (machine.AffiliatedPrinter != null)
             {
                 Print P = AssignedPrint(machine.AffiliatedPrinter);
