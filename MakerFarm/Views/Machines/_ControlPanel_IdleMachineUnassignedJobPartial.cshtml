@@ -9,7 +9,18 @@
      */
     bool Compressed = (bool)ViewData["Compressed"];
 }
-@if (Compressed) { }
+@if (Compressed) { 
+    using (Html.BeginForm("QueueJob", "Machines"))
+    {
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.Hidden("MId", MId)
+            <input type="image" src="/Content/SmallStaticIcons/arrow-right-3.png" alt="Submit" style="width:15px;">
+        </div>
+    </div>
+    }
+}
 else
 {
 if (AssignedPrint)
