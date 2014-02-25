@@ -1,0 +1,29 @@
+﻿@{
+    MakerFarm.Models.Print PrintAssigned = (MakerFarm.Models.Print)ViewData["PrintAssigned"];
+    bool Compressed = (bool)ViewData["Compressed"];
+}
+
+@if (Compressed)
+{
+    //Button Mode
+    if (PrintAssigned == null)
+    {
+        //nothing assigned
+    }
+    else
+    {
+        @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = PrintAssigned.PrintId }, null)
+    }
+}
+else
+{
+    //Full Scale!
+    if (PrintAssigned == null)
+    {
+        //No print assigned, nothing to Draw
+    }
+    else
+    {
+        <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = PrintAssigned.PrintId })'" />
+    }
+}

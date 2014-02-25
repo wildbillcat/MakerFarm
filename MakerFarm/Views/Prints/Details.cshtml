@@ -27,23 +27,12 @@
     {
         <div class="display-field">
             Waiting to Print
-            @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && AssignedJob == null)
-            {
-                <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
-            }
         </div>
     }
     else
     {
         <div class="display-field">
-            @CurrentEvent.EventType.ToString()
-            @if (!InactiveJob)
-            {
-                if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && AssignedJob == null)
-                {
-                    <input type="button" value="Update Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = Model.PrintId})'" />
-                }
-            }
+            @CurrentEvent.EventType.ToString()            
         </div>
         if (!InactiveJob)
         {

@@ -171,6 +171,7 @@ namespace MakerFarm.Controllers
         //Partial Method
         public ActionResult MachineControlPanel(long id = 0, bool MachineID = true, bool Compressed = false)
         {
+            ViewData["Compressed"] = Compressed;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -185,7 +186,16 @@ namespace MakerFarm.Controllers
             }
             if (machine == null || !machine.ClientJobSupport)
             {
-                return HttpNotFound();
+                Printer PrinterAssigned = null;
+                Print PrintAssigned = null;
+                if (!MachineID)
+                {
+                    PrinterAssigned = db.Printers.Find(id);
+                    PrintAssigned = AssignedPrint(PrinterAssigned);
+                }
+                ViewData["PrintAssigned"] = PrintAssigned;
+                //return a button with the current print to update status!
+                return PartialView("_ControlPanel_NoMachineAffiliated");                
             }
             if (db.Entry(machine).Reference(p => p.AssignedJob).IsLoaded == false)
             {
@@ -198,7 +208,7 @@ namespace MakerFarm.Controllers
             ViewData["MId"] = machine.MachineId;
             ViewData["AssignedJob"] = machine.AssignedJob;
             ViewData["AssignedPrint?"] = false;
-            ViewData["Compressed"] = Compressed;
+            
             if (machine.AffiliatedPrinter != null)
             {
                 Print P = AssignedPrint(machine.AffiliatedPrinter);
