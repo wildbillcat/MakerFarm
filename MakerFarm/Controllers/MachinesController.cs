@@ -318,7 +318,7 @@ namespace MakerFarm.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "MachineName,MachineId,PrinterId,Status,idle,ClientJobSupport,Enabled")] Machine machine)
+        public ActionResult Edit([Bind(Include = "MachineName,MachineId,PrinterId,Status,idle,ClientJobSupport,Enabled,PoisonJobs")] Machine machine)
         {
             machine.LastUpdated = DateTime.Now;
             if (ModelState.IsValid)
