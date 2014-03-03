@@ -20,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventType, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes), new { onchange = "changeError()"})
+                @Html.DropDownListFor(model => model.EventType, new SelectList(ViewBag.EventTypes), string.Empty, new { onchange = "changeError()" })
                 @Html.ValidationMessageFor(model => model.EventType)
             </div>
         </div>
@@ -29,15 +29,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PrintErrorTypeId, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @if (ViewBag.Send)
-            {
-                @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
-                @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
-            }else{
-                @Html.DropDownListFor(model => model.PrintErrorTypeId, (SelectList)ViewBag.FileErrors)
-                @Html.ValidationMessageFor(model => model.PrintErrorTypeId)
-            }
-            
+            @Html.DropDownListFor(model => model.PrintErrorTypeId, new SelectList(new List<string>()))
+            @Html.ValidationMessageFor(model => model.PrintErrorTypeId)            
         </div>
     </div>
 }

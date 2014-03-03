@@ -156,7 +156,7 @@ namespace MakerFarm.Controllers
                 evts = Enum.GetValues(typeof(MakerFarm.Models.PrintEventType)).Cast<MakerFarm.Models.PrintEventType>().ToList();
                 evts.Remove(PrintEventType.PRINT_START);
             }
-            List<PrintErrorType> HumanError = db.PrintErrorTypes.Where(p => p.UserError == true && p.Enabled == true).ToList();
+            List<PrintErrorType> HumanError = db.PrintErrorTypes.Where(p => p.UserError == true && p.Enabled == true).OrderBy(p=>p.PrintErrorName).ToList();
             string HumanHTML = "";
             if (HumanError.Count > 0)
             {
@@ -167,7 +167,7 @@ namespace MakerFarm.Controllers
             }
 
 
-            List<PrintErrorType> MachineError = db.PrintErrorTypes.Where(p => p.UserError == false && p.Enabled == true).ToList();
+            List<PrintErrorType> MachineError = db.PrintErrorTypes.Where(p => p.UserError == false && p.Enabled == true).OrderBy(p => p.PrintErrorName).ToList();
             string MachineHTML = "";
             if (MachineError.Count > 0)
             {
