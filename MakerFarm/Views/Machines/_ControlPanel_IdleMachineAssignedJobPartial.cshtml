@@ -10,7 +10,12 @@
 @{
     bool Compressed = (bool)ViewData["Compressed"];
 }
-@if (Compressed) { }
+@if (Compressed) {
+if (AssignedJob != null && AssignedJob.complete)
+{
+    @Html.ActionLink("Update Status", "Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] }, null);
+}
+}
 else
 {
 if (AssignedJob != null)

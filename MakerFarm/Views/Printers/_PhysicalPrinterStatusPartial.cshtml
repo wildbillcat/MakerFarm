@@ -34,12 +34,12 @@ else if (compressed) {
                 <br />
             }
             @M.Status.Split()[0]
-            if (M.CurrentTaskProgress != null)
-            {
-                <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
-            }
         }
-    }        
+    }
+    if (M.CurrentTaskProgress != null)
+        {
+            <progress value="@M.CurrentTaskProgress.ToString()" max="100">@M.CurrentTaskProgress.ToString()%</progress>
+        }        
 }
 else
 {
