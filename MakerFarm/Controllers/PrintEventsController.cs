@@ -248,7 +248,7 @@ namespace MakerFarm.Controllers
                 if (!db.Printers.Find(printevent.PrinterId).PrinterName.Equals("Null Printer"))
                 {
                     PrinterStatusLog StatusUpdate = new PrinterStatusLog();
-                    StatusUpdate.Comment = string.Concat(values["PrinterStatusComments"], " Event Id:", printevent.PrintEventId);
+                    StatusUpdate.Comment = string.Concat(User.Identity.Name, " : ", values["PrinterStatusComments"], " Event Id:", printevent.PrintEventId);
                     StatusUpdate.LogEntryDate = DateTime.Now;
                     StatusUpdate.LoggedPrinterStatus = (PrinterStatus)Enum.Parse(typeof(PrinterStatus), values["LoggedPrinterStatus"]);
                     StatusUpdate.PrinterId = printevent.PrinterId;

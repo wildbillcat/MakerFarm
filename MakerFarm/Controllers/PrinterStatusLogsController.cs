@@ -63,6 +63,7 @@ namespace MakerFarm.Controllers
         public ActionResult Create([Bind(Include="PrinterStatusLogId,LoggedPrinterStatus,Comment,PrinterId")] PrinterStatusLog printerstatuslog)
         {
             printerstatuslog.LogEntryDate = DateTime.Now;
+            printerstatuslog.Comment = string.Concat(User.Identity.Name, " : ", printerstatuslog.Comment);
             Printer PrinterInQuestion = db.Printers.Find(printerstatuslog.PrinterId);
             if (PrinterInQuestion.PrinterName.Equals("Null Printer"))
             {
