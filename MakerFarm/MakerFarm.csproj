@@ -451,6 +451,7 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\SmallStaticIcons\arrow-right-3.png" />
+    <Content Include="Content\StaticIcons\3dprintIcon.png" />
     <Content Include="Content\StaticIcons\appointment-new.png" />
     <Content Include="Content\StaticIcons\archive-insert-2.png" />
     <Content Include="Content\StaticIcons\dialog-error-5.png" />
