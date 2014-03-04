@@ -19,7 +19,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink(applicationTitle, "SubmissionSelection", "PrinterTypes")</p>
+                    <p class="site-title">@Html.ActionLink(applicationTitle, "Index", "Home")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -27,7 +27,8 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Submit Print", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Submit Print", "SubmissionSelection", "PrinterTypes")</li>
                             <li>@Html.ActionLink("Print Queues", "Index", "PrinterTypes")</li>
                         </ul>
                     </nav>

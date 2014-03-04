@@ -14,7 +14,8 @@ namespace MakerFarm.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("SubmissionSelection", "PrinterTypes");
+            //return RedirectToAction("SubmissionSelection", "PrinterTypes");
+            return View();
         }
 
         public ActionResult About()

@@ -1,34 +1,36 @@
 ﻿@{
     ViewBag.Title = "Yale School of Architecture 3D Print Submission";
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-            </hgroup>
-            <p>
-                This application is used to monitor the usage of 3D printing, allowing users to submit prints digitally and the fabrication process to be tracked.    
-            </p>
-        </div>
-    </section>
-}
-<h3>We suggest the following:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Think of a great design!</h5>
-        Or nab one off a website. All you need to do is submit a print through the web interface. 
-        @Html.ActionLink("Click to get started!", "Index", "PrinterTypes")
-    </li>
 
-    <li class="two">
-        <h5>Watch the Print Queue</h5>
-        The DM Office will be monitoring the printers and sending off parts as fast as possible, updating your print status as they go.
-    </li>
+<style>
+    table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    td {
+        text-align: center;
+        font-size: large;
+    }
+</style>
 
-    <li class="three">
-        <h5>Pick up your Print from the DM Office</h5>
-        Eventually your print will complete, or we will have reached the maximum number of authorized attempts.
-        You can look at the print log for your print to see what happened.
-    </li>
-</ol>
+<h2>Welcome to the @ViewBag.Title Application</h2>
+
+<table class="table">
+    <tr>
+        <td>
+            <a href=@Url.Action("SubmissionSelection", "PrinterTypes")>
+                <img src="@Url.Content("/Content/StaticIcons/archive-insert-2.png")" alt="Submit a print Icon" width="200" />
+                <br />
+                Submit a print!
+            </a>
+        </td>
+        <td></td>
+        <td>
+            <a href=@Url.Action("Index", "PrinterTypes")>
+                <img src="@Url.Content("/Content/StaticIcons/appointment-new.png")" alt="Printers Icon" width="200" />
+                <br />
+                Look at queues
+            </a>
+        </td>
+    </tr>
+</table>
