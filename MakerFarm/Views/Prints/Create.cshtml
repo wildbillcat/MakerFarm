@@ -31,7 +31,7 @@
             @Html.Label(string.Concat("Material ", (1+i).ToString()))
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.MaterialIds, (SelectList)ViewData["MaterialsList"])
+            @Html.DropDownListFor(model => model.MaterialIds, (SelectList)ViewData["MaterialsList"], string.Empty)
             @Html.ValidationMessageFor(model => model.MaterialIds)
         </div>
         }

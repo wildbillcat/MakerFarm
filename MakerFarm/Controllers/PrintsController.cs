@@ -501,10 +501,27 @@ namespace MakerFarm.Controllers
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
             string matIds = tempMaterial[0];
-            for (int i = 1; i < tempMaterial.Length; i++ )
+            try
             {
-                matIds = string.Concat(matIds, ",", tempMaterial[i]);
+                Material Mt = db.Materials.Find(long.Parse(matIds));
+                if (Mt.PrinterTypeId != print.PrinterTypeId)
+                {
+                    ModelState.AddModelError("MaterialIDs", "Invalid material selected");
+                }
+                for (int i = 1; i < tempMaterial.Length; i++)
+                {
+                    Mt = db.Materials.Find(long.Parse(matIds));
+                    if (Mt.PrinterTypeId != print.PrinterTypeId)
+                    {
+                        ModelState.AddModelError("MaterialIDs", "Invalid material selected");
+                    }
+                    matIds = string.Concat(matIds, ",", tempMaterial[i]);
+                }
             }
+            catch {
+                ModelState.AddModelError("MaterialIDs", "Invalid material selected");
+            }
+            
             print.MaterialIds = matIds;
 
             /*Estimated Material Usage*/
