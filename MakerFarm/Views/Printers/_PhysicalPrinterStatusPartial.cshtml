@@ -17,7 +17,7 @@ else if (compressed) {
     {
         if (TimedOut)
         {
-            <text>PRINTER TIMEOUT</text>
+            <text>CLIENT TIMED OUT</text>
         }else{
             if (M.AssignedJob == null){
                 <text>Job not yet queued</text>
@@ -47,7 +47,7 @@ else
     {
         if (TimedOut)
         {
-            <text>PRINTER TIMEOUT</text> 
+            <text>CLIENT TIMED OUT</text> 
             <br />
         }
         foreach (string S in M.Status.Split('\n'))
