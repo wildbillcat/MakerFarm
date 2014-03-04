@@ -396,7 +396,7 @@ namespace MakerFarm.Controllers
                 //The printer you attempted to use does not exist in the database!
                 return RedirectToAction("Index", "PrinterTypes");
             }
-            List<Material> materials = db.Materials.Where(s => (s.PrinterTypeId == id) && !(s.MaterialSpoolQuantity == 0)).ToList<Material>();
+            List<Material> materials = db.Materials.Where(s => (s.PrinterTypeId == id) && !(s.MaterialSpoolQuantity == 0)).OrderBy(p=>p.MaterialName).ToList<Material>();
             if(materials.Count() == 0)
             {
                 //The printer you attempted to use does not have any materials available
