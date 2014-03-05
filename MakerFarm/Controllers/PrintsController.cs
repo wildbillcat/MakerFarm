@@ -832,6 +832,12 @@ namespace MakerFarm.Controllers
             return false;
         }
 
+        public ActionResult GCodeViewer(long id)
+        {
+            return PartialView(db.Prints.Find(id));
+            //return View(db.Prints.Find(id));
+        }
+
         //
         // GET: /Prints/Delete/5
         [Authorize(Roles = "Administrator")]

@@ -5,8 +5,7 @@
     if (M != null && DateTime.Now.Subtract(M.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout"))))
     {
         TimedOut = true;
-    }
-    
+    }    
 }
 
 @if(M == null){
