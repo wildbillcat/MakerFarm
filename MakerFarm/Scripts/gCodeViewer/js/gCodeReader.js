@@ -262,9 +262,9 @@ GCODE.gCodeReader = (function(){
 
             var density = 1;
             if(gCodeOptions['filamentType'] === 'ABS') {
-                density = 1.04;
+                density = 1.05;
             }else if(gCodeOptions['filamentType'] === 'PLA') {
-                density = 1.24;
+                density = 1.43;
             }
             totalWeight = density*3.141*gCodeOptions['filamentDia']/10*gCodeOptions['filamentDia']/10/4*totalFilament/10;
 
