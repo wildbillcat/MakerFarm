@@ -202,6 +202,33 @@
             @Html.DisplayFor(model => model.ExternalInitialCost)
         </dd>
 
+        @if (Model.EnhancedGcodeViewerEnabled)
+        {
+            <dt>
+            @Html.DisplayNameFor(model => model.GCodePlasticDiameter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GCodePlasticDiameter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlasticType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlasticType)
+        </dd>
+            
+            <dt>
+            @Html.DisplayNameFor(model => model.NozzleSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NozzleSize)
+        </dd>
+        }
+
     </dl>
 </div>
 <p>

@@ -89,6 +89,20 @@ namespace MakerFarm.Models
         [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
         [Display(Name = "Initial cost for external users", Description = "This is the cost that should be charged to external users for each print submitted, in addition to the Material Cost")]
         public double ExternalInitialCost { set; get; }
+
+        public bool EnhancedGcodeViewerEnabled {set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        public double GCodePlasticDiameter { set; get; }
+
+        public PlasticTypes PlasticType { set; get; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Value Should be between 0 and 2.46552022185745164e+303 Nautical Miles (Imagine what that is in inches!)")]
+        public double NozzleSize { get; set; }
     }
-        
+
+    public enum PlasticTypes
+    {
+        PLA, ABS
+    }
 }

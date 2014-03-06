@@ -425,6 +425,10 @@
     <Compile Include="Migrations\201402130215039_Changed name of affiliated machine to printer as it should have been.Designer.cs">
       <DependentUpon>201402130215039_Changed name of affiliated machine to printer as it should have been.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403062039398_Added additional settings for Enhanced Gcode Viewer.cs" />
+    <Compile Include="Migrations\201403062039398_Added additional settings for Enhanced Gcode Viewer.Designer.cs">
+      <DependentUpon>201403062039398_Added additional settings for Enhanced Gcode Viewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -888,6 +892,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402130215039_Changed name of affiliated machine to printer as it should have been.resx">
       <DependentUpon>201402130215039_Changed name of affiliated machine to printer as it should have been.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403062039398_Added additional settings for Enhanced Gcode Viewer.resx">
+      <DependentUpon>201403062039398_Added additional settings for Enhanced Gcode Viewer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

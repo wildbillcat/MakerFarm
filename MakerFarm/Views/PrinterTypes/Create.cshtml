@@ -210,6 +210,38 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.EnhancedGcodeViewerEnabled, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EnhancedGcodeViewerEnabled)
+                @Html.ValidationMessageFor(model => model.EnhancedGcodeViewerEnabled)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GCodePlasticDiameter, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GCodePlasticDiameter)
+                @Html.ValidationMessageFor(model => model.GCodePlasticDiameter)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PlasticType, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.PlasticType)
+                @Html.ValidationMessageFor(model => model.PlasticType)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NozzleSize, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NozzleSize)
+                @Html.ValidationMessageFor(model => model.NozzleSize)
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
