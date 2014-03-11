@@ -834,8 +834,8 @@ namespace MakerFarm.Controllers
 
         public ActionResult GCodeViewer(long id)
         {
-            return PartialView(db.Prints.Find(id));
-            //return View(db.Prints.Find(id));
+            //return PartialView(db.Prints.Find(id));
+            return View(db.Prints.Find(id));
         }
 
         //

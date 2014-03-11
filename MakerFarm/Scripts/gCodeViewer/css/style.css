@@ -1,18 +1,6 @@
-body,
-html {
-    margin:0;
-    padding:0;
-    color:#000;
-    background-image: url(cupertino/images/background.jpg);
-}
 #wrap {
     width:1000px;
     height: 680px;
-    position: absolute;
-    top: 50%;
-    margin-top: -350px;
-    left: 50%;
-    margin-left: -500px;
     /**/
     background:#ffffff;
     /*border: 5px outset #bbb;*/

@@ -25,17 +25,6 @@
             @Html.ValidationMessage("PrintFile")
         </div>
 
-        @for (int i = 0; i < (int)ViewData["SupportedMaterials"]; i++)
-        { 
-        <div class="editor-label">
-            @Html.Label(string.Concat("Material ", (1+i).ToString()))
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.MaterialIds, (SelectList)ViewData["MaterialsList"], string.Empty)
-            @Html.ValidationMessageFor(model => model.MaterialIds)
-        </div>
-        }
-
         <div class="editor-label">
             @Html.LabelFor(model => model.EstMaterialUse)
             @Html.Label(string.Concat("(", ViewData["PrinterMeasurmentUnit"], ")"))
@@ -52,6 +41,17 @@
             @Html.EditorFor(model => model.EstToolpathTime)
             @Html.ValidationMessageFor(model => model.EstToolpathTime)
         </div>
+
+        @for (int i = 0; i < (int)ViewData["SupportedMaterials"]; i++)
+        {
+            <div class="editor-label">
+                @Html.Label(string.Concat("Material ", (1 + i).ToString()))
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.MaterialIds, (SelectList)ViewData["MaterialsList"], string.Empty)
+                @Html.ValidationMessageFor(model => model.MaterialIds)
+            </div>
+        }
             
         @if ((int)ViewData["MNUA"] > 1)
         {

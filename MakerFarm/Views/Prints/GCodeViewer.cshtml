@@ -1,10 +1,16 @@
 ﻿@model MakerFarm.Models.Print
 
 <!-- Scripts from header -->
+<!-- -->
 <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
+<!-- -->
 <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/bootstrap.css" media="screen" />
+<!-- -->
 <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/lib/codemirror.css" media="screen" />
+<!-- -->
 <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/style.css" media="screen" />
+
+
 <script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-ui-1.9.0.custom.js"></script>
 
@@ -38,7 +44,6 @@
 
 <div id="wrap" class="ui-widget ui-widget-content ui-corner-all">
     <div id="control">
-        <img src="/Scripts/gCodeViewer/img/logo.png" alt="gCodeViewer - an online gcode viewer" />
 
         <div id="accordion2" class="accordion">
             <div class="accordion-group">
@@ -148,11 +153,17 @@
                 </div>
                 <div id="printerInfoAccordioinTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <label for="filamentDia">Plastic diameter: <input type="text" value="1.75" id="filamentDia" onchange="GCODE.ui.processOptions()" /></label>
+                        <label for="filamentDia">Plastic diameter: <input type="text" value="@Model.PrinterType.GCodePlasticDiameter" id="filamentDia" onchange="GCODE.ui.processOptions()" readonly/></label>
                         <label>Plastic type: </label>
-                        <label for="plasticABS"><input type="radio" name="radPlastic" id="plasticABS" value="ABS" onclick="GCODE.ui.processOptions()" checked>ABS</label>
-                        <label for="plasticPLA"><input type="radio" name="radPlastic" id="plasticPLA" value="PLA" onclick="GCODE.ui.processOptions()">PLA</label>
-                        <label for="nozzleDia">Nozzle size: <input type="text" value="0.4" id="nozzleDia" onchange="GCODE.ui.processOptions()" /></label>
+                        @if (Model.PrinterType.PlasticType.Equals("ABS"))
+                        { <text>
+                        <label for="plasticABS"><input type="radio" name="radPlastic" id="plasticABS" value="ABS" onclick="GCODE.ui.processOptions()" checked/>ABS</label>
+                        </text> }
+                        else
+                        {<text>
+                        <label for="plasticPLA"><input type="radio" name="radPlastic" id="plasticPLA" value="PLA" onclick="GCODE.ui.processOptions()" checked/>PLA</label>
+                        </text> }
+                        <label for="nozzleDia">Nozzle size: <input type="text" value="@Model.PrinterType.NozzleSize" id="nozzleDia" onchange="GCODE.ui.processOptions()" readonly /></label>
                     </div>
                 </div>
             </div>
@@ -239,6 +250,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
     GCODE.ui.initHandlers();
 </script>

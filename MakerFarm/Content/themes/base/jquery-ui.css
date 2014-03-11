@@ -304,7 +304,7 @@ button.ui-button::-moz-focus-inner {
 	text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
-	background-image: none;
+	/*background-image: none;*/
 	margin: .7em 0 0 0;
 	padding: 0 .2em;
 	border-left: 0;
@@ -431,7 +431,7 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-buttonpane {
 	text-align: left;
 	border-width: 1px 0 0 0;
-	background-image: none;
+	/*background-image: none;*/
 	margin-top: .5em;
 	padding: .3em 1em .5em .4em;
 }
@@ -539,7 +539,7 @@ button.ui-button::-moz-focus-inner {
 	opacity: 0.25;
 }
 .ui-progressbar-indeterminate .ui-progressbar-value {
-	background-image: none;
+	/*background-image: none;*/
 }
 
 .ui-resizable {
@@ -926,7 +926,7 @@ body .ui-tooltip {
 .ui-widget-header .ui-state-disabled {
 	opacity: .35;
 	filter:Alpha(Opacity=35);
-	background-image: none;
+	/*background-image: none;*/
 }
 .ui-state-disabled .ui-icon {
 	filter:Alpha(Opacity=35); /* For IE8 - See #6059 */
