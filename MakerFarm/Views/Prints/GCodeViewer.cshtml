@@ -1,32 +1,7 @@
 ﻿@model MakerFarm.Models.Print
 
-<!-- Scripts from header -->
-<!-- -->
-<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
-<!-- -->
-<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/bootstrap.css" media="screen" />
-<!-- -->
-<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/lib/codemirror.css" media="screen" />
-<!-- -->
-<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/style.css" media="screen" />
 
 
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-1.8.2.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-ui-1.9.0.custom.js"></script>
-
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/codemirror.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/mode_gcode/gcode_mode.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/three.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/bootstrap.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/modernizr.custom.09684.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/TrackballControls.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/lib/zlib.min.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/js/ui.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/js/gCodeReader.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/js/analyzer.js"></script>
-<script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer3d.js"></script>
-<!-- Scripts from header -->
 
 <div id="analysisModal" class="modal hide fade">
     <div class="modal-header">
@@ -176,7 +151,7 @@
                 </div>
                 <div id="errorAnalysisAccordioinTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <button class="btn disabled" id="runAnalysisButton" onclick="GCODE.analyzer.runAnalyze()" />Run analysis</button>
+                        <button class="btn disabled" id="runAnalysisButton" onclick="GCODE.analyzer.runAnalyze()" >Run analysis</button>
                         <div id="analysisOptionsDiv" class="hide">
                             <label for="renderErrors"><input type="checkbox" id="renderErrors" onclick="GCODE.ui.processOptions()">Render error analysis results</label>
                         </div>
@@ -251,7 +226,32 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/bootstrap.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/lib/codemirror.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/style.css" media="screen" />
+
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-ui-1.9.0.custom.js"></script>
+
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/codemirror.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/mode_gcode/gcode_mode.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/three.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/bootstrap.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/modernizr.custom.09684.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/TrackballControls.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/lib/zlib.min.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/js/ui.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/js/gCodeReader.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/js/analyzer.js"></script>
+<script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer3d.js"></script>
 
 <script>
     GCODE.ui.initHandlers();
 </script>
+}
+
