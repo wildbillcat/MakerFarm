@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Create";
+    MakerFarm.Models.PrinterType printerType = (MakerFarm.Models.PrinterType)ViewData["printerType"];
 }
 
 <h2>Submit File</h2>
@@ -82,7 +83,7 @@
             @Html.ValidationMessageFor(model => model.PrinterTypeId)
         </div>
         
-        @if ((bool)ViewData["FullColorPrint"])
+        @if (printerType.OffersFullColorPrinting)
         {
         <div class="editor-label">
             @Html.LabelFor(model => model.FullColorPrint)

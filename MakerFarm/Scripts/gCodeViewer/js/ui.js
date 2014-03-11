@@ -153,6 +153,7 @@ GCODE.ui = (function(){
 
         resultSet.push("Model size is: " + modelInfo.modelSize.x.toFixed(2) + 'x' + modelInfo.modelSize.y.toFixed(2) + 'x' + modelInfo.modelSize.z.toFixed(2)+'mm<br>');
         resultSet.push("Total filament used: " + modelInfo.totalFilament.toFixed(2) + "mm<br>");
+        resultSet.push("<input id=\"EstMaterialUse\" type=\"hidden\" value=\"" + (parseFloat(modelInfo.totalWeight) * 0.035274).toFixed(2) + "\" name=\"EstMaterialUse\"></input>");
         resultSet.push("Total filament weight used: " + modelInfo.totalWeight.toFixed(2) + "grams<br>");
         var i = 0, tmp = [];
         for(var key in modelInfo.filamentByExtruder){
@@ -163,9 +164,14 @@ GCODE.ui = (function(){
             resultSet.push(tmp.join(''));
         }
         resultSet.push("Estimated print time: " + parseInt(parseFloat(modelInfo.printTime)/60/60) + ":" + parseInt((parseFloat(modelInfo.printTime)/60)%60) + ":" + parseInt(parseFloat(modelInfo.printTime)%60) + "<br>");
+        resultSet.push("<input id=\"EstToolpathTime\" type=\"hidden\" value=\"" + (parseFloat(modelInfo.printTime) / 60).toFixed(2) + "\" name=\"EstToolpathTime\"></input>");
         resultSet.push("Estimated layer height: " + modelInfo.layerHeight.toFixed(2) + "mm<br>");
         resultSet.push("Layer count: " + modelInfo.layerCnt.toFixed(0) + "printed, " + modelInfo.layerTotal.toFixed(0) + 'visited<br>');
-        document.getElementById('list').innerHTML =  resultSet.join('');
+        document.getElementById('list').innerHTML = resultSet.join('');
+        //var btnSet = [];
+        //btnSet.push("<input type=\"submit\" value=\"Submit\" />");
+        //document.getElementById('submitBtn').innerHTML = btnSet.join('');
+        document.getElementById('submitBtn').style.visibility = "visible";
     };
 
     var handleFileSelect = function(evt) {
