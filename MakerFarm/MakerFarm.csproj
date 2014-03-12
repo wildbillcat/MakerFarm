@@ -770,7 +770,8 @@
     <Content Include="Views\Machines\_ControlPanel_IdleMachineUnassignedJobPartial.cshtml" />
     <Content Include="Views\Machines\_ControlPanel_CanceledPartial.cshtml" />
     <Content Include="Views\Machines\_ControlPanel_NoMachineAffiliated.cshtml" />
-    <Content Include="Views\Prints\GCodeViewer.cshtml" />
+    <Content Include="Views\Prints\GCodeSubmission.cshtml" />
+    <Content Include="Views\Prints\_GCodeViewerPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

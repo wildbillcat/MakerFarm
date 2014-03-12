@@ -47,6 +47,27 @@
         @Html.DisplayFor(model => model.PrinterType.TypeName)
     </div>
 
+    <div class="display-label">
+        Estimated Cost
+    </div>
+    <div class="display-field">
+        @if (Model.InternalUser)
+        {
+            {
+                double price = (Model.EstMaterialUse * Model.PrinterType.InternalCostPerUnit + Model.PrinterType.InternalInitialCost);
+                @price.ToString("C");
+            }
+        }
+        else
+        {
+            {
+                double price = (Model.EstMaterialUse * Model.PrinterType.ExternalCostPerUnit + Model.PrinterType.ExternalInitialCost);
+                @price.ToString("C");
+            }
+        }
+        (Please note: The price estimate that this system generates should not be taken as a final price. Individuals are responsible for the final cost calculation.)
+    </div>
+
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
