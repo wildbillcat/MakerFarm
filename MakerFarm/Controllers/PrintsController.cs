@@ -609,6 +609,11 @@ namespace MakerFarm.Controllers
             ViewData["PrintSubmissionWaiverTerms"] = db.PrintSubmissionWaiverTerms.Where(p => p.Enabled.Equals(true)).ToList();
             ViewData["FullColorPrint"] = printerType.OffersFullColorPrinting;
             ctx.Dispose();
+            ViewData["printerType"] = printerType;
+            if (printerType.EnhancedGcodeViewerEnabled)
+            {
+                return View("GCodeViewer");
+            }
             return View(print);
         }
 

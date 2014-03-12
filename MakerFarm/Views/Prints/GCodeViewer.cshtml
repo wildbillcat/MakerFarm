@@ -2,6 +2,7 @@
 @{
     MakerFarm.Models.PrinterType printerType = (MakerFarm.Models.PrinterType)ViewData["printerType"];
 }
+@section scripts{
 
     <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/bootstrap.css" media="screen" />
@@ -9,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/Scripts/gCodeViewer/css/style.css" media="screen" />
        
     
-    <script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-1.8.2.js"></script>
+    <!--<script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-1.8.2.js"></script>-->
     <script type="text/javascript" src="/Scripts/gCodeViewer/lib/jquery-ui-1.9.0.custom.js"></script>
     <script type="text/javascript" src="/Scripts/gCodeViewer/lib/codemirror.js"></script>
     <script type="text/javascript" src="/Scripts/gCodeViewer/lib/mode_gcode/gcode_mode.js"></script>
@@ -23,6 +24,13 @@
     <script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer.js"></script>
     <script type="text/javascript" src="/Scripts/gCodeViewer/js/analyzer.js"></script>
     <script type="text/javascript" src="/Scripts/gCodeViewer/js/renderer3d.js"></script>
+
+    <script>
+        GCODE.ui.initHandlers();
+        $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); });
+    </script>
+
+    }
 
     <div id="analysisModal" class="modal hide fade">
         <div class="modal-header">
@@ -51,13 +59,13 @@
                             Select GCode file
                         </a>
                     </div>
-                    <div id="fileAccordionTab" class="accordion-body collapse">
+                    <div id="fileAccordionTab" class="accordion-body">
                         <div class="accordion-inner">
                             <input type="file" id="file" name="PrintFile" />
                             <!--<form class="add-teacher" id="fAddTeacher" enctype="multipart/form-data" method="post" novalidate="novalidate">-->
                             <!--<button id="selectFileButton">Select GCode File</button>-->
                             <!--</form>-->
-                            <div id="drop_zone">Drop file here</div>
+                            <div class="hide" id="drop_zone">Drop file here</div>
                         </div>
                     </div>
                 </div>
@@ -67,7 +75,7 @@
                             Progress indicators
                         </a>
                     </div>
-                    <div id="progressAccordionTab" class="accordion-body collapse">
+                    <div id="progressAccordionTab" class="accordion-body">
                         <div class="accordion-inner">
                             <div id="progressBlock">
                                 <div class="progress">
@@ -86,7 +94,7 @@
                             Model info
                         </a>
                     </div>
-                    <div id="infoAccordionTab" class="accordion-body collapse">
+                    <div id="infoAccordionTab" class="accordion-body">
                         <div class="accordion-inner">
                             <p id="list"></p>
 
@@ -156,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="accordion-group">
+                <div class="accordion-group hide">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#layerAccordionTab">
                             Layer Info
@@ -168,7 +176,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="accordion-group">
+                <div class="accordion-group hide">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#options2DAccordionTab">
                             2D Render options
@@ -192,7 +200,7 @@
                     </div>
                 </div>
 
-                <div class="accordion-group">
+                <div class="accordion-group hide">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#analyzeOptionsAccordioinTab">
                             GCode analyzer options
@@ -208,7 +216,7 @@
                     </div>
                 </div>
 
-                <div class="accordion-group">
+                <div class="accordion-group hide">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#printerInfoAccordioinTab">
                             Printer Info
@@ -252,13 +260,13 @@
         <div id="gcode">
             <div id="tabs-min" class="tabbable">
                 <ul id="myTab" class="nav nav-tabs">
-                    <li class=""><a href="#tab2d" data-toggle="tab">2D</a></li>
-                    <li class=""><a href="#tab3d" data-toggle="tab">3D</a></li>
-                    <li class=""><a href="#tabGCode" data-toggle="tab">GCode</a></li>
-                    <li class="active"><a href="#tabAbout" data-toggle="tab">About</a></li>
+                    <li class="hide"><a href="#tab2d" data-toggle="tab">2D</a></li>
+                    <li class="hide"><a href="#tab3d" data-toggle="tab">3D</a></li>
+                    <li class="hide"><a href="#tabGCode" data-toggle="tab">GCode</a></li>
+                    <li class="hide"><a href="#tabAbout" data-toggle="tab">About</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane" id="tab2d">
+                    <div class="tab-pane active" id="tab2d">
                         <canvas id="canvas" width="650" height="620"></canvas>
                         <div id="slider-vertical"></div>
                         <div id="slider-horizontal"></div>
@@ -269,7 +277,7 @@
                     <div class="tab-pane" id="tabGCode">
                         <div id="gCodeContainer"></div>
                     </div>
-                    <div class="tab-pane active" id="tabAbout">
+                    <div class="tab-pane" id="tabAbout">
                         <div class="aboutpage">
                             <h1>gCodeViewer</h1>
                             <b>gCodeViewer</b> is a visual GCode visualizer, viewer and analyzer in your own browser! It works on any OS in almost any modern browser (chrome, ff, safari 6, opera, ie10 should work too). All you need to do - is drag your *.gcode file to the designated zone.<br /><br />
@@ -311,6 +319,4 @@
     </div>
 </form> 
 
-    <script>
-        GCODE.ui.initHandlers();
-    </script>
+    
