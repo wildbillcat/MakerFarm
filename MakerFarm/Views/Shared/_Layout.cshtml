@@ -46,7 +46,9 @@
         </header>
         <div id="body">
             @RenderSection("featured", required: false)
-            @Html.Action("UnwaiveredPrints", "Account")
+            @if (User.Identity.IsAuthenticated) { 
+                @Html.Action("UnwaiveredPrints", "Account")
+            }
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
             </section>

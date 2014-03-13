@@ -25,11 +25,13 @@ namespace MakerFarm.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult SystemStatus()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult CompactWaitingPrints()
         {
             List<PrinterType> TypeList = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
@@ -71,6 +73,7 @@ namespace MakerFarm.Controllers
             return PartialView("_CompactWaitingPrintsPartial");
         }
 
+        [AllowAnonymous]
         public ActionResult CompactActivePrinters(int id = 0)
         {
             List<PrinterType> MasterTypes = db.PrinterTypes.Where(p => p.QueueVisible).ToList();
