@@ -50,6 +50,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.PauseMachine, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.PauseMachine)
+                @Html.ValidationMessageFor(model => model.PauseMachine)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.ClientJobSupport, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ClientJobSupport)
@@ -70,6 +78,38 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PoisonJobs)
                 @Html.ValidationMessageFor(model => model.PoisonJobs)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Print_Send, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Print_Send)
+                @Html.ValidationMessageFor(model => model.Print_Send)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Print_Cancel, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Print_Cancel)
+                @Html.ValidationMessageFor(model => model.Print_Cancel)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Print_Pause, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Print_Pause)
+                @Html.ValidationMessageFor(model => model.Print_Pause)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Print_Resume, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Print_Resume)
+                @Html.ValidationMessageFor(model => model.Print_Resume)
             </div>
         </div>
 

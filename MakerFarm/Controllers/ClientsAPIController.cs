@@ -109,10 +109,14 @@ namespace MakerFarm.Controllers
                     Mach.ClientJobSupport = false;
                     Mach.Enabled = false;
                     Mach.CurrentTaskProgress = null;
+                    Mach.PauseMachine = MachinePause.ActivePrinting;
+                    Mach.Print_Cancel = false;
+                    Mach.Print_Pause = false;
+                    Mach.Print_Resume = false;
+                    Mach.Print_Send = false;
                     db.Machines.Add(Mach);
                 }
-            }
-                        
+            }                        
             db.SaveChanges();
             return Ok();
         }

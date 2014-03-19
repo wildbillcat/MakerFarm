@@ -47,6 +47,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.PauseMachine)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PauseMachine)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.LastUpdated)
         </dt>
 
@@ -76,6 +84,38 @@
 
         <dd>
             @Html.DisplayFor(model => model.PoisonJobs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Print_Send)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Print_Send)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Print_Resume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Print_Resume)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Print_Pause)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Print_Pause)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Print_Cancel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Print_Cancel)
         </dd>
 
         @if (Model.AssignedJob != null)

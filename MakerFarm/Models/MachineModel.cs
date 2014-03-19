@@ -35,7 +35,8 @@ namespace MakerFarm.Models
 
         public double? CurrentTaskProgress { get; set; }
 
-        public bool MachinePaused { get; set; }
+        [Display(Name = "Pause Machine?", Description = "This registers if the machine is paused")]
+        public MachinePause PauseMachine { get; set; }
 
         [ForeignKey("PrinterId")]
         public virtual Printer AffiliatedPrinter { get; set; }
@@ -48,17 +49,17 @@ namespace MakerFarm.Models
          * Machine Glossary
          */
         //Print Related Commands
-        bool Print_Send { get; set; } //This denotes MakerFarm Job Support
-        bool Print_Cancel { get; set; }
-        bool Print_Pause { get; set; }
-        bool Print_Resume { get; set; }
+        public bool Print_Send { get; set; } //This denotes MakerFarm Job Support
+        public bool Print_Cancel { get; set; }
+        public bool Print_Pause { get; set; }
+        public bool Print_Resume { get; set; }
 
         public MachineInterest GetMachineInterest()
         {
             MachineInterest M = new MachineInterest();
             M.MachineName = MachineName;
             M.PoisonJobs = PoisonJobs;
-            M.MachinePaused = MachinePaused;
+            M.PauseMachine = PauseMachine;
             
             if(AssignedJob == null){
                 M.CurrentJob = 0;
@@ -77,7 +78,7 @@ namespace MakerFarm.Models
         public int CurrentJob { get; set; }
         public bool PoisonJobs { get; set; }
         public bool PreviouslyCollected { get; set; }
-        public bool MachinePaused { get; set; }
+        public MachinePause PauseMachine { get; set; }
     }
 
     public class MachineStatusUpdate
@@ -88,12 +89,19 @@ namespace MakerFarm.Models
         public double MachinePaused { get; set; }
     }
 
-    class RancherCommandGlossary
+    public class RancherCommandGlossary
     {
         //Print Related Commands
         bool Print_Send { get; set; } //This denotes MakerFarm Job Support
         bool Print_Cancel { get; set; }
         bool Print_Pause { get; set; }
         bool Print_Resume { get; set; }
+    }
+
+    //Printer can be actively printing, paused due to MakerFarm, have a Reume Command queued by MakerFarm, or have been paused at the machine. 
+    //By Default the Machine would be Active printing.
+    public enum MachinePause
+    {
+        ActivePrinting, MakerfarmPause, MakerfarmResume, PausedAtMachine
     }
 }
