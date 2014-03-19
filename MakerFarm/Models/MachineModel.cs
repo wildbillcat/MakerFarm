@@ -35,17 +35,30 @@ namespace MakerFarm.Models
 
         public double? CurrentTaskProgress { get; set; }
 
+        public bool MachinePaused { get; set; }
+
         [ForeignKey("PrinterId")]
         public virtual Printer AffiliatedPrinter { get; set; }
 
         //reference to the job assigned to the current machine
         public virtual Job AssignedJob { get; set; }
 
+
+        /*
+         * Machine Glossary
+         */
+        //Print Related Commands
+        bool Print_Send { get; set; } //This denotes MakerFarm Job Support
+        bool Print_Cancel { get; set; }
+        bool Print_Pause { get; set; }
+        bool Print_Resume { get; set; }
+
         public MachineInterest GetMachineInterest()
         {
             MachineInterest M = new MachineInterest();
             M.MachineName = MachineName;
             M.PoisonJobs = PoisonJobs;
+            M.MachinePaused = MachinePaused;
             
             if(AssignedJob == null){
                 M.CurrentJob = 0;
@@ -57,17 +70,30 @@ namespace MakerFarm.Models
             return M;
         }
     }
+
     public class MachineInterest
     {
         public string MachineName { get; set; }
         public int CurrentJob { get; set; }
         public bool PoisonJobs { get; set; }
         public bool PreviouslyCollected { get; set; }
+        public bool MachinePaused { get; set; }
     }
+
     public class MachineStatusUpdate
     {
         public string MachineName { get; set; }
         public string MachineStatus { get; set; }
         public double? CurrentTaskProgress { get; set; }
+        public double MachinePaused { get; set; }
+    }
+
+    class RancherCommandGlossary
+    {
+        //Print Related Commands
+        bool Print_Send { get; set; } //This denotes MakerFarm Job Support
+        bool Print_Cancel { get; set; }
+        bool Print_Pause { get; set; }
+        bool Print_Resume { get; set; }
     }
 }
