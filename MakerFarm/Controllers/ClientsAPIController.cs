@@ -240,5 +240,35 @@ namespace MakerFarm.Controllers
             }
         }
 
+        // POST odata/ClientsAPI(5)/CanDo
+        /*
+         * This method is used to allow a client to report what machines it sees to Makerfarm, 
+         * populating the printers and improving the ease of configuration. 
+         */
+        [HttpPost]
+        public IHttpActionResult CanDo([FromODataUri] int key, ODataActionParameters parameters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            Client Client = db.Clients.Find(key);
+            if (Client == null || !Client.Enabled) //Client Doesnt exist or isnt enabled
+            {
+                return NotFound();
+            }
+            string ClientAPIKey = (string)parameters["ClientAPIKey"];
+            if (!Client.ClientAPIKey.Equals(ClientAPIKey))
+            {
+                //API Key is invalid reject request
+                return BadRequest();
+            }
+            //List of the Machines 
+            IEnumerable<RancherCommandGlossary> machlist = (IEnumerable<RancherCommandGlossary>)parameters["Machines"];
+            RancherCommandGlossary[] MachineAbilities = machlist.ToArray();
+
+            return Ok();
+        }
+
     }
 }

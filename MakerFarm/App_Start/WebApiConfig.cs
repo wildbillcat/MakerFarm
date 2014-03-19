@@ -31,6 +31,10 @@ namespace MakerFarm
             TakeThis.Parameter<int>("JobId");
             //TakeThis.Returns<HttpResponseMessage>();
 
+            ActionConfiguration CanDo = builder.Entity<Client>().Action("CanDo");
+            CanDo.Parameter<string>("ClientAPIKey");
+            CanDo.CollectionParameter<RancherCommandGlossary>("Machines");
+
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
             // To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.

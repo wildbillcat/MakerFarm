@@ -91,6 +91,7 @@ namespace MakerFarm.Models
 
     public class RancherCommandGlossary
     {
+        public string MachineName { get; set; }
         //Print Related Commands
         bool Print_Send { get; set; } //This denotes MakerFarm Job Support
         bool Print_Cancel { get; set; }
