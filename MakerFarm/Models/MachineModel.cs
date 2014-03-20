@@ -93,10 +93,10 @@ namespace MakerFarm.Models
     {
         public string MachineName { get; set; }
         //Print Related Commands
-        bool Print_Send { get; set; } //This denotes MakerFarm Job Support
-        bool Print_Cancel { get; set; }
-        bool Print_Pause { get; set; }
-        bool Print_Resume { get; set; }
+        public bool Print_Send { get; set; } //This denotes MakerFarm Job Support
+        public bool Print_Cancel { get; set; }
+        public bool Print_Pause { get; set; }
+        public bool Print_Resume { get; set; }
     }
 
     //Printer can be actively printing, paused due to MakerFarm, have a Reume Command queued by MakerFarm, or have been paused at the machine. 
