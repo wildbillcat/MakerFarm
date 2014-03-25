@@ -25,10 +25,9 @@ namespace MakerFarm.Models
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Machine> Machines { get; set; }
 
-
         public MakerfarmDBContext() : base("DefaultConnection")
         {
-            //Database.SetInitializer<MakerfarmDBContext>(new DropCreateDatabaseIfModelChanges<MakerfarmDBContext>());
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
     }

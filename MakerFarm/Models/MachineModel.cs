@@ -63,10 +63,16 @@ namespace MakerFarm.Models
             
             if(AssignedJob == null){
                 M.CurrentJob = 0;
-                M.PreviouslyCollected = false;
+                M.PreviouslyCollected = false; 
+                M.EstMaterialUse = 0;
+                M.EstToolpathTime = 0;
+                M.PrintFileName = null;
             }else{
                 M.CurrentJob = AssignedJob.JobId;
                 M.PreviouslyCollected = AssignedJob.started;
+                M.EstMaterialUse = AssignedJob.AffiliatedPrint.EstMaterialUse;
+                M.EstToolpathTime = AssignedJob.AffiliatedPrint.EstToolpathTime;
+                M.PrintFileName = string.Concat(AssignedJob.AffiliatedPrint.PrintId.ToString(), "_", AssignedJob.AffiliatedPrint.FileName);
             }
             return M;
         }
@@ -75,10 +81,14 @@ namespace MakerFarm.Models
     public class MachineInterest
     {
         public string MachineName { get; set; }
-        public int CurrentJob { get; set; }
         public bool PoisonJobs { get; set; }
         public bool PreviouslyCollected { get; set; }
         public MachinePause PauseMachine { get; set; }
+
+        public int CurrentJob { get; set; }
+        public string PrintFileName { get; set; }
+        public int EstToolpathTime { get; set; } /* Estimated amount of time (in minutes) to complete the print job from the processing software */
+        public double EstMaterialUse { get; set; } /* The print cost originally estimated by the print software (Ounces) */
     }
 
     public class MachineStatusUpdate
