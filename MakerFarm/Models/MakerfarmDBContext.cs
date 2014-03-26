@@ -27,7 +27,7 @@ namespace MakerFarm.Models
 
         public MakerfarmDBContext() : base("DefaultConnection")
         {
-            this.Configuration.LazyLoadingEnabled = false;
+
         }
 
     }
