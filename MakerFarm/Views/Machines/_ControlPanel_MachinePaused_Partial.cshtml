@@ -1,0 +1,27 @@
+﻿@{
+    MakerFarm.Models.Machine Machine = (MakerFarm.Models.Machine)ViewData["Machine"];
+    MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+    /*
+     * Either this Job hasn't yet started and we are waiting for the Printer to pick it up
+     * Or the job is presently printing
+     * Or or the job has completed!
+     * Status should reflect as such.
+     */
+    bool Compressed = (bool)ViewData["Compressed"];
+}
+@if (Compressed) { }
+else
+{
+    <text>Cancelation Issued. Awaiting Update. </text>
+    <br />
+    if (AssignedJob != null)
+    {
+        <text>Job Status : </text> @AssignedJob.Status
+    }
+    else
+    {
+
+    }
+    <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
+
+}

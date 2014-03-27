@@ -184,7 +184,8 @@ namespace MakerFarm.Controllers
             {
                 machine = db.Machines.FirstOrDefault(p => p.AffiliatedPrinter.PrinterId == id);
             }
-            if (machine == null || !machine.ClientJobSupport)
+            //If There is no Machine assigned to the Printer, skip 
+            if (machine == null)
             {
                 Printer PrinterAssigned = null;
                 Print PrintAssigned = null;
