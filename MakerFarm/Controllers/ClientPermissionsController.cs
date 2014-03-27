@@ -51,15 +51,6 @@ namespace MakerFarm.Controllers
                     ") " +
                     "dur on dbo.Machines.MachineId = dur.Machine_MachineId " +
                     "where dur.Machine_MachineId is null";
-
-            /*
-             * "select * " +
-                    "from dbo.Machines left outer join ( " + 
-                    "select * " +
-                    "from dbo.ClientPermissions " +
-                    "where dbo.ClientPermissions.Client_ClientId = " + C.ClientId + ") " +
-                    "dur on dbo.Machines.MachineId = dur.Machine_MachineId " +
-                    "where dur.Machine_MachineId is null";*/
             ViewBag.PrinterSelect = new SelectList(db.Machines.SqlQuery(sql), "MachineId", "MachineName");
             ViewBag.Client = C;
             return View();
