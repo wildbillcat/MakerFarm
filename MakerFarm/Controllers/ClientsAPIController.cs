@@ -143,6 +143,19 @@ namespace MakerFarm.Controllers
             {
                 if (P.Machine.Enabled)
                 {
+                    if (db.Entry(P).Reference(p => p.Machine).IsLoaded == false)
+                    {
+                        db.Entry(P).Reference(p => p.Machine).Load();
+                    }
+                    
+                    if (db.Entry(P.Machine).Reference(p => p.AssignedJob).IsLoaded == false)
+                    {
+                        db.Entry(P.Machine).Reference(p => p.AssignedJob).Load();
+                    }
+                    if (P.Machine.AssignedJob != null && db.Entry(P.Machine.AssignedJob).Reference(p => p.AffiliatedPrint).IsLoaded == false)
+                    {
+                        db.Entry(P.Machine.AssignedJob).Reference(p => p.AffiliatedPrint).Load();
+                    }
                     Machines.Add(P.Machine.GetMachineInterest());
                 }
             }

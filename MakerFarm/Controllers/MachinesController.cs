@@ -359,6 +359,11 @@ namespace MakerFarm.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Machine machine = db.Machines.Find(id);
+            ClientPermission[] permissions = db.ClientPermissions.Where(p => p.Machine.MachineName.Equals(machine.MachineName)).ToArray();
+            foreach (ClientPermission permission in permissions)
+            {
+                db.ClientPermissions.Remove(permission);
+            }
             db.Machines.Remove(machine);
             db.SaveChanges();
             return RedirectToAction("Index");
