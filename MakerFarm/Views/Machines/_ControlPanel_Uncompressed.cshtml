@@ -1,0 +1,54 @@
+﻿@{
+    MakerFarm.Models.Machine Machine = (MakerFarm.Models.Machine)ViewData["Machine"];
+    MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+}
+@if(Machine == null){
+    
+}else{
+    
+    <!--Start Poison/Cancel Jobs Section-->
+    if (Machine.Print_Cancel)
+    {
+        if (Machine.PoisonJobs)
+        {
+            if (Machine.idle)
+            {
+                <!--Printer is inactive and has been told to Poison Jobs-->
+                <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" /> 
+            }
+            else
+            {
+                <!--Printer is Active and has been told to Poison Jobs-->
+                <text>Attempting to cancel any activity on machine, please wait.</text>
+                <br />
+            }
+        }
+        else
+        {
+            if (Machine.idle)
+            {
+
+            }
+            else
+            {
+                <!--Printer is Active and has not been told to Poison Jobs-->
+                using (Html.BeginForm("CancelJob", "Machines"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.Hidden("MId", (long)ViewData["MId"])
+                            <input type="submit" value="Cancel Job?" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+    <!--End Poison/Cancel Jobs Section-->
+    
+    <!--Start Pause/Resume Jobs Section-->
+    
+    <!--End Pause/Resume Jobs Section-->
+}
+

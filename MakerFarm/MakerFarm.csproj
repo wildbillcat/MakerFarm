@@ -777,6 +777,8 @@
     <Content Include="Views\Prints\GCodeSubmission.cshtml" />
     <Content Include="Views\Prints\_GCodeViewerPartial.cshtml" />
     <Content Include="Views\Machines\_ControlPanel_MachinePaused_Partial.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_Compressed.cshtml" />
+    <Content Include="Views\Machines\_ControlPanel_Uncompressed.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

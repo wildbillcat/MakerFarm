@@ -198,6 +198,7 @@ namespace MakerFarm.Controllers
                 //return a button with the current print to update status!
                 return PartialView("_ControlPanel_NoMachineAffiliated");                
             }
+            ViewData["Machine"] = machine;
             if (db.Entry(machine).Reference(p => p.AssignedJob).IsLoaded == false)
             {
                 db.Entry(machine).Reference(p => p.AssignedJob).Load();
