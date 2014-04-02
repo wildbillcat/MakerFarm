@@ -1,6 +1,7 @@
 ﻿@{
     MakerFarm.Models.Machine Machine = (MakerFarm.Models.Machine)ViewData["Machine"];
     MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+    MakerFarm.Models.Print AssignedPrint = (MakerFarm.Models.Print)ViewData["PrintAssigned"];
     /*
      * Either this Job hasn't yet started and we are waiting for the Printer to pick it up
      * Or the job is presently printing
@@ -12,16 +13,18 @@
 @if (Compressed) { }
 else
 {
-<text>Cancelation Issued. Awaiting Update. </text>
+<text>Cancelation Success.</text>
 <br />
-if (AssignedJob != null)
-{
-    <text>Job Status : </text> @AssignedJob.Status
-}
-else
-{
-    
-}
-<input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
-
+    if (AssignedJob != null)
+    {
+        <text>Job Status : </text> @AssignedJob.Status
+    }
+    if (AssignedPrint != null)//Print Assigned
+    {
+        <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedPrint.PrintId, MId = Machine.MachineId })'" />
+    }
+    else
+    {
+        <input type="button" value="Unpoison Printer" onclick="location.href='@Url.Action("CancelJob", "Machines", new { MId = Machine.MachineId })'" />
+    }
 }

@@ -210,7 +210,7 @@ namespace MakerFarm.Controllers
             ViewData["MId"] = machine.MachineId;
             ViewData["AssignedJob"] = machine.AssignedJob;
             ViewData["AssignedPrint?"] = false;
-            
+            ViewData["PrintAssigned"] = AssignedPrint(machine.AffiliatedPrinter); //print assigned
             if (machine.AffiliatedPrinter != null)
             {
                 Print P = AssignedPrint(machine.AffiliatedPrinter);
