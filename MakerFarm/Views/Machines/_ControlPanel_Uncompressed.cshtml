@@ -1,6 +1,7 @@
 ﻿@{
     MakerFarm.Models.Machine Machine = (MakerFarm.Models.Machine)ViewData["Machine"];
     MakerFarm.Models.Job AssignedJob = (MakerFarm.Models.Job)ViewData["AssignedJob"];
+    MakerFarm.Models.Print AssignedPrint = (MakerFarm.Models.Print)ViewData["PrintAssigned"];
 }
 @if(Machine == null){
     
@@ -46,9 +47,82 @@
         }
     }
     <!--End Poison/Cancel Jobs Section-->
-    
-    <!--Start Pause/Resume Jobs Section-->
-    
-    <!--End Pause/Resume Jobs Section-->
+    <!--Start Pause Machine Status-->
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmPause)
+    {
+        <text>Attempting to Pause Job</text>
+        <br />
+    }
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmResume)
+    {
+        <text>Attempting to Resume Job</text>
+        <br />
+    }
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine)
+    {
+        <text>Machine is Paused</text>
+        <br />
+    }
+    <!--End Pause Machine Satus-->
+    <!--Start Pause Jobs Section-->
+    if (Machine.Print_Pause && !Machine.idle && Machine.PauseMachine == MakerFarm.Models.MachinePause.ActivePrinting) //If machine supports pausing, is active, and not paused, allow the user to pause the printer
+    {
+        using (Html.BeginForm("Pause", "Machines"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.Hidden("MId", (long)ViewData["MId"])
+                            <input type="submit" value="Pause Print?" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+    }
+    <!--End Pause Jobs Section-->
+    <!--Start Resume Jobs Section-->
+    if (Machine.Print_Resume && Machine.idle && Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine) //If machine supports resumption, is idle, and is paused, allow the user to pause the printer
+    {
+        using (Html.BeginForm("Resume", "Machines"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.Hidden("MId", (long)ViewData["MId"])
+                            <input type="submit" value="Pause Print?" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+    }
+    <!--End Resume Jobs Section-->
+    <!--Start Queue Job Section-->
+    if (Machine.Print_Send)
+    {
+        //A print is assigned but a job has not been. Offer the option to send a print
+        if (AssignedPrint != null && AssignedJob == null)
+        {
+            using (Html.BeginForm("QueueJob", "Machines"))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.Hidden("MId", MId)
+                        <input type="submit" value="Queue Job?" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        }    
+        if (AssignedJob != null)
+        {
+            <text>Job Status : </text> @AssignedJob.Status
+        }
+        //Job is assigned and has been completed, offer ability to update status
+        if (AssignedJob != null && AssignedJob.complete)
+        {
+            <text>Job Complete</text>
+            <br />
+            <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
+        }
+    }
+    <!--End Queue Job Section-->
 }
 
