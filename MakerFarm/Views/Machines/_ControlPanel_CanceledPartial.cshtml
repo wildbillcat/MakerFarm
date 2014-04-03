@@ -25,6 +25,15 @@ else
     }
     else
     {
-        <input type="button" value="Unpoison Printer" onclick="location.href='@Url.Action("CancelJob", "Machines", new { MId = Machine.MachineId })'" />
+        using (Html.BeginForm("CancelJob", "Machines"))
+        {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.Hidden("MId", Machine.MachineId)
+            <input type="submit" value="Unpoison Printer" class="btn btn-default" />
+        </div>
+    }
+        
     }
 }
