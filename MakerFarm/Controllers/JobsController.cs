@@ -17,7 +17,15 @@ namespace MakerFarm.Controllers
         // GET: /Jobs/
         public ActionResult Index()
         {
-            return View(db.Jobs.ToList());
+            List<Job> Jobs = db.Jobs.ToList();
+            foreach (Job J in Jobs)
+            {
+                if (db.Entry(J).Reference(p => p.AffiliatedPrint).IsLoaded == false)
+                {
+                    db.Entry(J).Reference(p => p.AffiliatedPrint).Load();
+                }
+            }             
+            return View(Jobs);
         }
 
         // GET: /Jobs/Details/5

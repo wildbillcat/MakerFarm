@@ -12,6 +12,12 @@
 <table class="table">
     <tr>
         <th>
+            <text>Print Name</text>
+        </th>
+        <th>
+            <text>Print UserName</text>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
@@ -29,7 +35,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink("item.AffiliatedPrint.FileName", "Details", new { id = item.JobId })
+            @Html.ActionLink(item.AffiliatedPrint.FileName, "Details", new { id = item.JobId })
+        </td>
+        <td>
+            @item.AffiliatedPrint.UserName
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
