@@ -10,6 +10,7 @@ using MakerFarm.Models;
 
 namespace MakerFarm.Controllers
 {
+    [Authorize(Roles = "Administrator, Moderator")]
     public class JobsController : Controller
     {
         private MakerfarmDBContext db = new MakerfarmDBContext();
@@ -98,6 +99,7 @@ namespace MakerFarm.Controllers
         }
 
         // GET: /Jobs/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -113,6 +115,7 @@ namespace MakerFarm.Controllers
         }
 
         // POST: /Jobs/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

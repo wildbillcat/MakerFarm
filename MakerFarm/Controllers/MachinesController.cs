@@ -211,6 +211,11 @@ namespace MakerFarm.Controllers
             ViewData["AssignedJob"] = machine.AssignedJob;
             ViewData["AssignedPrint?"] = false;
             ViewData["PrintAssigned"] = AssignedPrint(machine.AffiliatedPrinter); //print assigned
+            if (!Compressed)
+            {
+                return PartialView("_ControlPanel_Uncompressed");
+            }
+
             if (machine.AffiliatedPrinter != null)
             {
                 Print P = AssignedPrint(machine.AffiliatedPrinter);

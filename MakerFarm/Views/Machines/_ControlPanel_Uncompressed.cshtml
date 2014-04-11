@@ -12,10 +12,27 @@
     {
         if (Machine.PoisonJobs)
         {
-            if (Machine.idle)
+            if (Machine.CurrentTaskProgress == null)
             {
                 <!--Printer is inactive and has been told to Poison Jobs-->
-                <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" /> 
+                if (AssignedJob == null)
+                {
+                    using (Html.BeginForm("CancelJob", "Machines"))
+                    {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.Hidden("MId", (long)ViewData["MId"])
+                            <input type="submit" value="Clear Cancelation" class="btn btn-default" />
+                        </div>
+                    </div>
+                    }
+                }
+                else 
+                { 
+                    <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
+                }
+                 
             }
             else
             {
@@ -26,7 +43,7 @@
         }
         else
         {
-            if (Machine.idle)
+            if (Machine.CurrentTaskProgress == null)
             {
 
             }
@@ -65,7 +82,7 @@
     }
     <!--End Pause Machine Satus-->
     <!--Start Pause Jobs Section-->
-    if (Machine.Print_Pause && !Machine.idle && Machine.PauseMachine == MakerFarm.Models.MachinePause.ActivePrinting) //If machine supports pausing, is active, and not paused, allow the user to pause the printer
+    if (Machine.Print_Pause && Machine.CurrentTaskProgress != null && Machine.PauseMachine == MakerFarm.Models.MachinePause.ActivePrinting) //If machine supports pausing, is active, and not paused, allow the user to pause the printer
     {
         using (Html.BeginForm("Pause", "Machines"))
                 {
@@ -80,7 +97,7 @@
     }
     <!--End Pause Jobs Section-->
     <!--Start Resume Jobs Section-->
-    if (Machine.Print_Resume && Machine.idle && Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine) //If machine supports resumption, is idle, and is paused, allow the user to pause the printer
+    if (Machine.Print_Resume && Machine.CurrentTaskProgress == null && Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine) //If machine supports resumption, is idle, and is paused, allow the user to pause the printer
     {
         using (Html.BeginForm("Resume", "Machines"))
                 {
