@@ -137,6 +137,48 @@ namespace MakerFarm.Controllers
             return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PauseJob(long MId = 0)
+        {
+            Machine machine = db.Machines.Find(MId);
+            if (machine != null)
+            {
+                //Machine isn't null, so lets operate!
+                if (machine.PauseMachine == MachinePause.ActivePrinting && machine.Print_Pause)
+                {
+                    //Machine is currently running and supports pausing, so lets set it to pause 
+                    machine.PauseMachine = MachinePause.MakerfarmPause;
+                    db.Entry(machine).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                //Let's Poison the Machine
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResumeJob(long MId = 0)
+        {
+            Machine machine = db.Machines.Find(MId);
+            if (machine != null)
+            {
+                //Machine isn't null, so lets operate!
+                if (machine.PauseMachine == MachinePause.PausedAtMachine && machine.Print_Resume)
+                {
+                    //Machine is in fact paused and supports resumption, so lets set it to resume!
+                    machine.PauseMachine = MachinePause.MakerfarmResume;
+                    db.Entry(machine).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                //return to the printer!
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
+        }
+
         //Internal Method
         private Print AssignedPrint(Printer P)
         {

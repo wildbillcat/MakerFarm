@@ -6,7 +6,29 @@
 @if(Machine == null){
     
 }else{
-    
+    <!--Start Pause Machine Status-->
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmPause)
+    {
+        <text>Attempting to Pause Job</text>
+        <br />
+    }
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmResume)
+    {
+        <text>Attempting to Resume Job</text>
+        <br />
+    }
+    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine)
+    {
+        <text>Machine is Paused</text>
+        <br />
+    }
+    <!--End Pause Machine Satus-->
+    <!--Start Job Status-->
+    if (AssignedJob != null)
+    {
+        <text>Job Status : </text> @AssignedJob.Status
+    }
+    <!--End Job Status-->
     <!--Start Poison/Cancel Jobs Section-->
     if (Machine.Print_Cancel)
     {
@@ -27,12 +49,7 @@
                         </div>
                     </div>
                     }
-                }
-                else 
-                { 
-                    <input type="button" value="Update Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
-                }
-                 
+                }         
             }
             else
             {
@@ -64,27 +81,10 @@
         }
     }
     <!--End Poison/Cancel Jobs Section-->
-    <!--Start Pause Machine Status-->
-    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmPause)
-    {
-        <text>Attempting to Pause Job</text>
-        <br />
-    }
-    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.MakerfarmResume)
-    {
-        <text>Attempting to Resume Job</text>
-        <br />
-    }
-    if (Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine)
-    {
-        <text>Machine is Paused</text>
-        <br />
-    }
-    <!--End Pause Machine Satus-->
     <!--Start Pause Jobs Section-->
-    if (Machine.Print_Pause && Machine.CurrentTaskProgress != null && Machine.PauseMachine == MakerFarm.Models.MachinePause.ActivePrinting) //If machine supports pausing, is active, and not paused, allow the user to pause the printer
+    if (Machine.Print_Pause && Machine.CurrentTaskProgress != null && Machine.PauseMachine == MakerFarm.Models.MachinePause.ActivePrinting && Machine.CurrentTaskProgress != null) //If machine supports pausing, is active, and not paused, allow the user to pause the printer
     {
-        using (Html.BeginForm("Pause", "Machines"))
+        using (Html.BeginForm("PauseJob", "Machines"))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group">
@@ -99,13 +99,13 @@
     <!--Start Resume Jobs Section-->
     if (Machine.Print_Resume && Machine.CurrentTaskProgress == null && Machine.PauseMachine == MakerFarm.Models.MachinePause.PausedAtMachine) //If machine supports resumption, is idle, and is paused, allow the user to pause the printer
     {
-        using (Html.BeginForm("Resume", "Machines"))
+        using (Html.BeginForm("ResumeJob", "Machines"))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             @Html.Hidden("MId", (long)ViewData["MId"])
-                            <input type="submit" value="Pause Print?" class="btn btn-default" />
+                            <input type="submit" value="Resume Print?" class="btn btn-default" />
                         </div>
                     </div>
                 }
@@ -127,10 +127,6 @@
                     </div>
                 </div>
             }
-        }    
-        if (AssignedJob != null)
-        {
-            <text>Job Status : </text> @AssignedJob.Status
         }
         //Job is assigned and has been completed, offer ability to update status
         if (AssignedJob != null && AssignedJob.complete)
