@@ -29,6 +29,29 @@
         <text>Job Status : </text> @AssignedJob.Status
     }
     <!--End Job Status-->
+    <!--Remove Vacant Job-->
+    if (Machine.CurrentTaskProgress == null && AssignedJob != null && AssignedJob.started && !AssignedJob.complete && DateTime.Now.Subtract(AssignedJob.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout"))))
+    {
+        if (AssignedPrint == null)
+        {
+            using (Html.BeginForm("RemoveVacantJob", "Machines"))
+            {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.Hidden("MId", (long)ViewData["MId"])
+                    <input type="submit" value="Remove Orphaned Job" class="btn btn-default" />
+                </div>
+            </div>
+            }
+        }
+        else
+        {
+            <input type="button" value="Update Orphaned Print Status" onclick="location.href='@Url.Action("Create", "PrintEvents", new { id = AssignedJob.AffiliatedPrint.PrintId, MId = (long)ViewData["MId"] })'" />
+        }
+        
+    }
+    <!--End Remove Vacant Job-->
     <!--Start Poison/Cancel Jobs Section-->
     if (Machine.Print_Cancel)
     {

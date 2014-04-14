@@ -109,6 +109,23 @@ namespace MakerFarm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult RemoveVacantJob(long MId = 0)
+        {
+            Machine machine = db.Machines.Find(MId);
+
+            //Machine.CurrentTaskProgress == null && AssignedJob.started && !AssignedJob.complete && DateTime.Now.Subtract(AssignedJob.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout")))
+            if (machine != null && machine.AssignedJob != null && machine.CurrentTaskProgress == null && machine.AssignedJob.started && !machine.AssignedJob.complete && DateTime.Now.Subtract(machine.AssignedJob.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout"))))
+            {
+                machine.AssignedJob = null;
+                db.Entry(machine).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
+            }
+            return RedirectToAction("Details", "Machines", new { id = machine.MachineId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CancelJob(long MId = 0)
         {
             Machine machine = db.Machines.Find(MId);
