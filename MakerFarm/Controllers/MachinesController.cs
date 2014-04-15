@@ -117,6 +117,8 @@ namespace MakerFarm.Controllers
             if (machine != null && machine.AssignedJob != null && machine.CurrentTaskProgress == null && machine.AssignedJob.started && !machine.AssignedJob.complete && DateTime.Now.Subtract(machine.AssignedJob.LastUpdated) > new TimeSpan(0, 0, int.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("MachineTimeout"))))
             {
                 machine.AssignedJob = null;
+                machine.PoisonJobs = false;
+                machine.PauseMachine = MachinePause.ActivePrinting;
                 db.Entry(machine).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Details", "Printers", new { id = machine.AffiliatedPrinter.PrinterId });
