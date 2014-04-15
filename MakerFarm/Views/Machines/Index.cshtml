@@ -38,6 +38,24 @@
         <th>
             Enabled?
         </th>
+        <th>
+            Poisoned?
+        </th>
+        <th>
+            Paused?
+        </th>
+        <th>
+            Can Cancel?
+        </th>
+        <th>
+            Can Pause?
+        </th>
+        <th>
+            Can Resume?
+        </th>
+        <th>
+            Can Print?
+        </th>
         <th></th>
     </tr>
 
@@ -68,6 +86,24 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Enabled)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PoisonJobs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PauseMachine)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Print_Cancel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Print_Pause)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Print_Resume)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Print_Send)
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.MachineId })
