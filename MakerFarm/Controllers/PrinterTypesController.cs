@@ -18,13 +18,13 @@ namespace MakerFarm.Controllers
         // GET: /PrinterTypes/
         public ActionResult Index()
         {
-            return View(db.PrinterTypes.Where(p => p.SubmissionEnabled).ToList());
+            return View(db.PrinterTypes.Where(p => p.QueueVisible).ToList());
         }
 
         // GET: /PrinterTypes/
         public ActionResult SubmissionSelection()
         {
-            return View(db.PrinterTypes.Where(p => p.QueueVisible).ToList());
+            return View(db.PrinterTypes.Where(p => p.SubmissionEnabled).ToList());
         }
 
         // GET: /PrinterTypes/Administration
