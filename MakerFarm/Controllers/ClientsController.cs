@@ -155,6 +155,10 @@ namespace MakerFarm.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Client client = db.Clients.Find(id);
+            foreach (ClientPermission p in client.ClientPermissions)
+            {
+                db.ClientPermissions.Remove(p);
+            }
             db.Clients.Remove(client);
             db.SaveChanges();
             return RedirectToAction("Index");
