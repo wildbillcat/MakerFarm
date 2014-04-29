@@ -655,6 +655,8 @@ namespace MakerFarm.Controllers
             Print print = db.Prints.Find(long.Parse(values["PrintId"]));
             print.UserName = values["UserName"];
 
+            print.FileName = values["FileName"];
+
             print.FullColorPrint = values.Get("FullColorPrint").Contains("true");
 
             print.InternalUser = values.Get("InternalUser").Contains("true");

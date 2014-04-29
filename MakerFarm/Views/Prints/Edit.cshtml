@@ -19,7 +19,7 @@
             @Html.LabelFor(model => model.FileName)
         </div>
         <div class="editor-field">
-            @Model.FileName
+            @Html.EditorFor(model => model.FileName)
         </div>
 
         @foreach(SelectList S in (List<SelectList>)ViewData["MaterialsList"])
