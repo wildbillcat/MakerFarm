@@ -62,7 +62,7 @@
                     }
                 </td>
                 <td>
-                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit))
+                    @if (User.Identity.IsAuthenticated && (Roles.IsUserInRole("Moderator") || Roles.IsUserInRole("Administrator")) && !(ActiveCount.ContainsKey(item.UserName) && ActiveCount[item.UserName] >= ActiveQueueLimit) && System.IO.File.Exists(item.GetPath()))
                     {
                         @Html.ActionLink("Assign/Cancel", "Create", "PrintEvents", new { id = item.PrintId }, null)
                     }
