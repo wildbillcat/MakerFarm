@@ -125,7 +125,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AssignedJob.JobId)
+            @Html.DisplayFor(model => model.AssignedJob.JobId) | @Html.ActionLink("Edit Job", "Edit", "Jobs", new { id = Model.AssignedJob.JobId }, null)
         </dd>
         }
 

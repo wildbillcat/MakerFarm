@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MakerFarm.Models;
+using PagedList;
 
 namespace MakerFarm.Controllers
 {
@@ -16,16 +17,18 @@ namespace MakerFarm.Controllers
         private MakerfarmDBContext db = new MakerfarmDBContext();
 
         // GET: /Jobs/
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            List<Job> Jobs = db.Jobs.ToList();
+            int pageSize = 20;
+            int pageNumber = (page ?? 1); 
+            IPagedList<Job> Jobs = db.Jobs.OrderByDescending(p => p.LastUpdated).ToPagedList(pageNumber, pageSize);
             foreach (Job J in Jobs)
             {
                 if (db.Entry(J).Reference(p => p.AffiliatedPrint).IsLoaded == false)
                 {
                     db.Entry(J).Reference(p => p.AffiliatedPrint).Load();
                 }
-            }             
+            }            
             return View(Jobs);
         }
 

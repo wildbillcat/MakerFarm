@@ -1,4 +1,7 @@
-﻿@model IEnumerable<MakerFarm.Models.Job>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<MakerFarm.Models.Job>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -12,22 +15,22 @@
 <table class="table">
     <tr>
         <th>
-            <text>Print Name</text>
+            Print Name
         </th>
         <th>
-            <text>Print UserName</text>
+            Print UserName
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.started)
+            Started?
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.complete)
+            Complete?
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdated)
+            Completion Time
         </th>
         <th></th>
     </tr>
