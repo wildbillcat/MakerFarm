@@ -187,7 +187,7 @@ namespace MakerFarm.Controllers
             db.Entry(Client).State = EntityState.Modified;
             MachineStatusUpdate MachineUpdate = (MachineStatusUpdate)parameters["MachineUpdate"];
             JobStatusUpdate JobUpdate = (JobStatusUpdate)parameters["JobUpdate"];
-            ClientPermission P = Client.ClientPermissions.FirstOrDefault(p => p.Machine.MachineName.Equals(MachineUpdate.MachineName) && p.SetInformation);
+            ClientPermission P = Client.ClientPermissions.FirstOrDefault(p => p.Machine.MachineName.Equals(MachineUpdate.MachineName));
             if (P != null || P.Machine != null)
             {
                 Machine M = P.Machine;

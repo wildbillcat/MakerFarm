@@ -434,6 +434,10 @@
     <Compile Include="Migrations\201403191428021_prototyped for pause resume and registering what commands machines support.Designer.cs">
       <DependentUpon>201403191428021_prototyped for pause resume and registering what commands machines support.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407281417192_Removed extranious client permission attributes.cs" />
+    <Compile Include="Migrations\201407281417192_Removed extranious client permission attributes.Designer.cs">
+      <DependentUpon>201407281417192_Removed extranious client permission attributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BillModel.cs" />
@@ -755,7 +759,6 @@
     <Content Include="Views\ClientPermissions\Create.cshtml" />
     <Content Include="Views\ClientPermissions\Delete.cshtml" />
     <Content Include="Views\ClientPermissions\Details.cshtml" />
-    <Content Include="Views\ClientPermissions\Edit.cshtml" />
     <Content Include="Views\ClientPermissions\Index.cshtml" />
     <Content Include="Views\Printers\_PhysicalPrinterStatusPartial.cshtml" />
     <Content Include="Views\Prints\_ActivePrintersPartial.cshtml" />
@@ -907,6 +910,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403191428021_prototyped for pause resume and registering what commands machines support.resx">
       <DependentUpon>201403191428021_prototyped for pause resume and registering what commands machines support.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407281417192_Removed extranious client permission attributes.resx">
+      <DependentUpon>201407281417192_Removed extranious client permission attributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -27,24 +27,22 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.GetInformation)
+            @Html.DisplayNameFor(model => model.Client.ClientName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.GetInformation)
+            @Html.DisplayFor(model => model.Client.ClientName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SetInformation)
+            @Html.DisplayNameFor(model => model.Machine.AffiliatedPrinter)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SetInformation)
+            @Html.DisplayFor(model => model.Machine.AffiliatedPrinter)
         </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClientPermissionId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -51,7 +51,19 @@ namespace MakerFarm.Controllers
                     ") " +
                     "dur on dbo.Machines.MachineId = dur.Machine_MachineId " +
                     "where dur.Machine_MachineId is null";
-            ViewBag.PrinterSelect = new SelectList(db.Machines.SqlQuery(sql), "MachineId", "MachineName");
+            List<Machine> MachineList = db.Machines.SqlQuery(sql).ToList();
+            List<SelectListItem> MachineSelectList = new List<SelectListItem>();
+            foreach(Machine Mach in MachineList){
+                if (Mach.AffiliatedPrinter != null)
+                {
+                    MachineSelectList.Add(new SelectListItem() { Text = string.Concat(Mach.MachineName, " : ", Mach.AffiliatedPrinter.PrinterName), Value = Mach.MachineId.ToString() });
+                }
+                else
+                {
+                    MachineSelectList.Add(new SelectListItem() { Text = string.Concat(Mach.MachineName, " : Unassigned"), Value = Mach.MachineId.ToString() });
+                }                
+            }
+            ViewBag.PrinterSelect = new SelectList(MachineSelectList, "Value", "Text");
             ViewBag.Client = C;
             return View();
         }
@@ -93,21 +105,6 @@ namespace MakerFarm.Controllers
                     "where dur.Machine_MachineId is null";
             ViewBag.PrinterSelect = new SelectList(db.Machines.SqlQuery(sql), "MachineId", "MachineName");
             ViewBag.Client = C;
-            return View(clientpermission);
-        }
-
-        // GET: /ClientPermissions/Edit/5
-        public ActionResult Edit(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ClientPermission clientpermission = db.ClientPermissions.Find(id);
-            if (clientpermission == null)
-            {
-                return HttpNotFound();
-            }
             return View(clientpermission);
         }
 

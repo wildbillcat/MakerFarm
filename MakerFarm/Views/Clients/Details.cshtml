@@ -56,8 +56,8 @@
         @foreach (MakerFarm.Models.ClientPermission perm in Model.ClientPermissions)
         {
             <dd>
-                @perm.Machine.MachineName
-                | @Html.ActionLink("Edit", "Edit", "ClientPermissions", new { id = perm.ClientPermissionId }, null)
+                @perm.Machine.MachineName 
+                | @if(perm.Machine.AffiliatedPrinter != null){ @perm.Machine.AffiliatedPrinter.PrinterName }else{<text>Unassigned</text>}
                 | @Html.ActionLink("Delete", "Delete", "ClientPermissions", new { id = perm.ClientPermissionId }, null)
             </dd>
         }
