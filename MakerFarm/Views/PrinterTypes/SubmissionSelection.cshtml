@@ -18,7 +18,7 @@
 </th>
     </tr>
     <tr>
-        <td>
+        <td valign="top">
             <a href=@Url.Action("Create", "Prints", new { id = item.PrinterTypeId }, null)>
                 <img src="@Url.Content(item.PrinterIcon)" alt="Image" height="100" />
             </a>
@@ -38,6 +38,9 @@
               <a href="@item.HyperLink">Read More...</a>  
             }         
 </td>
+    </tr>
+    <tr>
+        <td colspan="2"><hr /></td>
     </tr>
 }
     
