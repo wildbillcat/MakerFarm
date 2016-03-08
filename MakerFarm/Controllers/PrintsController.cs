@@ -665,7 +665,7 @@ namespace MakerFarm.Controllers
             /* Material ID Parsing */
             string[] tempMaterial = values.GetValues("MaterialIDs");
             string matIds = tempMaterial[0];
-            for (int i = 1; i < tempMaterial.Length; i++ )
+            for (int i = 1; i < tempMaterial.Length; i++)
             {
                 matIds = string.Concat(matIds, ",", tempMaterial[i]);
             }
@@ -679,6 +679,17 @@ namespace MakerFarm.Controllers
 
             /*Authorized number of attempts*/
             print.AuthorizedAttempts = int.Parse(values["AuthorizedAttempts"]);
+
+            // Change printer type -- Ultimaker only
+            if (print.PrinterTypeId == 12 || print.PrinterTypeId == 13)
+            { 
+                print.PrinterTypeId = int.Parse(values["PrinterTypeId"]);
+                // need to change material, too
+                if (print.PrinterTypeId == 12)
+                    print.MaterialIds = "50";
+                else
+                    print.MaterialIds = "51";
+            }
 
             /*Staff Assistance*/
             print.StaffAssistedPrint = values.Get("StaffAssistedPrint").Contains("true");

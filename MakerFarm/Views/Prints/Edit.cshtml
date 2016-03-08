@@ -83,8 +83,23 @@
             @Html.LabelFor(model => model.PrinterTypeId)
         </div>
         <div class="editor-field">
-            @Model.PrinterType.TypeName
-            @Html.ValidationMessageFor(model => model.PrinterTypeId)
+            @if (Model.PrinterType.TypeName.StartsWith("Ultimaker"))
+            {
+                @Html.DropDownListFor(model => model.PrinterTypeId,
+                new SelectList(new List<Object>{
+                    new {value = 12, text = "Ultimaker 2"},
+                    new {value = 13, text = "Ultimaker 2 Extended"}
+                },
+                "value",
+                "text",
+                Model.PrinterType)
+            )
+                @Html.ValidationMessageFor(model => model.PrinterTypeId)
+            }
+            else
+            {
+                @Model.PrinterType.TypeName
+            }
         </div>
 
         <div class="editor-label">
